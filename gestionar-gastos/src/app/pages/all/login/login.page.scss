@@ -1,0 +1,72 @@
+ion-content.background{
+    --background: url(login.jpg) 0 0/100% 100% no-repeat;
+}
+
+#input{
+    background: #c2c2c2cc;
+    border-radius: 14px;
+    margin-bottom: 8px;
+
+}
+
+.sc-ion-input-ios-h {
+    padding-left: 17px !important;
+    
+}
+
+
+#label{
+    margin-inline: 15%; 
+    padding-top: 74%; 
+    color: white;
+    --padding-top: 74%;
+    --padding-bottom: 0px;
+    --padding-start: 0px;
+    --padding-end: 0px;
+}
+
+#botonIniciar{
+   
+    margin-inline: 36%;
+    --ion-color-base: #72bda3 !important;
+    --ion-color-base-rgb: var(--ion-color-success-rgb, 45, 211, 111) !important;
+    --ion-color-contrast: var(--ion-color-success-contrast, #fff) !important;
+    --ion-color-contrast-rgb: var(--ion-color-success-contrast-rgb, 255, 255, 255) !important;
+    --ion-color-shade: var(--ion-color-success-shade, #28ba62) !important;
+    --ion-color-tint: var(--ion-color-success-tint, #42d77d) !important;
+}
+
+#botonIniciar2{
+   
+    margin-inline: 27%;
+    font-size: 12px;
+    --ion-color-base: #72bda3 !important;
+    --ion-color-base-rgb: var(--ion-color-success-rgb, 45, 211, 111) !important;
+    --ion-color-contrast: var(--ion-color-success-contrast, #fff) !important;
+    --ion-color-contrast-rgb: var(--ion-color-success-contrast-rgb, 255, 255, 255) !important;
+    --ion-color-shade: var(--ion-color-success-shade, #28ba62) !important;
+    --ion-color-tint: var(--ion-color-success-tint, #42d77d) !important;
+}
+
+#label2{
+    margin-inline: 5%; 
+    font-size: 11px;
+    color: #69706e;
+    --padding-top: 74%;
+    --padding-bottom: 0px;
+    --padding-start: 0px;
+    --padding-end: 0px;
+}
+
+
+#botonIniciar3{
+   
+
+    font-size: 9px;
+    --ion-color-base: #7b8783  !important;
+    --ion-color-base-rgb: var(--ion-color-success-rgb, 45, 211, 111) !important;
+    --ion-color-contrast: var(--ion-color-success-contrast, #fff) !important;
+    --ion-color-contrast-rgb: var(--ion-color-success-contrast-rgb, 255, 255, 255) !important;
+    --ion-color-shade: var(--ion-color-success-shade, #28ba62) !important;
+    --ion-color-tint: var(--ion-color-success-tint, #42d77d) !important;
+}
