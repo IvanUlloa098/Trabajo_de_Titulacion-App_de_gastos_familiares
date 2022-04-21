@@ -1,11 +1,14 @@
 export class User{
-    id: string;
+    uid: string;
     email: string;
     password: string;
     role: string;
-    name: string;
+    displayName: string;
     description : string;
     id_familia : number;
-    picture: string;
+    photoURL: string;
     active: boolean;
+    createdAt: Date;
+    lastLogin: Date;
+    provider: string;
 }

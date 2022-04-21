@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
+import { throws } from 'assert';
 import { User } from 'src/app/domain/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 
@@ -25,7 +26,10 @@ export class SignupPage implements OnInit {
     this.User.description = 'Hola, estoy manejando mis finanzas'
     this.User.active = true
     this.User.id_familia = -1
-    this.User.picture = 'default'
+    this.User.photoURL = 'https://firebasestorage.googleapis.com/v0/b/gestionar-gastos.appspot.com/o/default.png?alt=media&token=e8ff50d0-3177-4b40-acf6-d29127a6baf3'
+    this.User.createdAt = new Date()
+    this.User.lastLogin = new Date()
+    this.User.provider = 'gestion-gastos'
 
     if(user){
       this.ID = this.auth.verificacion();

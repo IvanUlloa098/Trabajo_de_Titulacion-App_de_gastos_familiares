@@ -17,6 +17,7 @@ export class LoginPage implements OnInit {
   public password : string;
   User: User = new User();
   user2: any;
+  userUpdate: any;
   verifica: any;
   alerta: any;
 
@@ -37,14 +38,8 @@ export class LoginPage implements OnInit {
 
     if(user){
       this.user2 = this.AuthenticationService.getUsuario(this.User.email);
-      this.user2.forEach((element: any[]) => {
-
-        console.log(" VER ELEMENTO", element[0]);
-       
-          this.router.navigate(["/tabs"])
-
-       
-      });
+      this.user2.subscribe(res=> this.AuthenticationService.timeStampLogin(res[0]))
+      this.router.navigate(["/tabs"])
 
     }else{
       console.log("error en el loggeo")
@@ -59,8 +54,8 @@ export class LoginPage implements OnInit {
   googleLogin() {
     this.AuthenticationService.googleLogin();
     this.router.navigate(["/tabs"])
-    }
-    
+  }
+  
   emailPasswordLogin() {
       let data = this.AuthenticationService.emailPasswordLogin(this.email, this.password);
       console.log('Response:\n', data);

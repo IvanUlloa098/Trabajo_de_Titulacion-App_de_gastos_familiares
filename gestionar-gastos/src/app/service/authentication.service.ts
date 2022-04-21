@@ -15,8 +15,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 
-
-
 export class AuthenticationService {
   public user: Observable<any>;
   public estaLogeado: any = false;
@@ -40,14 +38,21 @@ export class AuthenticationService {
     );
   }
 
-
-
-  //login
+  //iniciar sesion
   async onLogin (user: User) {
     try{
+      this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
       return await this.afAuth.signInWithEmailAndPassword( user.email, user.password)
     }catch(error) {
       console.log( 'error en LOGIN' , error );
+    }
+  }
+
+  timeStampLogin (user) {
+    try{
+      return this.afs.collection("users").doc(user.uid).update({lastLogin: new Date()})
+    }catch(error) {
+      console.log( 'error en TIMESTAMP' , error );
     }
   }
 
@@ -75,7 +80,6 @@ export class AuthenticationService {
     
   }
 
-
   // cierra sesion
   salirCuenta() {
     console.log("Logout");
@@ -85,36 +89,25 @@ export class AuthenticationService {
 
   // guarda usuario
   async save(user: User){
-    const refContactos = this.afs.collection("User");
+    const refContactos = this.afs.collection("users");
 
-    if(user.id == null){
-      user.id = this.afs.createId();
+    if(user.uid == null){
+      user.uid = this.afs.createId();
     }
-    refContactos.doc(user.id).set(Object.assign({}, user));
+    refContactos.doc(user.uid).set(Object.assign({}, user));
 
   }
 
 
   getUsuario(email: any) {
     console.log("llega getUser")
-    return this.afs.collection("User", ref => ref.where("email", "==", email)).valueChanges();
+    return this.afs.collection("users", ref => ref.where("email", "==", email)).valueChanges();
 
   }
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
   async getCurrentUser(): Promise<any> {
     return this.user.pipe(first()).toPromise();
   }
-
-  
-  
 
   async signupUser(name: string, email: string, password: string): Promise<any> {
     try {
@@ -140,10 +133,7 @@ export class AuthenticationService {
     }
   }
 
-
-
-
-  /****************************** LOGIN WITH GOOGLE */
+  //GOOGLE
   async googleLogin() {
     if (this.platform.is('cordova')) {
       return await this.nativeGoogleLogin();
@@ -180,9 +170,7 @@ export class AuthenticationService {
     }
   }
 
-
-
-  /******************************** LOGIN WITH EMAIL */
+  // EMAIL AND PASSWORD
   async emailPasswordLogin(email: string, password: string): Promise<void> {
     try {
       const emailCredential = firebase.default.auth.EmailAuthProvider.credential(email, password);
@@ -214,8 +202,6 @@ export class AuthenticationService {
 
     console.log('doc' + JSON.stringify(doc));
 
-    
-
     if (doc == null || doc == ''  ) {
       // Crear Cuenta
       data = {
@@ -225,7 +211,12 @@ export class AuthenticationService {
         photoURL: user.photoURL || 'https://goo.gl/7kz9qG',
         provider: provider,
         lastLogin: new Date(Number(user.lastLoginAt)) || new Date(),
-        createdAt: new Date(Number(user.createdAt)) || new Date()
+        createdAt: new Date(Number(user.createdAt)) || new Date(),
+        role: 'N',
+        description: 'Hola, estoy manejando mis finanzas',
+        id_familia: -1,
+        active: true,
+        password: "N"
       };
     } else if (doc.active == false){
       throw { error_code: 999, error_message: 'Acceso denegado, servicio deshabilitado, consulte con el administrador.' }; 
@@ -247,15 +238,8 @@ export class AuthenticationService {
     return userRef.doc(`${user.uid}`).set(data, { merge: true});
   }
 
-
-
-  ////////////////////////////////////////////////
-
-
   getUserAuth(){
     return this.afAuth.authState;
   }
-
-
 
 }
