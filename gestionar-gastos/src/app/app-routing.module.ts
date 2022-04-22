@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./pages/all/tabs/tabs.module').then( m => m.TabsPageModule)
+  },
+  {
+    path: 'createfamily',
+    loadChildren: () => import('./pages/all/createfamily/createfamily.module').then( m => m.CreatefamilyPageModule)
   }
 
 ];

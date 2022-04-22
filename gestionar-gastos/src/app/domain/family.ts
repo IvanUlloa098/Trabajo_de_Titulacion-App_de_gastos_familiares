@@ -1,8 +1,7 @@
-export class Family{
+export class Familia{
     id: string;
-    email: string;
-    password: string;
-    name: string;
-    description : string;
+    nombre: string;
+    presupuesto_global: number;
+    primer_dia_mes: string;
     activo: boolean;
 }

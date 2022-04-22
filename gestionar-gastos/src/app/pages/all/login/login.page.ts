@@ -33,13 +33,17 @@ export class LoginPage implements OnInit {
     console.log("1");
     const user = await this.AuthenticationService.onLogin(this.User);
 
-    //this.verifica = await this.auth.verificacion();
-    //console.log("ver data", this.verifica);
-
     if(user){
       this.user2 = this.AuthenticationService.getUsuario(this.User.email);
-      this.user2.subscribe(res=> this.AuthenticationService.timeStampLogin(res[0]))
-      this.router.navigate(["/tabs"])
+      this.user2.subscribe(res=> {
+        this.AuthenticationService.timeStampLogin(res[0]);
+        if (res[0].id_familia == -1) {
+          return this.router.navigate(["/createfamily"]);
+        } else {
+          return this.router.navigate(["/tabs"]);
+        }
+        
+      })
 
     }else{
       console.log("error en el loggeo")

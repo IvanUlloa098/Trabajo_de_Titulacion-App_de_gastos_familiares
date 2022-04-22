@@ -1,0 +1,47 @@
+<ion-header>
+</ion-header>
+
+<ion-content class="background" >
+
+   
+
+
+  <ion-grid  style=" margin-top: 70%;">
+      <ion-label>Nombre de la familia</ion-label>
+      <ion-input id="input" placeholder="Familia Ejemplo" [(ngModel)]="fam.nombre" ></ion-input>
+
+      <ion-label>Presupuesto global</ion-label>
+      <ion-input  id = "input" type = "number" placeholder= "0.00" [(ngModel)]="fam.presupuesto_global" ></ion-input>
+
+      <ion-item>
+        <ion-label>Primer día del mes</ion-label>
+        <ion-select value="1" [(ngModel)]="fam.primer_dia_mes" color="sunny">
+          <ion-select-option value="1989">1</ion-select-option>
+          <ion-select-option value="1990">2</ion-select-option>
+          <ion-select-option value="1991">3</ion-select-option>
+          <ion-select-option value="1992">4</ion-select-option>
+          <ion-select-option value="1993">5</ion-select-option>
+          <ion-select-option value="1994">6</ion-select-option>
+          <ion-select-option value="1995">7</ion-select-option>
+          <ion-select-option value="1996">8</ion-select-option>
+          <ion-select-option value="1997">9</ion-select-option>
+          <ion-select-option value="1998">10</ion-select-option>
+          <ion-select-option value="1999">11</ion-select-option>
+          <ion-select-option value="1999">12</ion-select-option>
+          <ion-select-option value="1999">13</ion-select-option>
+          <ion-select-option value="1999">14</ion-select-option>
+          <ion-select-option value="1999">15</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+  </ion-grid>
+
+  <ion-button id="botonIniciar" style=" margin-bottom: 7%;" color="success"  (click)="logeo()" > Crear familia </ion-button>
+  <ion-button id="botonConozco" style=" margin-bottom: 7%;" color="success"  (click)="logeo()" > Conozco una familia </ion-button>
+  
+  
+  <!--<ion-fab-button ><ion-icon name="log-out" (click)=" logout()" ></ion-icon></ion-fab-button>-->
+ 
+  
+
+</ion-content>
