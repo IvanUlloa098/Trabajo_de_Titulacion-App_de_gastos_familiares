@@ -5,7 +5,7 @@ export class User{
     role: string;
     displayName: string;
     description : string;
-    id_familia : number;
+    id_familia : string;
     photoURL: string;
     active: boolean;
     createdAt: Date;

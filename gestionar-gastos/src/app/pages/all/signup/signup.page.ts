@@ -25,7 +25,7 @@ export class SignupPage implements OnInit {
     this.User.role = 'N'
     this.User.description = 'Hola, estoy manejando mis finanzas'
     this.User.active = true
-    this.User.id_familia = -1
+    this.User.id_familia = "-1"
     this.User.photoURL = 'https://firebasestorage.googleapis.com/v0/b/gestionar-gastos.appspot.com/o/default.png?alt=media&token=e8ff50d0-3177-4b40-acf6-d29127a6baf3'
     this.User.createdAt = new Date()
     this.User.lastLogin = new Date()

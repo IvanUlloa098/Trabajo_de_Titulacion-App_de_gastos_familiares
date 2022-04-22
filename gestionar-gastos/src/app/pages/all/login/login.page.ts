@@ -4,7 +4,7 @@ import { User } from 'src/app/domain/user';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -30,34 +30,57 @@ export class LoginPage implements OnInit {
 
   async logeo(){
     try {
-    console.log("1");
-    const user = await this.AuthenticationService.onLogin(this.User);
+      console.log("1");
+      const user = await this.AuthenticationService.onLogin(this.User);
 
-    if(user){
-      this.user2 = this.AuthenticationService.getUsuario(this.User.email);
-      this.user2.subscribe(res=> {
-        this.AuthenticationService.timeStampLogin(res[0]);
-        if (res[0].id_familia == -1) {
-          return this.router.navigate(["/createfamily"]);
-        } else {
-          return this.router.navigate(["/tabs"]);
-        }
+      if(user){
+        this.user2 = this.AuthenticationService.getUsuario(this.User.email);
+        this.user2.subscribe(res=> {
+          this.AuthenticationService.timeStampLogin(res[0]);
+          if (res[0].id_familia === "-1") {
+            let params: NavigationExtras = {
+              queryParams: {
+                id:res[0].email
+              }
+            }
+
+            return this.router.navigate(["/createfamily"], params);
+          } else {
+            return this.router.navigate(["/tabs"]);
+          }
+          
+        })
+
+      }else{
+        console.log("error en el loggeo")
+        this.alerta = "Datos incorrectos"
+      }
+    } catch (error) {
         
-      })
-
-    }else{
-      console.log("error en el loggeo")
-      this.alerta = "Datos incorrectos"
     }
-  } catch (error) {
-      
-  }
     
   }
 
-  googleLogin() {
-    this.AuthenticationService.googleLogin();
-    this.router.navigate(["/tabs"])
+  async googleLogin() {
+    
+    this.user2 = await this.AuthenticationService.googleLogin()
+    this.user2 = await this.AuthenticationService.getUsuario(this.user2.email)
+
+    this.user2.subscribe(res=> {
+      this.AuthenticationService.timeStampLogin(res[0])
+      if (res[0].id_familia === "-1") {
+        let params: NavigationExtras = {
+          queryParams: {
+            id:res[0].email
+          }
+        }
+
+        return this.router.navigate(["/createfamily"], params);
+      } else {
+        return this.router.navigate(["/tabs"]);
+      }
+      
+    })
   }
   
   emailPasswordLogin() {

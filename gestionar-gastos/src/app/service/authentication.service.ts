@@ -48,11 +48,34 @@ export class AuthenticationService {
     }
   }
 
-  timeStampLogin (user) {
+  async timeStampLogin (user) {
     try{
-      return this.afs.collection("users").doc(user.uid).update({lastLogin: new Date()})
+      return await this.afs.collection("users").doc(user.uid).update({lastLogin: new Date()})
     }catch(error) {
       console.log( 'error en TIMESTAMP' , error );
+    }
+  }
+
+  async changeFamily(user, family) {
+    try{
+      return await this.afs.collection("users").doc(user.uid).update({id_familia: family.id})
+    }catch(error) {
+      console.log( 'error en CHANGEFAMILY' , error );
+    }
+  }
+
+  async createFamily(family) {
+    try{
+      const refContactos = this.afs.collection("families");
+
+      if(family.id == null){
+        family.id = this.afs.createId();
+      }
+      
+      return await refContactos.doc(family.id).set(Object.assign({}, family));
+
+    }catch(error) {
+      console.log( 'error en CHANGEFAMILY' , error );
     }
   }
 
@@ -142,7 +165,7 @@ export class AuthenticationService {
     }
   }
 
-  async nativeGoogleLogin(): Promise<void>  {
+  async nativeGoogleLogin()  {
     try {
       const gplusUser: any = await this.googlePlus.login({
         webClientId: environment.googleWebClientId,
@@ -152,18 +175,21 @@ export class AuthenticationService {
       const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
       const firebaseUser = await firebase.default.auth().signInWithCredential(googleCredential);
       console.log(JSON.stringify(firebaseUser.user));
-      return await this.updateUserData(firebaseUser.user, 'google');
+      this.updateUserData(firebaseUser.user, 'google');
+      return await JSON.parse(JSON.stringify(firebaseUser.user))
+      
     } catch (error) {
       console.error('Error: Login Google - Native' + JSON.stringify(error));
       return error;
     }
   }
 
-  async webGoogleLogin(): Promise<void> {
+  async webGoogleLogin() {
     try {
       const provider = new firebase.default.auth.GoogleAuthProvider();
       const credential = await this.afAuth.signInWithPopup(provider);
-      return await this.updateUserData(credential.user, 'google');
+      this.updateUserData(credential.user, 'google');
+      return await JSON.parse(JSON.stringify(credential.user))
     } catch (error) {
       console.error('Error: Login Google - Web' + JSON.stringify(error));
       return error;
@@ -214,7 +240,7 @@ export class AuthenticationService {
         createdAt: new Date(Number(user.createdAt)) || new Date(),
         role: 'N',
         description: 'Hola, estoy manejando mis finanzas',
-        id_familia: -1,
+        id_familia: "-1",
         active: true,
         password: "N"
       };
