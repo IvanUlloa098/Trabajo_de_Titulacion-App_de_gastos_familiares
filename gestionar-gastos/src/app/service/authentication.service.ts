@@ -64,19 +64,33 @@ export class AuthenticationService {
     }
   }
 
-  async createFamily(family) {
+  async modifyRole(user, role) {
     try{
-      const refContactos = this.afs.collection("families");
-
-      if(family.id == null){
-        family.id = this.afs.createId();
-      }
-      
-      return await refContactos.doc(family.id).set(Object.assign({}, family));
-
+      return await this.afs.collection("users").doc(user.uid).update({role: role})
     }catch(error) {
       console.log( 'error en CHANGEFAMILY' , error );
     }
+  }
+
+  async createFamily(family) {
+    try{
+      const refContactos = this.afs.collection("families")
+
+      if(family.id == null){
+        family.id = this.afs.createId()
+      }
+      
+      refContactos.doc(family.id).set(Object.assign({}, family))
+      return await this.getFamily(family.id)
+
+    }catch(error) {
+      console.log( 'error en CHANGEFAMILY' , error )
+    }
+  }
+
+  async getFamily(id) {
+    return await this.afs.collection("families", ref => ref.where("id", "==", id)).valueChanges();
+    
   }
 
   async onRegistro (user: User){
@@ -122,9 +136,8 @@ export class AuthenticationService {
   }
 
 
-  getUsuario(email: any) {
-    console.log("llega getUser")
-    return this.afs.collection("users", ref => ref.where("email", "==", email)).valueChanges();
+  async getUsuario(email: any) {
+    return await this.afs.collection("users", ref => ref.where("email", "==", email)).valueChanges()
 
   }
 

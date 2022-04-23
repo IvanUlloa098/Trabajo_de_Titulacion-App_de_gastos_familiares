@@ -5,6 +5,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 
 import { NavigationExtras, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +15,8 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
 
+  private readonly onDestroy = new Subject<void>();
+
   public email: string;
   public password : string;
   User: User = new User();
@@ -20,27 +24,31 @@ export class LoginPage implements OnInit {
   userUpdate: any;
   verifica: any;
   alerta: any;
+  aux:any
 
   constructor(public readonly auth: AngularFireAuth, 
               private AuthenticationService :  AuthenticationService,
               private router : Router) { }
 
   ngOnInit() {
+    this.onDestroy.next();
   }
 
   async logeo(){
     try {
-      console.log("1");
+      
       const user = await this.AuthenticationService.onLogin(this.User);
 
       if(user){
-        this.user2 = this.AuthenticationService.getUsuario(this.User.email);
-        this.user2.subscribe(res=> {
+        this.user2 = await this.AuthenticationService.getUsuario(this.User.email);
+        await this.user2.pipe(take(1)).subscribe(res=> {
           this.AuthenticationService.timeStampLogin(res[0]);
+          this.aux = res[0]
+          
           if (res[0].id_familia === "-1") {
             let params: NavigationExtras = {
               queryParams: {
-                id:res[0].email
+                user:res[0]
               }
             }
 
@@ -66,21 +74,25 @@ export class LoginPage implements OnInit {
     this.user2 = await this.AuthenticationService.googleLogin()
     this.user2 = await this.AuthenticationService.getUsuario(this.user2.email)
 
-    this.user2.subscribe(res=> {
-      this.AuthenticationService.timeStampLogin(res[0])
-      if (res[0].id_familia === "-1") {
+    await this.user2.pipe(take(1)).subscribe(res=> {
+      this.aux = res[0]
+    
+      if (this.aux.id_familia === "-1") {
         let params: NavigationExtras = {
           queryParams: {
-            id:res[0].email
+            user:this.aux.email
           }
-        }
+      }
 
         return this.router.navigate(["/createfamily"], params);
       } else {
         return this.router.navigate(["/tabs"]);
       }
-      
+
     })
+
+    
+
   }
   
   emailPasswordLogin() {
