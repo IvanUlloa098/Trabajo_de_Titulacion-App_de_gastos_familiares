@@ -48,7 +48,7 @@ export class LoginPage implements OnInit {
           if (res[0].id_familia === "-1") {
             let params: NavigationExtras = {
               queryParams: {
-                user:res[0]
+                user:res[0].email
               }
             }
 
@@ -82,7 +82,7 @@ export class LoginPage implements OnInit {
           queryParams: {
             user:this.aux.email
           }
-      }
+        }
 
         return this.router.navigate(["/createfamily"], params);
       } else {

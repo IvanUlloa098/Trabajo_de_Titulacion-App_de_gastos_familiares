@@ -57,6 +57,7 @@ export class AuthenticationService {
   }
 
   async changeFamily(user, family) {
+    console.log('HERE')
     try{
       return await this.afs.collection("users").doc(user.uid).update({id_familia: family.id})
     }catch(error) {
