@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { throws } from 'assert';
 import { User } from 'src/app/domain/user';
-import { AuthenticationService } from 'src/app/service/authentication.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,15 +13,19 @@ import { AuthenticationService } from 'src/app/service/authentication.service';
 })
 export class SignupPage implements OnInit {
 
-  User : User = new User();
-  ID: any;
+  User : User = new User()
+  ID: any
+
+  alert: string
+  advice: string
   
-  constructor( private router: Router, private auth: AuthenticationService ) { }
+  constructor( private router: Router, private auth: AuthenticationService, private alertCtrl: AlertController) { }
 
   ngOnInit() {
   }
 
   async registro(){
+    
     const user = await this.auth.onRegistro(this.User);
     this.User.role = 'N'
     this.User.description = 'Hola, estoy manejando mis finanzas'
@@ -31,21 +36,55 @@ export class SignupPage implements OnInit {
     this.User.lastLogin = new Date()
     this.User.provider = 'gestion-gastos'
 
-    if(user){
-      this.ID = this.auth.verificacion();
-      console.log(" ES EL ID (EMAIL)",  this.ID);
+    try {
 
-      this.auth.save(this.User);
-      console.log("exito de registro ");
-      this.router.navigate(["/login"])
+      if(user){
+        this.ID = this.auth.verificacion();
+        console.log(" ES EL ID (EMAIL)",  this.ID);
+  
+        this.auth.save(this.User);
+        console.log("exito de registro ");
 
-    }else{
-      console.log("error en registro")
+        this.alert = "Se ha registrado el usuario con éxito"
+        this.advice = '¡Comienze a gestionar su dinero!'
+        this.genericAlert(this.alert, this.advice)
+
+        this.router.navigate(["/login"])
+  
+      }else{
+        console.log("error en registro")
+        this.alert = "Ocurrió un error inesperado en con el registro"
+        this.advice = 'Por favor, inténtelo de nuevo'
+  
+        this.genericAlert(this.alert, this.advice)
+      }
+
+    } catch (error) {
+      this.alert = "Ocurrió un error inesperado en con el registro"
+      this.advice = 'Por favor, inténtelo de nuevo'
+
+      this.genericAlert(this.alert, this.advice)
     }
+    
+
   }
 
   regresar(){
     this.router.navigate(["/login"])
+  }
+
+  async genericAlert(alert_message, advice){
+
+    const prompt = await this.alertCtrl.create({  
+      header: 'Lo sentimos',  
+      subHeader: alert_message,
+      message: advice,  
+      
+      buttons: ['Aceptar']  
+    }); 
+
+    await prompt.present()
+
   }
 
 }

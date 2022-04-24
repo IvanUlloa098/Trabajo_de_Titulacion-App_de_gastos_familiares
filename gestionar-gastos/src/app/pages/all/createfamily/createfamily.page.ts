@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/service/authentication.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Familia } from 'src/app/domain/family';
 import { take } from 'rxjs/operators';
 import { AlertController } from '@ionic/angular';
@@ -17,6 +17,9 @@ export class CreatefamilyPage implements OnInit {
   user2: any
   id:any
   aux: any
+
+  alert: string
+  advice: string
 
   constructor( private router: Router, private AuthenticationService :  AuthenticationService, private alertCtrl: AlertController, private activate: ActivatedRoute ) {
     activate.queryParams.subscribe(params => {
@@ -55,14 +58,23 @@ export class CreatefamilyPage implements OnInit {
 
       } catch (error) {
         console.log("error al crear familia")
-        return this.router.navigate(["/createfamily", params]);
+
+        this.alert = "Ocurrió un error inesperado al ingresar su familia"
+        this.advice = 'Por favor, inténtelo de nuevo'
+  
+        return this.genericAlert(this.alert, this.advice)
+
       }
 
       return this.router.navigate(["/tabs"]);
 
     }else{
       console.log("error al crear familia")
-      return this.router.navigate(["/createfamily"], params);
+
+      this.alert = "Debe llenar todos los datos necesarios"
+      this.advice = 'Por favor, inténtelo de nuevo'
+
+      return this.genericAlert(this.alert, this.advice)
     }
   }
 
@@ -81,7 +93,7 @@ export class CreatefamilyPage implements OnInit {
       ],  
       buttons: [  
         {  
-          text: 'Cancel',  
+          text: 'Cancelar',  
           handler: data => {  
             console.log('Cancel clicked');  
           }  
@@ -89,14 +101,15 @@ export class CreatefamilyPage implements OnInit {
         {  
           text: 'Buscar',  
           handler: async data => {  
+            console.log('Accept '+data.email)
             await this.join(data.email)
-            console.log('Accept '+data.email);  
+              
           }  
         }  
       ]  
     }); 
      
-    await prompt.present();
+    await prompt.present()
 
   }
 
@@ -115,6 +128,12 @@ export class CreatefamilyPage implements OnInit {
         
         if (res[0].id_familia === "-1") {
           console.log("no existe esa familia")
+
+          this.alert = "No existe ninguna familia registrada con el correo electrónico ingresado"
+          this.advice = 'Por favor, inténtelo de nuevo'
+    
+          return this.genericAlert(this.alert, this.advice)
+
         } else {
 
           this.aux = await this.AuthenticationService.getUsuario(this.id)
@@ -136,13 +155,32 @@ export class CreatefamilyPage implements OnInit {
 
     } catch (error) {
       console.log("error al asignar familia")
-      return this.router.navigate(["/createfamily"], params);
+
+      this.alert = "Ocurrió un error inesperado al ingresar su familia"
+      this.advice = 'Por favor, inténtelo de nuevo'
+
+      return this.genericAlert(this.alert, this.advice)
+
     }
 
   }
 
   regresar(){
     this.router.navigate(["/login"])
+  }
+
+  async genericAlert(alert_message, advice){
+
+    const prompt = await this.alertCtrl.create({  
+      header: 'Lo sentimos',  
+      subHeader: alert_message,
+      message: advice,  
+      
+      buttons: ['Aceptar']  
+    }); 
+
+    await prompt.present()
+
   }
 
 }

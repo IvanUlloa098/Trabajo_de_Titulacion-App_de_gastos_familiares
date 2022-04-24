@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/domain/user';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AuthenticationService } from 'src/app/service/authentication.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 import { NavigationExtras, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -15,20 +16,22 @@ import { take, takeUntil } from 'rxjs/operators';
 })
 export class LoginPage implements OnInit {
 
-  private readonly onDestroy = new Subject<void>();
+  private readonly onDestroy = new Subject<void>()
 
-  public email: string;
-  public password : string;
-  User: User = new User();
-  user2: any;
-  userUpdate: any;
-  verifica: any;
-  alerta: any;
+  public email: string
+  public password : string
+  User: User = new User()
+  user2: any
+  userUpdate: any
+  verifica: any
+  alert: string
+  advice: string
   aux:any
 
   constructor(public readonly auth: AngularFireAuth, 
               private AuthenticationService :  AuthenticationService,
-              private router : Router) { }
+              private router : Router,
+              private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.onDestroy.next();
@@ -61,10 +64,17 @@ export class LoginPage implements OnInit {
 
       }else{
         console.log("error en el loggeo")
-        this.alerta = "Datos incorrectos"
+        this.alert = "Los Datos ingresados son incorrectos"
+        this.advice = 'Por favor, ingréselos de nuevo'
+
+        this.genericAlert(this.alert, this.advice)
+        
       }
     } catch (error) {
-        
+      this.alert = "Ocurrió un error inesperado en con el inicio de sesión"
+      this.advice = 'Por favor, inténtelo de nuevo'
+
+      this.genericAlert(this.alert, this.advice)
     }
     
   }
@@ -74,30 +84,51 @@ export class LoginPage implements OnInit {
     this.user2 = await this.AuthenticationService.googleLogin()
     this.user2 = await this.AuthenticationService.getUsuario(this.user2.email)
 
-    await this.user2.pipe(take(1)).subscribe(res=> {
-      this.aux = res[0]
-    
-      if (this.aux.id_familia === "-1") {
-        let params: NavigationExtras = {
-          queryParams: {
-            user:this.aux.email
+    try {
+
+      await this.user2.pipe(take(1)).subscribe(res=> {
+        this.aux = res[0]
+      
+        if (this.aux.id_familia === "-1") {
+          let params: NavigationExtras = {
+            queryParams: {
+              user:this.aux.email
+            }
           }
+  
+          return this.router.navigate(["/createfamily"], params);
+        } else {
+          return this.router.navigate(["/tabs"]);
         }
+  
+      })
+      
+    } catch (error) {
+      this.alert = "Ocurrió un error inesperado en con el inicio de sesión"
+      this.advice = 'Por favor, inténtelo de nuevo'
 
-        return this.router.navigate(["/createfamily"], params);
-      } else {
-        return this.router.navigate(["/tabs"]);
-      }
-
-    })
-
-    
+      this.genericAlert(this.alert, this.advice)
+    }
 
   }
   
   emailPasswordLogin() {
       let data = this.AuthenticationService.emailPasswordLogin(this.email, this.password);
       console.log('Response:\n', data);
+  }
+
+  async genericAlert(alert_message, advice){
+
+    const prompt = await this.alertCtrl.create({  
+      header: 'Lo sentimos',  
+      subHeader: alert_message,
+      message: advice,  
+      
+      buttons: ['Aceptar']  
+    }); 
+
+    await prompt.present()
+
   }
 
 }
