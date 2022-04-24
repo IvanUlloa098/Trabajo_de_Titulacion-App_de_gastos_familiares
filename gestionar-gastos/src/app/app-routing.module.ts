@@ -14,7 +14,19 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./pages/all/login/login.module').then( m => m.LoginPageModule)
+  },  {
+    path: 'registrar-gasto',
+    loadChildren: () => import('./pages/all/registrar-gasto/registrar-gasto.module').then( m => m.RegistrarGastoPageModule)
+  },
+  {
+    path: 'ver-gastos',
+    loadChildren: () => import('./pages/all/ver-gastos/ver-gastos.module').then( m => m.VerGastosPageModule)
+  },
+  {
+    path: 'ver-gastos-familia',
+    loadChildren: () => import('./pages/admin/ver-gastos-familia/ver-gastos-familia.module').then( m => m.VerGastosFamiliaPageModule)
   }
+
 ];
 
 @NgModule({

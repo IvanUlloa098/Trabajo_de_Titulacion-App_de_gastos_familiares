@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ver Gastos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div div style="float: left; width: 100%;">
+    <div *ngFor="let gasto of gastos | async">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>
+            <div div style="float: left; width: 50%; margin-left: 5%;">
+              <h2>{{ gasto.id }}</h2>
+              <h2>{{ gasto.monto }}</h2>
+              <h2>{{ gasto.id_categoria }}</h2>
+              <p>{{ gasto.descripcion }}</p>
+              <p>{{ gasto.fecha }}</p>
+            </div>            
+          </ion-label>
+        </ion-item>        
+      </ion-item-sliding>      
+    </div>
+  </div>
+  <ion-button expand="block">Graficos</ion-button>
+</ion-content>

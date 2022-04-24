@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Gasto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-divider>
+      <ion-label>Gasto</ion-label>
+    </ion-item-divider>
+    <ion-item-group>
+      <ion-item>
+        <ion-label>Monto: </ion-label>
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="gasto.monto"></ion-input>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+        <ion-label>Fecha: </ion-label>
+        <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="gasto.fecha" required="true"></ion-datetime>
+  <ion-list>
+    <ion-item-group>                  
+      <ion-item>
+        <ion-label>Categoria:</ion-label>
+        <ion-select>
+          <ion-select-option value="Alimentacion">Alimentacion</ion-select-option>
+          <ion-select-option value="Servicios">Servicios</ion-select-option>
+          <ion-select-option value="Educacion">Educacion</ion-select-option>
+          <ion-select-option value="Ocio">Ocio</ion-select-option>
+          <ion-select-option value="Transporte">Transporte</ion-select-option>
+          <ion-select-option value="Vivienda">Vivienda</ion-select-option>
+          <ion-select-option value="Salud">Salud</ion-select-option>
+          <ion-select-option value="Otros">Otros</ion-select-option>
+        </ion-select>
+      </ion-item>      
+    </ion-item-group>
+    <ion-item-divider>
+      <ion-label>Descripcion</ion-label>
+    </ion-item-divider>
+    <ion-item-group>
+      <ion-item>        
+        <ion-textarea inputmode="text" [(ngModel)]="gasto.descripcion"></ion-textarea>
+      </ion-item>
+    </ion-item-group>    
+  </ion-list>
+  <ion-button expand="block" (click)="registrarGasto()">Registrar</ion-button>
+</ion-content>
