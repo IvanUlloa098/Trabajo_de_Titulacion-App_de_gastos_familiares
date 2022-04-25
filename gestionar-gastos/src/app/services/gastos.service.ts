@@ -10,7 +10,7 @@ import { Gasto } from '../domain/gasto';
   providedIn: 'root'
 })
 export class GastosService {  
-
+  gastos:Gasto[]; 
   constructor(public afs: AngularFirestore) { }
 
   guardar(gasto:Gasto){

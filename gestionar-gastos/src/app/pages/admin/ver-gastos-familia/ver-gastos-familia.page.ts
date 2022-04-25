@@ -9,7 +9,6 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
   styleUrls: ['./ver-gastos-familia.page.scss'],
 })
 export class VerGastosFamiliaPage implements OnInit {
-
   constructor(private route: ActivatedRoute,
     private router: Router, 
     private gastoService: GastosService) { }
