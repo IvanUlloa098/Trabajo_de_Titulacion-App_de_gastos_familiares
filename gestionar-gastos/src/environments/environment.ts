@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
 
-  firebaseConfig : {
+  firebaseConfig: {
     apiKey: "AIzaSyCRIvVinB3PxHqmCx6ncrHbQYemvRAO3jY",
     authDomain: "gestionar-gastos.firebaseapp.com",
     projectId: "gestionar-gastos",
@@ -13,6 +13,8 @@ export const environment = {
     messagingSenderId: "519785918958",
     appId: "1:519785918958:web:135830cbfdf7ddfa6d5eff"
   },
+
+  googleWebClientId : "Qz5zi2nZB4V0YuC5hCXF3RvE"
 
 };
 

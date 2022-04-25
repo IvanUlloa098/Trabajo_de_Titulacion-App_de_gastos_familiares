@@ -14,7 +14,8 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./pages/all/login/login.module').then( m => m.LoginPageModule)
-  },  {
+  },
+  {
     path: 'registrar-gasto',
     loadChildren: () => import('./pages/all/registrar-gasto/registrar-gasto.module').then( m => m.RegistrarGastoPageModule)
   },
@@ -25,10 +26,21 @@ const routes: Routes = [
   {
     path: 'ver-gastos-familia',
     loadChildren: () => import('./pages/admin/ver-gastos-familia/ver-gastos-familia.module').then( m => m.VerGastosFamiliaPageModule)
+  },
+  {
+    path: 'signup',
+    loadChildren: () => import('./pages/all/signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: 'tabs',
+    loadChildren: () => import('./pages/all/tabs/tabs.module').then( m => m.TabsPageModule)
+  },
+  {
+    path: 'createfamily',
+    loadChildren: () => import('./pages/all/createfamily/createfamily.module').then( m => m.CreatefamilyPageModule)
   }
 
 ];
-
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
