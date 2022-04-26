@@ -42,20 +42,15 @@ export class LoginPage implements OnInit {
       
       const user = await this.AuthenticationService.onLogin(this.User);
 
-      if(user){
+      if(this.User.email && this.User.password){
         this.user2 = await this.AuthenticationService.getUsuario(this.User.email);
         await this.user2.pipe(take(1)).subscribe(res=> {
           this.AuthenticationService.timeStampLogin(res[0]);
           this.aux = res[0]
           
           if (res[0].id_familia === "-1") {
-            let params: NavigationExtras = {
-              queryParams: {
-                user:res[0].email
-              }
-            }
 
-            return this.router.navigate(["/createfamily"], params);
+            return this.router.navigate(["/createfamily"]);
           } else {
             return this.router.navigate(["/tabs"]);
           }
@@ -71,7 +66,7 @@ export class LoginPage implements OnInit {
         
       }
     } catch (error) {
-      this.alert = "Ocurrió un error inesperado en con el inicio de sesión"
+      this.alert = "Ocurrió un error con el inicio de sesión"
       this.advice = 'Por favor, inténtelo de nuevo'
 
       this.genericAlert(this.alert, this.advice)
@@ -80,11 +75,13 @@ export class LoginPage implements OnInit {
   }
 
   async googleLogin() {
-    
-    this.user2 = await this.AuthenticationService.googleLogin()
-    this.user2 = await this.AuthenticationService.getUsuario(this.user2.email)
 
     try {
+
+      this.user2 = await this.AuthenticationService.googleLogin()
+
+      await this.AuthenticationService.updateUserData(this.user2, 'google')
+      this.user2 = await this.AuthenticationService.getUsuario(this.user2._delegate.email)
 
       await this.user2.pipe(take(1)).subscribe(res=> {
         this.aux = res[0]
@@ -106,7 +103,7 @@ export class LoginPage implements OnInit {
     } catch (error) {
       this.alert = "Ocurrió un error inesperado en con el inicio de sesión"
       this.advice = 'Por favor, inténtelo de nuevo'
-
+      console.log(error)
       this.genericAlert(this.alert, this.advice)
     }
 
