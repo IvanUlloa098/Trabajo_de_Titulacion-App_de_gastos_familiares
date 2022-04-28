@@ -21,13 +21,11 @@ export class CreatefamilyPage implements OnInit {
   alert: string
   advice: string
 
-  constructor( private router: Router, private AuthenticationService :  AuthenticationService, private alertCtrl: AlertController, private activate: ActivatedRoute ) {
-    activate.queryParams.subscribe(params => {
-      if(this.router.getCurrentNavigation().extras.queryParams){
-        this.id = this.router.getCurrentNavigation().extras.queryParams.user
-      }
-    })
+  private sessionUser : any
 
+  constructor( private router: Router, private AuthenticationService :  AuthenticationService, private alertCtrl: AlertController, private activate: ActivatedRoute ) {
+    this.sessionUser = this.AuthenticationService.currentUser
+    this.id = this.sessionUser._delegate.email
   }
 
   ngOnInit() {

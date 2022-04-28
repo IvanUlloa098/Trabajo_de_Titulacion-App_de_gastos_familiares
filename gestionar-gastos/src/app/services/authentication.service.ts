@@ -18,6 +18,9 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
   public user: Observable<any>;
   public estaLogeado: any = false;
+  public currentUser: any
+  private credential: any
+
   constructor( private afAuth: AngularFireAuth,
                private afs: AngularFirestore,
                private platform: Platform,
@@ -41,8 +44,15 @@ export class AuthenticationService {
   //iniciar sesion
   async onLogin (user: User) {
     try{
-      this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
-      return await this.afAuth.signInWithEmailAndPassword( user.email, user.password)
+      this.afAuth.setPersistence('session').then( () => {
+        this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
+        this.afAuth.signInWithEmailAndPassword( user.email, user.password).then((userCredential) => {
+          this.currentUser = userCredential.user
+        })
+      })
+
+      return await this.currentUser
+      
     }catch(error) {
       console.log( 'error en LOGIN' , error );
     }
@@ -186,11 +196,16 @@ export class AuthenticationService {
         offline: true
       });
 
-      const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
-      const firebaseUser = await firebase.default.auth().signInWithCredential(googleCredential);
-      console.log(JSON.stringify(firebaseUser.user));
-      this.updateUserData(firebaseUser.user, 'google');
-      return await JSON.parse(JSON.stringify(firebaseUser.user))
+      await this.afAuth.setPersistence('session').then( async () => {
+        const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
+        await firebase.default.auth().signInWithCredential(googleCredential).then(async (userCredential) => {
+          this.currentUser = await userCredential.user
+        })
+        //console.log(JSON.stringify(firebaseUser.user));
+        //await this.updateUserData(this.currentUser, 'google');
+      })
+
+      return await JSON.stringify(this.currentUser._delegate)
       
     } catch (error) {
       console.error('Error: Login Google - Native' + JSON.stringify(error));
@@ -200,10 +215,20 @@ export class AuthenticationService {
 
   async webGoogleLogin() {
     try {
-      const provider = new firebase.default.auth.GoogleAuthProvider();
-      const credential = await this.afAuth.signInWithPopup(provider);
-      this.updateUserData(credential.user, 'google');
-      return await JSON.parse(JSON.stringify(credential.user))
+
+      await this.afAuth.setPersistence('session').then( async () => {
+        const provider = new firebase.default.auth.GoogleAuthProvider()
+        
+        await this.afAuth.signInWithPopup(provider).then(async (userCredential) => {
+          this.currentUser = await userCredential.user
+          this.credential = await userCredential
+        })
+        //console.log(JSON.stringify(this.currentUser));
+        //await this.updateUserData(this.credential, 'google')
+      })
+      
+      return await this.currentUser
+      
     } catch (error) {
       console.error('Error: Login Google - Web' + JSON.stringify(error));
       return error;
@@ -213,9 +238,13 @@ export class AuthenticationService {
   // EMAIL AND PASSWORD
   async emailPasswordLogin(email: string, password: string): Promise<void> {
     try {
-      const emailCredential = firebase.default.auth.EmailAuthProvider.credential(email, password);
-      const firebaseUser = await firebase.default.auth().signInWithCredential(emailCredential);
-      return await this.updateUserData(firebaseUser.user, 'email');
+      const emailCredential = firebase.default.auth.EmailAuthProvider.credential(email, password)
+      const firebaseUser = await firebase.default.auth().signInWithCredential(emailCredential)
+
+      this.currentUser = firebaseUser.user
+      console.log(this.currentUser)
+      return await this.updateUserData(this.currentUser.user, 'email');
+
     } catch (error) {
       return error;
     }
@@ -232,26 +261,24 @@ export class AuthenticationService {
   }
 
   // Guardar los datos del usuario en Firestore
-  async updateUserData(usertemp: any, provider: any){
-    console.log('update' + JSON.stringify(usertemp));
-    const doc: any = await this.userExists(usertemp.email);
-    console.log('doc' + JSON.stringify(doc));
+  async updateUserData(user: any, provider: any){
+    //console.log('update' + JSON.stringify(usertemp));
+    const doc: any = await this.userExists(user._delegate.email);
+    //console.log('doc' + JSON.stringify(doc));
 
     let data: any;
-    let user: any = JSON.parse(JSON.stringify(usertemp));
-
-    console.log('doc' + JSON.stringify(doc));
+    //console.log('doc' + JSON.stringify(doc));
 
     if (doc == null || doc == ''  ) {
       // Crear Cuenta
       data = {
-        uid: user.uid,
-        email: user.email || null,
-        displayName: user.displayName || '7',
-        photoURL: user.photoURL || 'https://goo.gl/7kz9qG',
+        uid: user._delegate.uid,
+        email: user._delegate.email || null,
+        displayName: user._delegate.displayName || '7',
+        photoURL: user._delegate.photoURL || 'https://goo.gl/7kz9qG',
         provider: provider,
-        lastLogin: new Date(Number(user.lastLoginAt)) || new Date(),
-        createdAt: new Date(Number(user.createdAt)) || new Date(),
+        lastLogin:  new Date(),
+        createdAt:  new Date(),
         role: 'N',
         description: 'Hola, estoy manejando mis finanzas',
         id_familia: "-1",
@@ -263,19 +290,19 @@ export class AuthenticationService {
     } else {
       // Actualizar cuenta
       data = {
-        uid: user.uid,
-        email: user.email || null,
-        displayName: user.displayName || '',
-        photoURL: user.photoURL || 'https://goo.gl/7kz9qG',
+        uid: user._delegate.uid,
+        email: user._delegate.email || null,
+        displayName: user._delegate.displayName || '',
+        photoURL: user._delegate.photoURL || 'https://goo.gl/7kz9qG',
         provider: provider,
-        lastLogin: new Date(Number(user.lastLoginAt)) || new Date()
+        lastLogin: new Date()
       };
     }
 
-    console.log('data', JSON.stringify(data));
+    //console.log('data', JSON.stringify(data));
     const userRef = this.afs.collection<any>('users');
 
-    return userRef.doc(`${user.uid}`).set(data, { merge: true});
+    return userRef.doc(user._delegate.uid).set(data, { merge: true});
   }
 
   getUserAuth(){
