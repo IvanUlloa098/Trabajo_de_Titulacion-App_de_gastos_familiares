@@ -1,0 +1,29 @@
+ion-content.background{
+    --background: url(login.jpg) 0 0/100% 100% no-repeat;
+}
+
+img {
+    width:  100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-left: 30%;
+}
+
+#label {
+
+    color: #919594;
+    text-align: inherit;
+    padding-left: 7%;
+}
+
+#botonIniciar{
+   
+    margin-inline: 35%;
+    --ion-color-base: #72bda3 !important;
+    --ion-color-base-rgb: var(--ion-color-success-rgb, 45, 211, 111) !important;
+    --ion-color-contrast: var(--ion-color-success-contrast, #fff) !important;
+    --ion-color-contrast-rgb: var(--ion-color-success-contrast-rgb, 255, 255, 255) !important;
+    --ion-color-shade: var(--ion-color-success-shade, #28ba62) !important;
+    --ion-color-tint: var(--ion-color-success-tint, #42d77d) !important;
+}

@@ -33,12 +33,6 @@ export class CreatefamilyPage implements OnInit {
 
   async crear(){
 
-    let params: NavigationExtras = {
-      queryParams: {
-        user:this.id
-      }
-    }
-
     if(this.fam){
 
       try {
