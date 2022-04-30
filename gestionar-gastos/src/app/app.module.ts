@@ -12,6 +12,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from 'src/environments/environment';
+import { AngularFireStorage } from '@angular/fire/compat/storage'; 
 
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
@@ -25,7 +26,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
             AngularFireAuthModule, 
             AngularFireStorageModule, 
             AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, GooglePlus],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, GooglePlus, AngularFireStorage],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

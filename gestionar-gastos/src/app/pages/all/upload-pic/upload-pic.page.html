@@ -55,23 +55,4 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        Uploaded Files Collection
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card *ngFor="let img of files | async">
-      <ion-card-header>
-        <ion-card-title>
-          {{ img.name }}
-        </ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        <img [src]="img.filepath" />
-        <a [href]="img.filepath" rel="nofollow" target="_blank">Download</a>
-      </ion-card-content>
-    </ion-card>
-  </ion-card>
 </ion-content>
