@@ -66,6 +66,10 @@ export class AuthenticationService {
     }
   }
 
+  async savePhotoURL(user, path){
+    return await this.afs.collection("users").doc(user).update({photoURL: path})
+  }
+
   async changeFamily(user, family) {
     console.log('HERE')
     try{
