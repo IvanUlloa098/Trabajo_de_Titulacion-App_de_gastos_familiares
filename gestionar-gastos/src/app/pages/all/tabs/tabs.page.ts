@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -10,12 +11,17 @@ export class TabsPage implements OnInit {
 
   private sessionUser : any
 
-  constructor(private AuthenticationService :  AuthenticationService) {
-    this.sessionUser = this.AuthenticationService.currentUser
-    console.log(this.sessionUser._delegate.email)
+  constructor(private auth :  AuthenticationService) {
+    
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.auth.getUserAuth().pipe(take(1)).subscribe(async user =>{
+
+      this.sessionUser = user.email
+      
+      console.log( 'HERE ', user.email);
+    })
   }
 
 }

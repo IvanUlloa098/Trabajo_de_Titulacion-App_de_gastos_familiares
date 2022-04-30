@@ -28,7 +28,6 @@ export class ProfilePage implements OnInit{
   constructor(private auth: AuthenticationService) { }
 
   async ngOnInit() {
-    this.auth.updateUserData;
     
     this.auth.getUserAuth().pipe(take(1)).subscribe(async user =>{
 

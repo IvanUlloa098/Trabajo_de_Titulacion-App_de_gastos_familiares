@@ -309,4 +309,19 @@ export class AuthenticationService {
     return this.afAuth.authState;
   }
 
+  async onAuthStateChange(){
+    this.afAuth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        this.currentUser=user
+        console.log(user.email)
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+  }
+
 }

@@ -23,42 +23,46 @@ export class CreatefamilyPage implements OnInit {
 
   private sessionUser : any
 
-  constructor( private router: Router, private AuthenticationService :  AuthenticationService, private alertCtrl: AlertController, private activate: ActivatedRoute ) {
-    this.sessionUser = this.AuthenticationService.currentUser
-    this.id = this.sessionUser._delegate.email
-  }
+  constructor(  private router: Router, 
+                private auth :  AuthenticationService, 
+                private alertCtrl: AlertController, 
+                private activate: ActivatedRoute ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.sessionUser = await this.auth.getUserAuth()
   }
 
   async crear(){
 
     if(this.fam){
 
-      try {
-        this.User = await this.AuthenticationService.getUsuario(this.id)
-        this.aux = await this.AuthenticationService.createFamily(this.fam)
-  
-        this.aux.pipe(take(1)).subscribe( res=> {
+      await this.sessionUser.pipe(take(1)).subscribe(async user =>{
 
-          this.User.pipe(take(1)).subscribe(res2=> {
-            this.AuthenticationService.changeFamily(res2[0], res[0])
-            this.AuthenticationService.modifyRole(res2[0], 'A')
+        try {
+          this.User = await this.auth.getUsuario(user.email)
+          this.aux = await this.auth.createFamily(this.fam)
+    
+          await this.aux.pipe(take(1)).subscribe( async res=> {
+  
+            await this.User.pipe(take(1)).subscribe(res2=> {
+              this.auth.changeFamily(res2[0], res[0])
+              this.auth.modifyRole(res2[0], 'A')
+            }) 
+    
           }) 
   
-        }) 
-
-      } catch (error) {
-        console.log("error al crear familia")
-
-        this.alert = "Ocurrió un error inesperado al ingresar su familia"
-        this.advice = 'Por favor, inténtelo de nuevo'
+        } catch (error) {
+          console.log("error al crear familia")
   
-        return this.genericAlert(this.alert, this.advice)
-
-      }
-
-      return this.router.navigate(["/tabs"]);
+          this.alert = "Ocurrió un error inesperado al ingresar su familia"
+          this.advice = 'Por favor, inténtelo de nuevo'
+    
+          return this.genericAlert(this.alert, this.advice)
+  
+        }
+  
+        return this.router.navigate(["/tabs"]);
+      })
 
     }else{
       console.log("error al crear familia")
@@ -106,17 +110,11 @@ export class CreatefamilyPage implements OnInit {
   }
 
   async join(email) {
-    console.log(email);  
-    let params: NavigationExtras = {
-      queryParams: {
-        user:this.id
-      }
-    }
     
     try {
-      this.User = await this.AuthenticationService.getUsuario(email);
-      console.log(this.id);  
-      this.User.pipe(take(1)).subscribe( async res=> {
+      this.User = await this.auth.getUsuario(email);
+      //console.log(this.id);  
+      await this.User.pipe(take(1)).subscribe( async res=> {
         
         if (res[0].id_familia === "-1") {
           console.log("no existe esa familia")
@@ -128,16 +126,18 @@ export class CreatefamilyPage implements OnInit {
 
         } else {
 
-          this.aux = await this.AuthenticationService.getUsuario(this.id)
-          this.fam.id = res[0].id_familia
+          await this.sessionUser.pipe(take(1)).subscribe(async user =>{
+            this.aux = await this.auth.getUsuario(user.email)
+            this.fam.id = res[0].id_familia
 
-          await this.aux.pipe(take(1)).subscribe( res2=> {
-            this.AuthenticationService.changeFamily(res2[0],  this.fam)
-            this.AuthenticationService.modifyRole(res2[0], 'U')
-            
+            await this.aux.pipe(take(1)).subscribe( res2=> {
+              this.auth.changeFamily(res2[0],  this.fam)
+              this.auth.modifyRole(res2[0], 'U')
+              
+            })
+
+            return this.router.navigate(["/tabs"]);
           })
-
-          return this.router.navigate(["/tabs"]);
 
         }
 
