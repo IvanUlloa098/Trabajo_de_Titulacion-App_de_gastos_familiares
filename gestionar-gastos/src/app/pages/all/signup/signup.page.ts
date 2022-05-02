@@ -18,6 +18,7 @@ export class SignupPage implements OnInit {
 
   alert: string
   advice: string
+  header: string
   
   constructor( private router: Router, private auth: AuthenticationService, private alertCtrl: AlertController) { }
 
@@ -45,25 +46,28 @@ export class SignupPage implements OnInit {
         this.auth.save(this.User);
         console.log("exito de registro ");
 
+        this.header = 'Bienvenido'
         this.alert = "Se ha registrado el usuario con éxito"
         this.advice = '¡Comienze a gestionar su dinero!'
-        this.genericAlert(this.alert, this.advice)
+        this.genericAlert(this.header, this.alert, this.advice)
 
         this.router.navigate(["/login"])
   
       }else{
         console.log("error en registro")
+        this.header = 'Lo sentimos'
         this.alert = "Ocurrió un error inesperado en con el registro"
         this.advice = 'Por favor, inténtelo de nuevo'
   
-        this.genericAlert(this.alert, this.advice)
+        this.genericAlert(this.header,this.alert, this.advice)
       }
 
     } catch (error) {
+      this.header = 'Lo sentimos'
       this.alert = "Ocurrió un error inesperado en con el registro"
       this.advice = 'Por favor, inténtelo de nuevo'
 
-      this.genericAlert(this.alert, this.advice)
+      this.genericAlert(this.header,this.alert, this.advice)
     }
     
 
@@ -73,10 +77,10 @@ export class SignupPage implements OnInit {
     this.router.navigate(["/login"])
   }
 
-  async genericAlert(alert_message, advice){
+  async genericAlert(header, alert_message, advice){
 
     const prompt = await this.alertCtrl.create({  
-      header: 'Lo sentimos',  
+      header: header,  
       subHeader: alert_message,
       message: advice,  
       

@@ -1,0 +1,45 @@
+<ion-header>
+</ion-header>
+
+<ion-content class="background" >
+
+  <ion-grid  style=" margin-top: 70%;">
+    
+      <ion-label>Nombre de la familia</ion-label>
+    <ion-input id="input" [(ngModel)]="nombre" placeholder="Familia Ejemplo" ></ion-input>
+
+      <ion-label>Presupuesto global</ion-label>
+      <ion-input  [(ngModel)]="presupuesto_global" id = "input" type = "number" placeholder= "0.00" ></ion-input>
+
+      <ion-item>
+        <ion-label>Primer día del mes</ion-label>
+        <ion-select [(ngModel)]="primer_dia_mes"  color="sunny">
+          <ion-select-option [value]="1">1</ion-select-option>
+          <ion-select-option [value]="2">2</ion-select-option>
+          <ion-select-option [value]="3">3</ion-select-option>
+          <ion-select-option [value]="4">4</ion-select-option>
+          <ion-select-option [value]="5">5</ion-select-option>
+          <ion-select-option [value]="6">6</ion-select-option>
+          <ion-select-option [value]="7">7</ion-select-option>
+          <ion-select-option [value]="8">8</ion-select-option>
+          <ion-select-option [value]="9">9</ion-select-option>
+          <ion-select-option [value]="10">10</ion-select-option>
+          <ion-select-option [value]="11">11</ion-select-option>
+          <ion-select-option [value]="12">12</ion-select-option>
+          <ion-select-option [value]="13">13</ion-select-option>
+          <ion-select-option [value]="14">14</ion-select-option>
+          <ion-select-option [value]="15">15</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+  </ion-grid>
+
+  <ion-button id="botonIniciar" style=" margin-bottom: 7%;" color="success"  (click)="update()" > Actualizar datos </ion-button>
+  
+  
+  <!--<ion-fab-button ><ion-icon name="log-out" (click)=" logout()" ></ion-icon></ion-fab-button>-->
+ 
+  
+
+</ion-content>
+

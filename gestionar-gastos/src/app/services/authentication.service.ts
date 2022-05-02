@@ -103,9 +103,13 @@ export class AuthenticationService {
     }
   }
 
-  async getFamily(id) {
-    return await this.afs.collection("families", ref => ref.where("id", "==", id)).valueChanges();
+  async getFamily(id: any) {
+    return await this.afs.collection("families", ref => ref.where("id", "==", id)).valueChanges()
     
+  }
+
+  async updateFamily(fam) {
+    return await this.afs.collection("families").doc(fam.id).update({nombre: fam.nombre, presupuesto_global:fam.presupuesto_global, primer_dia_mes:fam.primer_dia_mes})
   }
 
   async onRegistro (user: User){

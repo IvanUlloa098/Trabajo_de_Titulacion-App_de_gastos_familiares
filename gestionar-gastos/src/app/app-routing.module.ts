@@ -33,6 +33,10 @@ const routes: Routes = [
   {
     path: 'upload-pic',
     loadChildren: () => import('./pages/all/upload-pic/upload-pic.module').then( m => m.UploadPicPageModule)
+  },
+  {
+    path: 'update-family',
+    loadChildren: () => import('./pages/admin/update-family/update-family.module').then( m => m.UpdateFamilyPageModule)
   }
 
 
