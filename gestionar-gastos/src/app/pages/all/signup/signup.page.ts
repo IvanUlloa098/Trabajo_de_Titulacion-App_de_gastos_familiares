@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { throws } from 'assert';
 import { User } from 'src/app/domain/user';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -20,7 +20,12 @@ export class SignupPage implements OnInit {
   advice: string
   header: string
   
-  constructor( private router: Router, private auth: AuthenticationService, private alertCtrl: AlertController) { }
+  constructor(private router: Router, 
+              private auth: AuthenticationService, 
+              private alertCtrl: AlertController,
+              public menuCtrl: MenuController) {
+                this.menuCtrl.enable(false)
+              }
 
   ngOnInit() {
   }

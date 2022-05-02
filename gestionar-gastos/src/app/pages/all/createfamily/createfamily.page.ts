@@ -3,7 +3,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Familia } from 'src/app/domain/family';
 import { take } from 'rxjs/operators';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-createfamily',
@@ -26,7 +26,10 @@ export class CreatefamilyPage implements OnInit {
   constructor(  private router: Router, 
                 private auth :  AuthenticationService, 
                 private alertCtrl: AlertController, 
-                private activate: ActivatedRoute ) { }
+                private activate: ActivatedRoute,
+                public menuCtrl: MenuController ) {
+                  this.menuCtrl.enable(false)
+                }
 
   async ngOnInit() {
     this.sessionUser = await this.auth.getUserAuth()
