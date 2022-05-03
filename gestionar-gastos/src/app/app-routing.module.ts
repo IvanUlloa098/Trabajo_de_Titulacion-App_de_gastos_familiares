@@ -26,13 +26,10 @@ const routes: Routes = [
   {
     path: 'createfamily',
     loadChildren: () => import('./pages/all/createfamily/createfamily.module').then( m => m.CreatefamilyPageModule)
-  },  {
-    path: 'profile',
-    loadChildren: () => import('./pages/all/profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
-    path: 'upload-pic',
-    loadChildren: () => import('./pages/all/upload-pic/upload-pic.module').then( m => m.UploadPicPageModule)
+    path: 'profile',
+    loadChildren: () => import('./pages/all/profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
     path: 'update-family',

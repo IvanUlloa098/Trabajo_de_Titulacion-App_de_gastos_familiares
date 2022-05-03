@@ -277,7 +277,7 @@ export class AuthenticationService {
     let data: any;
     //console.log('doc' + JSON.stringify(doc));
 
-    if (doc == null || doc == ''  ) {
+    if (doc == null || doc == '' ) {
       // Crear Cuenta
       data = {
         uid: user._delegate.uid,
@@ -295,7 +295,7 @@ export class AuthenticationService {
       };
     } else if (doc.active == false){
       throw { error_code: 999, error_message: 'Acceso denegado, servicio deshabilitado, consulte con el administrador.' }; 
-    } else {
+    } else if (user._delegate.email !== undefined){
       // Actualizar cuenta
       data = {
         uid: user._delegate.uid,
@@ -305,6 +305,8 @@ export class AuthenticationService {
         provider: provider,
         lastLogin: new Date()
       };
+    } else {
+      throw { error_code: 999, error_message: 'Acceso denegado, servicio deshabilitado, consulte con el administrador.' };
     }
 
     //console.log('data', JSON.stringify(data));
