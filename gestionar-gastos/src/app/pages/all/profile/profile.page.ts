@@ -48,6 +48,7 @@ export class ProfilePage implements OnInit{
   description : Boolean;
   photo : String;
   id : string;
+  role: string
 
   alert: string
   advice: string
@@ -81,11 +82,17 @@ export class ProfilePage implements OnInit{
             this.aux = await this.auth.getUsuario(user.email)
     
             await this.aux.pipe(take(1)).subscribe( res=> {
-              this.name = res[0].displayName;
-              this.email = res[0].email;
-              this.photo = res[0].photoURL;
+              this.name = res[0].displayName
+              this.email = res[0].email
+              this.photo = res[0].photoURL
               this.description = res[0].description
-              this.id = res[0].uid;
+              this.id = res[0].uid
+
+              if(res[0].role == 'A') {
+                this.role = 'Jefe de familia'
+              } else {
+                this.role = 'Miembro de familia'
+              }
   
               a.dismiss().then(() => console.log('abort presenting'));
             })

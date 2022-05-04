@@ -7,7 +7,9 @@ img {
     height: 100px;
     object-fit: cover;
     border-radius: 50%;
-    margin-left: 30%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #label {
@@ -18,8 +20,6 @@ img {
 }
 
 #botonIniciar{
-   
-    margin-inline: 35%;
     --ion-color-base: #72bda3 !important;
     --ion-color-base-rgb: var(--ion-color-success-rgb, 45, 211, 111) !important;
     --ion-color-contrast: var(--ion-color-success-contrast, #fff) !important;
