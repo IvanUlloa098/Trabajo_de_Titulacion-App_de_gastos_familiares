@@ -7,7 +7,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController, MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +24,7 @@ export class LoginPage implements OnInit {
   user2: any
   userUpdate: any
   verifica: any
+
   alert: string
   advice: string
   aux:any
@@ -31,81 +32,100 @@ export class LoginPage implements OnInit {
   constructor(public readonly auth: AngularFireAuth, 
               private AuthenticationService :  AuthenticationService,
               private router : Router,
-              private alertCtrl: AlertController) { }
+              private alertCtrl: AlertController,
+              private loadingController: LoadingController,
+              public menuCtrl: MenuController) { 
+                this.menuCtrl.enable(false)
+              }
 
   ngOnInit() {
     this.onDestroy.next();
   }
 
   async logeo(){
-    try {
+
+    return await this.loadingController.create({ }).then(a => {
+      a.present().then(async () => {
+
+        try {
       
-      const user = await this.AuthenticationService.onLogin(this.User);
-
-      if(this.User.email && this.User.password){
-        this.user2 = await this.AuthenticationService.getUsuario(this.User.email);
-        await this.user2.pipe(take(1)).subscribe(res=> {
-          this.AuthenticationService.timeStampLogin(res[0]);
-          this.aux = res[0]
-          
-          if (res[0].id_familia === "-1") {
-
-            return this.router.navigate(["/createfamily"]);
-          } else {
-            return this.router.navigate(["/tabs"]);
+          const user = await this.AuthenticationService.onLogin(this.User);
+    
+          if(this.User.email && this.User.password){
+            this.user2 = await this.AuthenticationService.getUsuario(this.User.email);
+            await this.user2.pipe(take(1)).subscribe(res=> {
+              this.AuthenticationService.timeStampLogin(res[0]);
+              this.aux = res[0]
+              
+              if (res[0].id_familia === "-1") {
+                a.dismiss().then(() => console.log('abort presenting'));
+                this.router.navigate(["/createfamily"]);
+              } else {
+                a.dismiss().then(() => console.log('abort presenting'));
+                this.router.navigate(["/tabs"]);
+              }
+              
+            })
+    
+          }else{
+            console.log("error en el loggeo")
+            this.alert = "Los Datos ingresados son incorrectos"
+            this.advice = 'Por favor, ingréselos de nuevo'
+    
+            a.dismiss().then(() => console.log('abort presenting'));
+            this.genericAlert(this.alert, this.advice)
+            
           }
-          
-        })
+        } catch (error) {
+          this.alert = "Ocurrió un error con el inicio de sesión"
+          this.advice = 'Por favor, inténtelo de nuevo'
+    
+          a.dismiss().then(() => console.log('abort presenting'));
+          this.genericAlert(this.alert, this.advice)
+        }
 
-      }else{
-        console.log("error en el loggeo")
-        this.alert = "Los Datos ingresados son incorrectos"
-        this.advice = 'Por favor, ingréselos de nuevo'
-
-        this.genericAlert(this.alert, this.advice)
-        
-      }
-    } catch (error) {
-      this.alert = "Ocurrió un error con el inicio de sesión"
-      this.advice = 'Por favor, inténtelo de nuevo'
-
-      this.genericAlert(this.alert, this.advice)
-    }
+      })
+    })
     
   }
 
   async googleLogin() {
 
-    try {
+    return await this.loadingController.create({ }).then(a => {
+      a.present().then(async () => {
 
-      this.user2 = await this.AuthenticationService.googleLogin()
+        try {
 
-      await this.AuthenticationService.updateUserData(this.user2, 'google')
-      this.user2 = await this.AuthenticationService.getUsuario(this.user2._delegate.email)
+          this.user2 = await this.AuthenticationService.googleLogin()
+    
+          await this.AuthenticationService.updateUserData(this.user2, 'google')
+          this.user2 = await this.AuthenticationService.getUsuario(this.user2._delegate.email)
+    
+          await this.user2.pipe(take(1)).subscribe(res=> {
+            this.aux = res[0]
+          
+            if (this.aux.id_familia === "-1") {    
+              a.dismiss().then(() => console.log('abort presenting'));
+              this.router.navigate(["/createfamily"]);
 
-      await this.user2.pipe(take(1)).subscribe(res=> {
-        this.aux = res[0]
-      
-        if (this.aux.id_familia === "-1") {
-          let params: NavigationExtras = {
-            queryParams: {
-              user:this.aux.email
+            } else {
+              a.dismiss().then(() => console.log('abort presenting'));
+              this.router.navigate(["/tabs"]);
+
             }
-          }
-  
-          return this.router.navigate(["/createfamily"], params);
-        } else {
-          return this.router.navigate(["/tabs"]);
-        }
-  
-      })
       
-    } catch (error) {
-      this.alert = "Ocurrió un error inesperado en con el inicio de sesión"
-      this.advice = 'Por favor, inténtelo de nuevo'
-      console.log(error)
-      this.genericAlert(this.alert, this.advice)
-    }
+          })
+          
+        } catch (error) {
+          this.alert = "Ocurrió un error inesperado en con el inicio de sesión"
+          this.advice = 'Por favor, inténtelo de nuevo'
+          
+          a.dismiss().then(() => console.log('abort presenting'));
+          this.genericAlert(this.alert, this.advice)
+        }
+
+      })
+    })
 
   }
   
@@ -126,6 +146,10 @@ export class LoginPage implements OnInit {
 
     await prompt.present()
 
+  }
+
+  async dismiss() {
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
 
 }

@@ -43,27 +43,16 @@ export class AuthenticationService {
 
   //iniciar sesion
   async onLogin (user: User) {
-    try{
-      this.afAuth.setPersistence('session').then( () => {
-        this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
-        this.afAuth.signInWithEmailAndPassword( user.email, user.password).then((userCredential) => {
-          this.currentUser = userCredential.user
-        })
+    this.afAuth.setPersistence('session').then( () => {
+      this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
+      this.afAuth.signInWithEmailAndPassword( user.email, user.password).then((userCredential) => {
+        this.currentUser = userCredential.user
       })
-
-      return await this.currentUser
-      
-    }catch(error) {
-      console.log( 'error en LOGIN' , error );
-    }
+    })
   }
 
   async timeStampLogin (user) {
-    try{
-      return await this.afs.collection("users").doc(user.uid).update({lastLogin: new Date()})
-    }catch(error) {
-      console.log( 'error en TIMESTAMP' , error );
-    }
+    return await this.afs.collection("users").doc(user.uid).update({lastLogin: new Date()})
   }
 
   async savePhotoURL(user, path){
@@ -71,51 +60,35 @@ export class AuthenticationService {
   }
 
   async changeFamily(user, family) {
-    console.log('HERE')
-    try{
-      return await this.afs.collection("users").doc(user.uid).update({id_familia: family.id})
-    }catch(error) {
-      console.log( 'error en CHANGEFAMILY' , error );
-    }
+    return await this.afs.collection("users").doc(user.uid).update({id_familia: family.id})
   }
 
   async modifyRole(user, role) {
-    try{
-      return await this.afs.collection("users").doc(user.uid).update({role: role})
-    }catch(error) {
-      console.log( 'error en CHANGEFAMILY' , error );
-    }
+    return await this.afs.collection("users").doc(user.uid).update({role: role})
   }
 
   async createFamily(family) {
-    try{
-      const refContactos = this.afs.collection("families")
+    const refContactos = this.afs.collection("families")
 
-      if(family.id == null){
-        family.id = this.afs.createId()
-      }
-      
-      refContactos.doc(family.id).set(Object.assign({}, family))
-      return await this.getFamily(family.id)
-
-    }catch(error) {
-      console.log( 'error en CHANGEFAMILY' , error )
+    if(family.id == null){
+      family.id = this.afs.createId()
     }
+    
+    refContactos.doc(family.id).set(Object.assign({}, family))
+    return await this.getFamily(family.id)
   }
 
-  async getFamily(id) {
-    return await this.afs.collection("families", ref => ref.where("id", "==", id)).valueChanges();
+  async getFamily(id: any) {
+    return await this.afs.collection("families", ref => ref.where("id", "==", id)).valueChanges()
     
   }
 
-  async onRegistro (user: User){
-    try{
-      return await this.afAuth.createUserWithEmailAndPassword( user.email, user.password);
+  async updateFamily(fam) {
+    return await this.afs.collection("families").doc(fam.id).update({nombre: fam.nombre, presupuesto_global:fam.presupuesto_global, primer_dia_mes:fam.primer_dia_mes})
+  }
 
-    } catch(error){
-      console.log("error en REGISTRO  " , error);
-      console.error('Error' + JSON.stringify(error));
-    }
+  async onRegistro (user: User){
+    return await this.afAuth.createUserWithEmailAndPassword( user.email, user.password);
   }
 
   emailV: any;
@@ -184,6 +157,10 @@ export class AuthenticationService {
     }
   }
 
+  async updateUserProfileData(user) {
+    return await this.afs.collection("users").doc(user.uid).update({description: user.description, displayName: user.displayName, email: user.email})
+  }
+
   //GOOGLE
   async googleLogin() {
     if (this.platform.is('cordova')) {
@@ -194,64 +171,46 @@ export class AuthenticationService {
   }
 
   async nativeGoogleLogin()  {
-    try {
-      const gplusUser: any = await this.googlePlus.login({
-        webClientId: environment.googleWebClientId,
-        offline: true
-      });
+    const gplusUser: any = await this.googlePlus.login({
+      webClientId: environment.googleWebClientId,
+      offline: true
+    });
 
-      await this.afAuth.setPersistence('session').then( async () => {
-        const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
-        await firebase.default.auth().signInWithCredential(googleCredential).then(async (userCredential) => {
-          this.currentUser = await userCredential.user
-        })
-        //console.log(JSON.stringify(firebaseUser.user));
-        //await this.updateUserData(this.currentUser, 'google');
+    await this.afAuth.setPersistence('session').then( async () => {
+      const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
+      await firebase.default.auth().signInWithCredential(googleCredential).then(async (userCredential) => {
+        this.currentUser = await userCredential.user
       })
+      //console.log(JSON.stringify(firebaseUser.user));
+      //await this.updateUserData(this.currentUser, 'google');
+    })
 
-      return await JSON.stringify(this.currentUser._delegate)
-      
-    } catch (error) {
-      console.error('Error: Login Google - Native' + JSON.stringify(error));
-      return error;
-    }
+    return await JSON.stringify(this.currentUser._delegate)
   }
 
   async webGoogleLogin() {
-    try {
-
-      await this.afAuth.setPersistence('session').then( async () => {
-        const provider = new firebase.default.auth.GoogleAuthProvider()
-        
-        await this.afAuth.signInWithPopup(provider).then(async (userCredential) => {
-          this.currentUser = await userCredential.user
-          this.credential = await userCredential
-        })
-        //console.log(JSON.stringify(this.currentUser));
-        //await this.updateUserData(this.credential, 'google')
+    await this.afAuth.setPersistence('session').then( async () => {
+      const provider = new firebase.default.auth.GoogleAuthProvider()
+      
+      await this.afAuth.signInWithPopup(provider).then(async (userCredential) => {
+        this.currentUser = await userCredential.user
+        this.credential = await userCredential
       })
-      
-      return await this.currentUser
-      
-    } catch (error) {
-      console.error('Error: Login Google - Web' + JSON.stringify(error));
-      return error;
-    }
+      //console.log(JSON.stringify(this.currentUser));
+      //await this.updateUserData(this.credential, 'google')
+    })
+    
+    return await this.currentUser
   }
 
   // EMAIL AND PASSWORD
   async emailPasswordLogin(email: string, password: string): Promise<void> {
-    try {
-      const emailCredential = firebase.default.auth.EmailAuthProvider.credential(email, password)
-      const firebaseUser = await firebase.default.auth().signInWithCredential(emailCredential)
+    const emailCredential = firebase.default.auth.EmailAuthProvider.credential(email, password)
+    const firebaseUser = await firebase.default.auth().signInWithCredential(emailCredential)
 
-      this.currentUser = firebaseUser.user
-      console.log(this.currentUser)
-      return await this.updateUserData(this.currentUser.user, 'email');
-
-    } catch (error) {
-      return error;
-    }
+    this.currentUser = firebaseUser.user
+    console.log(this.currentUser)
+    return await this.updateUserData(this.currentUser.user, 'email');
   }
 
   // ---------
@@ -273,7 +232,7 @@ export class AuthenticationService {
     let data: any;
     //console.log('doc' + JSON.stringify(doc));
 
-    if (doc == null || doc == ''  ) {
+    if (doc == null || doc == '' ) {
       // Crear Cuenta
       data = {
         uid: user._delegate.uid,
@@ -291,7 +250,7 @@ export class AuthenticationService {
       };
     } else if (doc.active == false){
       throw { error_code: 999, error_message: 'Acceso denegado, servicio deshabilitado, consulte con el administrador.' }; 
-    } else {
+    } else if (user._delegate.email !== undefined){
       // Actualizar cuenta
       data = {
         uid: user._delegate.uid,
@@ -301,6 +260,8 @@ export class AuthenticationService {
         provider: provider,
         lastLogin: new Date()
       };
+    } else {
+      throw { error_code: 999, error_message: 'Acceso denegado, servicio deshabilitado, consulte con el administrador.' };
     }
 
     //console.log('data', JSON.stringify(data));
