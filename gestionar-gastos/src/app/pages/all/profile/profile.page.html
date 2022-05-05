@@ -60,7 +60,7 @@
 
       <ion-item color="transparent">
         <ion-label>Email:</ion-label>
-        <ion-input [(ngModel)]="email" placeholder="placeholder"></ion-input>
+        <ion-input [(ngModel)]="email" [disabled]="googleProvider" placeholder="placeholder" type = "email"></ion-input>
       </ion-item>
 
       <ion-item color="transparent">
@@ -69,7 +69,7 @@
       </ion-item>
 
       <div style="text-align: center">
-        <ion-button  id="botonIniciar" color="success"  (click)="Onlogout()">Actualizar</ion-button>
+        <ion-button  id="botonIniciar" color="success"  (click)="onUpdate()">Actualizar</ion-button>
       </div>
       
     </ion-grid> 
