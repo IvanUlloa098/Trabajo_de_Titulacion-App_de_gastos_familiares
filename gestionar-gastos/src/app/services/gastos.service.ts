@@ -3,15 +3,19 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 
 
+
 import { Observable } from 'rxjs';
 import { Gasto } from '../domain/gasto';
+import { User } from '../domain/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GastosService {  
-  gastos:Gasto[]; 
-  constructor(public afs: AngularFirestore) { }
+  
+  constructor(public afs: AngularFirestore) { 
+     
+  }
 
   guardar(gasto:Gasto){
     const refGastos = this.afs.collection("gastos");
@@ -22,16 +26,13 @@ export class GastosService {
   
       refGastos.doc(gasto.id).set(Object.assign({}, gasto));
   }
-  obtenerGastos(id:any):Observable<any[]>{
+  obtenerGastos(idG:any):Observable<any[]>{
     return this.afs.collection("gastos",
-            ref=> ref.where("id","==",id)).valueChanges();
-  }
-  obtenerGastosFamilia(id:any):Observable<any[]>{
-    return this.afs.collection("gastos",
-            ref=> ref.where("id","==",id)).valueChanges();
-  }
-  obtenerusrFamilia(id:any):Observable<any[]>{    
+            ref=> ref.where("id_usuario","==",idG)).valueChanges();
+  }  
+  obtenerusrFamilia(idF:any):Observable<any[]>{    
     return this.afs.collection("users",
-            ref=> ref.where("id_familia","==",id)).valueChanges();
+            ref=> ref.where("id_familia","==",idF)).valueChanges();
   }
+  
 }
