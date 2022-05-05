@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Familia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list lines="none">
+
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Miembros de tu familia</ion-label>
+      </ion-item-divider>
+      
+      <ion-item *ngFor="let item of members | async">
+        <ion-avatar slot="start">
+          <img [src]="item.photoURL" referrerpolicy="no-referrer" alt="">
+        </ion-avatar>
+        <ion-label class="ion-text-wrap">
+          <h2>{{item.displayName}}</h2>
+          <p>{{item.description}}</p>                      
+        </ion-label>
+
+        <div [hidden]='isHidden(item.role)'>
+          <ion-icon color= 'danger' name="close-circle" size="small" slot="end" (click)="deleteMember(item)"></ion-icon>
+        </div>
+          
+      </ion-item>
+        
+    </ion-item-group>
+
+  </ion-list>
+
+</ion-content>

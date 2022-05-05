@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'update-family',
     loadChildren: () => import('./pages/admin/update-family/update-family.module').then( m => m.UpdateFamilyPageModule)
+  },  {
+    path: 'list-familymembers',
+    loadChildren: () => import('./pages/admin/list-familymembers/list-familymembers.module').then( m => m.ListFamilymembersPageModule)
   }
+
 
 
 ];
