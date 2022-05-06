@@ -13,16 +13,19 @@ export class VerGastosFamiliaPage implements OnInit {
   gastosF:Gasto[]=[]
   usuarios:any
   gastos:any
+
+  
  
   constructor(private route: ActivatedRoute,
     private router: Router, 
     private gastoService: GastosService) { }
 
   ngOnInit() {
+    
     this.cargarUsuarios()    
   }
   async cargarUsuarios(){
-    this.usuarios=this.gastoService.obtenerusrFamilia("7Jq8PcqKZso18jwqjhoN")
+    this.usuarios=this.gastoService.obtenerusrFamilia("7Jq8PcqKZso18jwqjhoN")    
     this.usuarios.forEach((element) => {           
       for (let index = 0; index < element.length; index++) {
         this.gastos=this.gastoService.obtenerGastos(element[index].uid)        
