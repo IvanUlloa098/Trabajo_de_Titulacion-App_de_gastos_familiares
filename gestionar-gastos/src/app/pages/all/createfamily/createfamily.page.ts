@@ -64,7 +64,7 @@ export class CreatefamilyPage implements OnInit {
   
         }
   
-        return this.router.navigate(["/tabs"]);
+        return this.router.navigate(["/home"]);
       })
 
     }else{
@@ -139,14 +139,14 @@ export class CreatefamilyPage implements OnInit {
               
             })
 
-            return this.router.navigate(["/tabs"]);
+            return this.router.navigate(["/home"]);
           })
 
         }
 
       })
 
-      return this.router.navigate(["/tabs"]);
+      return this.router.navigate(["/home"]);
 
     } catch (error) {
       console.log("error al asignar familia")

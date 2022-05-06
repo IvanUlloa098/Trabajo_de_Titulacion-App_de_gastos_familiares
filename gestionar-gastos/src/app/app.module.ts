@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -26,7 +26,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
             AngularFireAuthModule, 
             AngularFireStorageModule, 
             AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, GooglePlus, AngularFireStorage],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {provide: ErrorHandler}, GooglePlus, AngularFireStorage],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
