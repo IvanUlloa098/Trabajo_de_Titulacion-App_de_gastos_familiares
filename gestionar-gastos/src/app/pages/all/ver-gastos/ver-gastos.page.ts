@@ -14,8 +14,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class VerGastosPage implements OnInit {
 
   gastos:any
-  usuario:any
-  
+  usuario:any  
 
   alert: string
   advice: string
@@ -33,9 +32,9 @@ export class VerGastosPage implements OnInit {
 
   async ngOnInit() {
     this.sessionUser = await this.auth.getUserAuth()    
-    this.obtenerUsuario()    
+    this.obtenerGastosUsr()    
   }
-  async obtenerUsuario(){
+  async obtenerGastosUsr(){
      
     await this.sessionUser.pipe(take(1)).subscribe(async user =>{
       try {

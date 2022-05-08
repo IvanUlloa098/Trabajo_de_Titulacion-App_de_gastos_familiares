@@ -37,8 +37,7 @@ export class CreatefamilyPage implements OnInit {
 
   async crear(){
 
-    if(this.fam){
-
+    if(this.fam){      
       await this.sessionUser.pipe(take(1)).subscribe(async user =>{
 
         try {
