@@ -21,6 +21,8 @@ export class AuthenticationService {
   public currentUser: any
   private credential: any
 
+  public sideMenu: boolean
+
   constructor( private afAuth: AngularFireAuth,
                private afs: AngularFirestore,
                private platform: Platform,
@@ -49,6 +51,10 @@ export class AuthenticationService {
         this.currentUser = userCredential.user
       })
     })
+  }
+  
+  setSideMenu(value) {
+    this.sideMenu = value
   }
 
   async timeStampLogin (user) {

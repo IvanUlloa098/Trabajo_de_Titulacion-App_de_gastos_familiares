@@ -8,6 +8,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { AlertController, LoadingController, MenuController } from '@ionic/angular';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,8 @@ export class LoginPage implements OnInit {
 
   public email: string
   public password : string
+  private sessionUser : any
+
   User: User = new User()
   user2: any
   userUpdate: any
@@ -34,12 +37,27 @@ export class LoginPage implements OnInit {
               private router : Router,
               private alertCtrl: AlertController,
               private loadingController: LoadingController,
-              public menuCtrl: MenuController) { 
+              public menuCtrl: MenuController,
+              private userService: UserService) { 
                 this.menuCtrl.enable(false)
               }
 
-  ngOnInit() {
+  async ngOnInit() {
+
     this.onDestroy.next();
+
+    return await this.loadingController.create({ }).then(a => {
+      a.present().then(async () => {
+        await this.AuthenticationService.getUserAuth().pipe(take(1)).subscribe(async user =>{
+          if (user !== null) {
+            this.router.navigate(["/home"])
+          } 
+
+          a.dismiss().then(() => console.log('abort presenting'));
+        })
+      })
+    })
+    
   }
 
   async logeo(){
@@ -48,24 +66,36 @@ export class LoginPage implements OnInit {
       a.present().then(async () => {
 
         try {
-      
           const user = await this.AuthenticationService.onLogin(this.User);
     
           if(this.User.email && this.User.password){
             this.user2 = await this.AuthenticationService.getUsuario(this.User.email);
-            await this.user2.pipe(take(1)).subscribe(res=> {
-              this.AuthenticationService.timeStampLogin(res[0]);
-              this.aux = res[0]
+
+            try {
+
+              await this.user2.pipe(take(1)).subscribe(res=> {
+                this.AuthenticationService.timeStampLogin(res[0]);
+                this.aux = res[0]
+                
+                if (res[0].id_familia === "-1") {
+                  a.dismiss().then(() => console.log('abort presenting'));
+                  this.router.navigate(["/createfamily"]);
+                } else {
+                  a.dismiss().then(() => console.log('abort presenting'));
+                  this.router.navigate(["/home"]);
+                }
+                
+              })
               
-              if (res[0].id_familia === "-1") {
-                a.dismiss().then(() => console.log('abort presenting'));
-                this.router.navigate(["/createfamily"]);
-              } else {
-                a.dismiss().then(() => console.log('abort presenting'));
-                this.router.navigate(["/tabs"]);
-              }
+            } catch (error) {
               
-            })
+              this.alert = "Ocurrió un error con el inicio de sesión"
+              this.advice = 'Por favor, inténtelo de nuevo'
+        
+              a.dismiss().then(() => console.log('abort presenting'));
+              this.genericAlert(this.alert, this.advice)
+
+            }
     
           }else{
             console.log("error en el loggeo")
@@ -110,7 +140,7 @@ export class LoginPage implements OnInit {
 
             } else {
               a.dismiss().then(() => console.log('abort presenting'));
-              this.router.navigate(["/tabs"]);
+              this.router.navigate(["/home"]);
 
             }
       

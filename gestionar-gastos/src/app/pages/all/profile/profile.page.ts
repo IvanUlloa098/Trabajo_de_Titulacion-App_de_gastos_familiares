@@ -109,8 +109,8 @@ export class ProfilePage implements OnInit{
           
         } catch (error) {
           console.log('ERROR al cargar datos')
-          this.alert = "Los Datos ingresados son incorrectos"
-          this.advice = 'Por favor, ingréselos de nuevo'
+          this.alert = "Ocurrió un error al cargar sus datos"
+          this.advice = 'Por favor, inténtelo de nuevo'
   
           a.dismiss().then(() => console.log('abort presenting'));
           this.genericAlert(this.alert, this.advice)
@@ -202,25 +202,34 @@ export class ProfilePage implements OnInit{
       a.present().then(async () => {
         
         try {
-          this.UserUpdate.uid = this.id
-          this.UserUpdate.email = this.email
-          this.UserUpdate.displayName = this.name
-          this.UserUpdate.description = this.description
 
-          const validation =this.validateEmail(this.email)
+          if(this.email !== "" && this.name !== "" && this.description !== "") {
+            this.UserUpdate.uid = this.id
+            this.UserUpdate.email = this.email
+            this.UserUpdate.displayName = this.name
+            this.UserUpdate.description = this.description
 
-          if(validation) {
-            this.auth.updateUserProfileData(this.UserUpdate)
-          } else {
+            const validation =this.validateEmail(this.email)
+
+            if(validation) {
+              this.auth.updateUserProfileData(this.UserUpdate)
+            } else {
+              console.log('ERROR: No se pudo actualizar')
+              this.alert = "El e-mail ingresado no es correcto"
+              this.advice = 'Por favor, revise la sintaxis del correo electrónico'
+        
+              this.genericAlert(this.alert, this.advice)
+            }
+          } else{
             console.log('ERROR: No se pudo actualizar')
-            this.alert = "El e-mail ingresado no es correcto"
-            this.advice = 'Por favor, revise la sintaxis del correo electrónico'
+            this.alert = "Información vacía"
+            this.advice = 'Por favor, verifique que exista información en todos los campos'
       
             this.genericAlert(this.alert, this.advice)
           }
           
         } catch (error) {
-          this.alert = "El e-mail ingresado no es correcto"
+          this.alert = "Ocurrió un error al actualizar sus datos"
           this.advice = 'Por favor, inténtelo de nuevo'
       
           this.genericAlert(this.alert, this.advice)
