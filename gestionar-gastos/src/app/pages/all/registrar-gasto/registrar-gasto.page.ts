@@ -46,7 +46,7 @@ export class RegistrarGastoPage implements OnInit {
             })        
           } catch(error){
               console.log(error)  
-              this.alert = "Ocurrió un error inesperado al cargar la informacion del usuario"
+              this.alert = "Ocurrió un error inesperado al registrar el gasto"
               this.advice = 'Por favor, inténtelo de nuevo'
         
               return this.genericAlert(this.alert, this.advice)

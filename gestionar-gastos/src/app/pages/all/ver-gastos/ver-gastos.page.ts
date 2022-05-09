@@ -48,7 +48,7 @@ export class VerGastosPage implements OnInit {
       } catch(error){
           console.log("error al cargar usuario")
   
-          this.alert = "Ocurrió un error inesperado al cargar la informacion del usuario"
+          this.alert = "Ocurrió un error inesperado al cargar su informacion"
           this.advice = 'Por favor, inténtelo de nuevo'
     
           return this.genericAlert(this.alert, this.advice)
