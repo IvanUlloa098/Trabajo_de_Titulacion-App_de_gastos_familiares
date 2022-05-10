@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import * as firebase from 'firebase/compat/app';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Router } from '@angular/router';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class UserService {
     private afs: AngularFirestore,
     private platform: Platform,
     private googlePlus: GooglePlus,
-    private router : Router) { }
+    private router : Router,
+    private angularFireStorage: AngularFireStorage) { }
 
   async updateUserProfileData(user) {
     return await this.afs.collection("users").doc(user.uid).update({description: user.description, displayName: user.displayName, email: user.email})
@@ -28,6 +30,15 @@ export class UserService {
 
   getFamilyMembers(fid) {
     return this.afs.collection("users", ref => ref.where("id_familia", "==", fid).where("active", "==", true)).valueChanges();
+  }
+
+  async savePhotoURL(user, path){
+    return await this.afs.collection("users").doc(user).update({photoURL: path})
+  }
+
+  async deletePreviousPhoto(path) {
+    return await this.angularFireStorage.storage.refFromURL(path).delete();
+
   }
 
   async changeFamily(user, family) {

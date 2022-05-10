@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController, MenuController } from '@ionic/angular';
+import { IonRouterOutlet, LoadingController, MenuController } from '@ionic/angular';
 import { take } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -20,8 +20,9 @@ export class HomePage implements OnInit {
               private auth :  AuthenticationService,
               private router: Router,
               private loadingController: LoadingController,
-              private userService: UserService) { 
-                 
+              private userService: UserService,
+              private routerOutlet: IonRouterOutlet) { 
+                this.routerOutlet.swipeGesture = false
               }
 
   async ngOnInit() {
