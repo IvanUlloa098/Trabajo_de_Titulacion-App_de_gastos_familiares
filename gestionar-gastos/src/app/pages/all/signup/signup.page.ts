@@ -55,13 +55,13 @@ export class SignupPage implements OnInit {
       
             await this.auth.save(this.User);
             console.log("exito de registro ");
+
+            a.dismiss().then(() => console.log('abort presenting'));
     
             this.header = 'Bienvenido'
             this.alert = "Se ha registrado el usuario con éxito"
             this.advice = '¡Comienze a gestionar su dinero!'
             this.genericAlert(this.header, this.alert, this.advice)
-    
-            this.router.navigate(["/login"])
       
           }else{
             console.log("error en registro")
@@ -80,6 +80,7 @@ export class SignupPage implements OnInit {
           this.genericAlert(this.header,this.alert, this.advice)
         } finally {
           a.dismiss().then(() => console.log('abort presenting'));
+          this.router.navigate(["/login"])
         }
 
       }) 

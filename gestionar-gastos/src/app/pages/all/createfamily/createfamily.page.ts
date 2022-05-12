@@ -3,7 +3,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Familia } from 'src/app/domain/family';
 import { take } from 'rxjs/operators';
-import { AlertController, MenuController } from '@ionic/angular';
+import { AlertController, LoadingController, MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-createfamily',
@@ -27,7 +27,8 @@ export class CreatefamilyPage implements OnInit {
                 private auth :  AuthenticationService, 
                 private alertCtrl: AlertController, 
                 private activate: ActivatedRoute,
-                public menuCtrl: MenuController ) {
+                public menuCtrl: MenuController,
+                private loadingController: LoadingController ) {
                   this.menuCtrl.enable(false)
                 }
 
@@ -37,44 +38,55 @@ export class CreatefamilyPage implements OnInit {
 
   async crear(){
 
-    if(this.fam){
+    return await this.loadingController.create({ }).then(a => {
+      a.present().then(async () => { 
 
-      await this.sessionUser.pipe(take(1)).subscribe(async user =>{
+        if(this.fam){
 
-        try {
-          this.User = await this.auth.getUsuario(user.email)
-          this.aux = await this.auth.createFamily(this.fam)
+          await this.sessionUser.pipe(take(1)).subscribe(async user =>{
     
-          await this.aux.pipe(take(1)).subscribe( async res=> {
-  
-            await this.User.pipe(take(1)).subscribe(res2=> {
-              this.auth.changeFamily(res2[0], res[0])
-              this.auth.modifyRole(res2[0], 'A')
-            }) 
+            try {
+              this.User = await this.auth.getUsuario(user.email)
+              this.aux = await this.auth.createFamily(this.fam)
+        
+              await this.aux.pipe(take(1)).subscribe( async res=> {
+      
+                await this.User.pipe(take(1)).subscribe(res2=> {
+                  this.auth.changeFamily(res2[0], res[0])
+                  this.auth.modifyRole(res2[0], 'A')
+
+                  a.dismiss().then(() => console.log('abort presenting'));
+                }) 
+        
+              }) 
+      
+            } catch (error) {
+              console.log("error al crear familia")
+      
+              this.alert = "Ocurrió un error inesperado al ingresar su familia"
+              this.advice = 'Por favor, inténtelo de nuevo'
+        
+              return this.genericAlert(this.alert, this.advice)
+      
+            } finally {
+              a.dismiss().then(() => console.log('abort presenting'));
+            }
+      
+            return this.router.navigate(["/home"]);
+          })
     
-          }) 
-  
-        } catch (error) {
+        }else{
           console.log("error al crear familia")
-  
-          this.alert = "Ocurrió un error inesperado al ingresar su familia"
+    
+          this.alert = "Debe llenar todos los datos necesarios"
           this.advice = 'Por favor, inténtelo de nuevo'
     
           return this.genericAlert(this.alert, this.advice)
-  
         }
-  
-        return this.router.navigate(["/home"]);
-      })
 
-    }else{
-      console.log("error al crear familia")
+      }) 
+    })
 
-      this.alert = "Debe llenar todos los datos necesarios"
-      this.advice = 'Por favor, inténtelo de nuevo'
-
-      return this.genericAlert(this.alert, this.advice)
-    }
   }
 
   async prompt(){
@@ -100,8 +112,16 @@ export class CreatefamilyPage implements OnInit {
         {  
           text: 'Buscar',  
           handler: async data => {  
-            console.log('Accept '+data.email)
-            await this.join(data.email)
+            return await this.loadingController.create({ }).then(a => {
+              a.present().then(async () => { 
+        
+                console.log('Accept '+data.email)
+                await this.join(data.email)
+
+                a.dismiss().then(() => console.log('abort presenting'));
+        
+              }) 
+            })
               
           }  
         }  
@@ -112,7 +132,13 @@ export class CreatefamilyPage implements OnInit {
 
   }
 
+  async dismiss() {
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
+
   async join(email) {
+
+ 
     
     try {
       this.User = await this.auth.getUsuario(email);

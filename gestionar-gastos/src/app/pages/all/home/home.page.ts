@@ -45,6 +45,10 @@ export class HomePage implements OnInit {
                 window.location.reload();
               }
 
+              if(res[0].id_familia === '-1'){
+                this.router.navigate(["/login"])
+              }
+
             }) 
           } catch (error) {
             console.log(error);
