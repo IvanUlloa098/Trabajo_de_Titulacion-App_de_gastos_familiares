@@ -35,6 +35,7 @@ export class RegistrarGastoPage implements OnInit {
     this.sessionUser = await this.auth.getUserAuth()    
   }
   async registrarGasto(){
+    this.gasto.id=null    
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
         this.sessionUser.pipe(take(1)).subscribe(async user =>{
