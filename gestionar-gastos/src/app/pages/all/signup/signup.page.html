@@ -5,16 +5,17 @@
 <ion-content  class="background">
 
     <ion-grid  style=" margin-top:  70%;">
-      <ion-input  id="input" placeholder="usuario@mail.com" type = "email" [(ngModel)]="User.email"></ion-input>
+      <ion-input  id="input" placeholder="Email usuario@mail.com" type = "email" [(ngModel)]="User.email"></ion-input>
       <ion-input id = "input"  placeholder= "************" type = "Password" [(ngModel)]="User.password"></ion-input>
-      <ion-input  id="input" placeholder="Name Lastname"  [(ngModel)]="User.displayName"></ion-input>
+      <ion-input  id="input" placeholder="Nombre Apellido"  [(ngModel)]="User.displayName"></ion-input>
     </ion-grid>
   
 
   <ion-grid>
     <ion-label id="label"> _________________________ </ion-label>
-    <ion-button id="botonIniciar" style=" margin-top: -9%;" color="success" routerLink= "/login" (click)="registro()">
-    Guardar
+    
+    <ion-button id="botonIniciar" style=" margin-top: -9%;" color="success" (click)="registro()">
+    Crear Cuenta
     </ion-button>
   </ion-grid>
   

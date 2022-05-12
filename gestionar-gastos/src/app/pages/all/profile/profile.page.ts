@@ -7,6 +7,7 @@ import {AngularFirestore,AngularFirestoreCollection} from '@angular/fire/compat/
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { User } from 'src/app/domain/user';
+import { UserService } from 'src/app/services/user/user.service';
 
 
 export interface FILE {
@@ -62,7 +63,8 @@ export class ProfilePage implements OnInit{
               private alertCtrl: AlertController,
               private router : Router,
               private angularFirestore: AngularFirestore,
-              private angularFireStorage: AngularFireStorage) { 
+              private angularFireStorage: AngularFireStorage,
+              private userService: UserService) { 
 
                 this.isImgUploading = false;
                 this.isImgUploaded = false;
@@ -166,16 +168,25 @@ export class ProfilePage implements OnInit{
             await this.auth.getUserAuth().pipe(take(1)).subscribe(async user =>{
               this.aux = await this.auth.getUsuario(user.email)
               
-              await this.aux.pipe(take(1)).subscribe(res=>{
-                this.auth.savePhotoURL(res[0].uid, resp)
+              await this.aux.pipe(take(1)).subscribe(async res=>{
+
+                try {
+                  if(resp !== 'https://firebasestorage.googleapis.com/v0/b/gestionar-gastos.appspot.com/o/default.png?alt=media&token=e8ff50d0-3177-4b40-acf6-d29127a6baf3'){
+                    await this.userService.deletePreviousPhoto(res[0].photoURL)
+                  }
+                } catch (error) {
+                  console.log('ERROR: Google photo URL ')
+                }
+
+                await this.userService.savePhotoURL(res[0].uid, resp)
+
+                window.location.reload();
               })
             })
             console.log(resp)
             
             this.isImgUploading = false;
             this.isImgUploaded = true;
-
-            this.router.navigate(["/profile"])
             
           },error => {
             console.log(error);
