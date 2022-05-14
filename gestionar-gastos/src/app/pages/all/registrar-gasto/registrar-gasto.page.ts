@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AlertController, MenuController,LoadingController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
 
 
 @Component({
@@ -19,9 +20,10 @@ export class RegistrarGastoPage implements OnInit {
   alert: string
   advice: string
 
-  private sessionUser : any
+  private sessionUser : any  
 
   constructor(private route: ActivatedRoute,
+    private localNotifications: LocalNotifications,
     private router: Router, 
     private gastoService: GastosService,
     private alertCtrl: AlertController,
@@ -35,6 +37,7 @@ export class RegistrarGastoPage implements OnInit {
     this.sessionUser = await this.auth.getUserAuth()    
   }
   async registrarGasto(){
+    this.gasto.id=null    
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
         this.sessionUser.pipe(take(1)).subscribe(async user =>{
@@ -42,6 +45,11 @@ export class RegistrarGastoPage implements OnInit {
             this.usuario = await this.auth.getUsuario(user.email)
             this.usuario.pipe(take(1)).subscribe(async user =>{
               this.gasto.id_usuario=user[0].uid
+              let fecha=new Date(this.gasto.fecha);
+              this.localNotifications.schedule({
+                text: "Nuevo Gasto"+this.gasto.descripcion+"\n De: "+this.gasto.monto,
+                trigger: {at: fecha},                 
+             });
               this.gastoService.guardar(this.gasto)       
             })        
           } catch(error){

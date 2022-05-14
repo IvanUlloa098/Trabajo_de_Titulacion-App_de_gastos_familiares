@@ -16,6 +16,8 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
+import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,9 +26,9 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
             AngularFireModule.initializeApp(environment.firebaseConfig), 
             AngularFirestoreModule, 
             AngularFireAuthModule, 
-            AngularFireStorageModule, 
+            AngularFireStorageModule,             
             AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {provide: ErrorHandler}, GooglePlus, AngularFireStorage],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {provide: ErrorHandler}, GooglePlus, AngularFireStorage,LocalNotifications],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

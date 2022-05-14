@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-
-
-
-
 import { Observable } from 'rxjs';
 import { Gasto } from '../domain/gasto';
-import { User } from '../domain/user';
+
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +28,7 @@ export class GastosService {
   }  
   obtenerusrFamilia(idF:any):Observable<any[]>{    
     return this.afs.collection("users",
-            ref=> ref.where("id_familia","==",idF)).valueChanges();
+            ref=> ref.where("id_familia","==",idF).where("active","==",true)).valueChanges();
   }
   
 }

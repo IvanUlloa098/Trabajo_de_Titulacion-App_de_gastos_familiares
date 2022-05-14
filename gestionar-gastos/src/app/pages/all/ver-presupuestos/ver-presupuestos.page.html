@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>ver-presupuestos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div div style="float: left; width: 100%;">
+    <div *ngFor="let presupuesto of presupuestos | async">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>
+            <div div style="float: left; width: 50%; margin-left: 5%;">              
+              <h2>{{ presupuesto.cantidad }}</h2>
+              <h2>{{ presupuesto.id_categoria }}</h2>              
+              <p>{{ presupuesto.fecha }}</p>
+            </div>            
+          </ion-label>
+        </ion-item>        
+      </ion-item-sliding>      
+    </div>
+  </div>
+  <ion-button expand="block">Graficos</ion-button>
+</ion-content>

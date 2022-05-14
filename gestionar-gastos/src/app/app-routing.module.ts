@@ -58,7 +58,15 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/all/home/home.module').then( m => m.HomePageModule)
-  }
+  },
+  {
+    path: 'registrar-presupuestos',
+    loadChildren: () => import('./pages/admin/registrar-presupuestos/registrar-presupuestos.module').then( m => m.RegistrarPresupuestosPageModule)
+  },  {
+    path: 'ver-presupuestos',
+    loadChildren: () => import('./pages/all/ver-presupuestos/ver-presupuestos.module').then( m => m.VerPresupuestosPageModule)
+  },
+
 ];
 
 @NgModule({
