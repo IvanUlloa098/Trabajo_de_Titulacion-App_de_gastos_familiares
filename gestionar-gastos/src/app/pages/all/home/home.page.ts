@@ -65,5 +65,8 @@ export class HomePage implements OnInit {
   async dismiss() {
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
+  async cargarNotificaciones(){
+    
+  }
 
 }

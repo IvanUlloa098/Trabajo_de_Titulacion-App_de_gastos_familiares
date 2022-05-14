@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
 
   private appPagesUser = [
     { title: 'Perfil', url: '/profile', icon: 'person-circle-outline' },
+    { title: 'Registrar Gasto', url: '/registrar-gasto', icon: 'cash-outline' },
+    { title: 'Ver Gastos', url: '/ver-gastos', icon: 'wallet-outline' },
   ];
 
   constructor(private auth :  AuthenticationService,
