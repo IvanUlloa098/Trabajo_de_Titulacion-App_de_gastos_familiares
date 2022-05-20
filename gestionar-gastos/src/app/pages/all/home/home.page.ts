@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController, MenuController } from '@ionic/angular';
+import { IonRouterOutlet, LoadingController, MenuController } from '@ionic/angular';
 import { take } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
