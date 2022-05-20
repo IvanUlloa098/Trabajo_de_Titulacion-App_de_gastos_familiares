@@ -29,6 +29,13 @@ export class PresupuestosService {
   }
   obtenerPresupuestos(idF:any):Observable<any[]>{
     return this.afs.collection("presupuestos",
-            ref=> ref.where("id_familia","==",idF)).valueChanges();
+            ref=> ref.where("id_familia","==",idF).where("activo","==",true)).valueChanges();
+  }
+  obtenerFamilia(idF:any):Observable<any[]>{
+    return this.afs.collection("families",
+            ref=> ref.where("id","==",idF)).valueChanges();
+  }
+  async actualizarPresupuesto(presupuesto) {
+    return await this.afs.collection("presupuestos").doc(presupuesto.id).update({activo: false})
   }
 }

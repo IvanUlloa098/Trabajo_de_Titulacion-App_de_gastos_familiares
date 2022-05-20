@@ -6,34 +6,68 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-divider>
-      <ion-label>Presupuesto por categoria</ion-label>
-    </ion-item-divider>
     <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Presupuesto General</ion-label>
+      </ion-item-divider>    
+      <ion-item>        
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoTotal" placehorder="Cantidad:"></ion-input>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Alimentacion</ion-label>      
+      </ion-item-divider>
+      <ion-item>      
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoAlimentacion.cantidad" placeholder="Cantidad:"></ion-input>
+      </ion-item>
+      <ion-item-divider>
+        <ion-label>Servicios</ion-label>      
+      </ion-item-divider>
+      <ion-item>      
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoServicios.cantidad" placeholder="Cantidad:"></ion-input>
+      </ion-item>
+      <ion-item-divider>
+        <ion-label>Educacion</ion-label>      
+      </ion-item-divider>    
+      <ion-item>      
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoEducacion.cantidad" placeholder="Cantidad:"></ion-input>
+      </ion-item>
+      <ion-item-divider>
+        <ion-label>Ocio</ion-label>      
+      </ion-item-divider>
+      <ion-item>      
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoOcio.cantidad" placeholder="Cantidad:"></ion-input>
+      </ion-item>
+      <ion-item-divider>
+        <ion-label>Transporte</ion-label>      
+      </ion-item-divider>
+      <ion-item>      
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoTransporte.cantidad" placeholder="Cantidad:"></ion-input>
+      </ion-item>
+      <ion-item-divider>
+        <ion-label>Vivienda</ion-label>      
+      </ion-item-divider>
+      <ion-item>      
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoVivienda.cantidad" placeholder="Cantidad:"></ion-input>
+      </ion-item>
+      <ion-item-divider>
+        <ion-label>Salud</ion-label>      
+      </ion-item-divider>
+      <ion-item>      
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoSalud.cantidad" placeholder="Cantidad:"></ion-input>
+      </ion-item>
+      <ion-item-divider>
+        <ion-label>Otros</ion-label>      
+      </ion-item-divider>
       <ion-item>
-        <ion-label>Cantidad: </ion-label>
-        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuesto.cantidad"></ion-input>
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoOtros.cantidad" placeholder="Cantidad:"></ion-input>
       </ion-item>
     </ion-item-group>
   </ion-list>
-        <ion-label>Fecha: </ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="presupuesto.fecha" required="true"></ion-datetime>
-  <ion-list>
-    <ion-item-group>                  
-      <ion-item>
-        <ion-label>Categoria:</ion-label>
-        <ion-select [(ngModel)]="presupuesto.id_categoria">
-          <ion-select-option value="834IqsQWzMFPdsE7TZKu">Alimentacion</ion-select-option>
-          <ion-select-option value="yfXjC94YqUqIbn4zXMjx">Servicios</ion-select-option>
-          <ion-select-option value="EjKGtXUIHEnwC0MKrzIn">Educacion</ion-select-option>
-          <ion-select-option value="Y2xbbnUeLwCz5UhfMMJZ">Ocio</ion-select-option>
-          <ion-select-option value="pZbMomfUFtw8u2aD0sEC">Transporte</ion-select-option>
-          <ion-select-option value="NgNS2EM0p4UdeAQlZ4q6">Vivienda</ion-select-option>
-          <ion-select-option value="Mp82DGLcR5AUOEk5DSrC">Salud</ion-select-option>
-          <ion-select-option value="uPtleC6y1na6ZkkpePAd">Otros</ion-select-option>
-        </ion-select>
-      </ion-item>      
-    </ion-item-group>    
-  </ion-list>
+  <ion-label>Fecha: </ion-label>
+  <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="presupuestoAlimentacion.fecha" required="true" dayValues={{diaMes}}></ion-datetime>
   <ion-button expand="block" (click)="registrarPresupuesto()">Registrar</ion-button>
+  <ion-button expand="block" (click)="actualizarPresupuestos()">Actualizar</ion-button>
+  
 </ion-content>
