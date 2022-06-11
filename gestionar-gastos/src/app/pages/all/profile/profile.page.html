@@ -8,22 +8,40 @@
     <ion-grid>
       <ion-row>
 
-        <ion-col>
+        <ion-col >
+
           <p id="label" ><img src="{{photo}}" alt="imguser"
             referrerpolicy="no-referrer">
           </p>
 
           <ion-item style="text-align: center;" color="transparent">
-            <ion-input [(ngModel)]="name" placeholder="placeholder"></ion-input>
+            <ion-input [(ngModel)]="name" placeholder="Espere..."></ion-input>
           </ion-item>
 
-          <ion-button *ngIf="!isImgUploading && !isImgUploaded" size="small" color="success" style="border-radius: 100px; margin-left: 3%;">
+          <!--<ion-button *ngIf="!isImgUploading && !isImgUploaded" size="small" color="success" style="border-radius: 100px; margin-left: 3%;">
             <ion-icon  name="cloud-upload-outline" style="margin-right: 1%;"></ion-icon> 
-            <input type="file" class="upload" (change)="fileUpload($event.target.files)" />
-          </ion-button>
+            <input type="file" class="upload" (change)="fileUpload($event.target.files)" />            
+          </ion-button>-->
+
         </ion-col>
 
-      </ion-row>      
+
+      </ion-row>     
+      
+      <ion-row >
+        <p id="label" ></p>
+        <p id="label" ></p>
+        
+        <ion-item style="text-align: center;" color="transparent" lines="none">     </ion-item>
+        <ion-item style="text-align: center;" color="transparent" lines="none">     </ion-item>
+
+        <div size="small" style="text-align: center;">
+          <input type="file" (change)="fileUpload($event.target.files)" id="file-input" style="opacity: 0">
+          <button ion-button (change)="fileUpload($event.target.files)">Cambiar imagen
+            <ion-icon no-lines color="success" name="cloud-upload-outline" style="margin-right: 1%;"></ion-icon>
+          </button>
+        </div>
+      </ion-row>
       
     </ion-grid>
 
@@ -55,17 +73,17 @@
     <ion-grid>
 
       <ion-item color="transparent">
-        <ion-input [(ngModel)]="description" placeholder="placeholder"></ion-input>
+        <ion-input [(ngModel)]="description" placeholder="Espere..."></ion-input>
       </ion-item>
 
       <ion-item color="transparent">
         <ion-label>Email:</ion-label>
-        <ion-input [(ngModel)]="email" [disabled]="googleProvider" placeholder="placeholder" type = "email"></ion-input>
+        <ion-input [(ngModel)]="email" [disabled]="googleProvider" placeholder="Espere..." type = "email"></ion-input>
       </ion-item>
 
       <ion-item color="transparent">
         <ion-label>Cuenta:</ion-label>
-        <ion-input [(ngModel)]="role" disabled="true" placeholder="placeholder"></ion-input>
+        <ion-input [(ngModel)]="role" disabled="true" placeholder="Espere..."></ion-input>
       </ion-item>
 
       <div style="text-align: center">

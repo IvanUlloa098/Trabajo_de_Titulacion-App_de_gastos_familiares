@@ -48,13 +48,37 @@ export class LoginPage implements OnInit {
 
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
-        await this.AuthenticationService.getUserAuth().pipe(take(1)).subscribe(async user =>{
-          if (user !== null) {
-            this.router.navigate(["/home"])
-          } 
 
+        try {
+          await this.AuthenticationService.getUserAuth().pipe(take(1)).subscribe(async user =>{
+
+            try {
+
+              this.sessionUser = await this.AuthenticationService.getUsuario(user.email)
+  
+              await this.sessionUser.pipe(take(1)).subscribe(async res=> {
+                if (res[0].id_familia !== "-1") {
+                  this.router.navigate(["/home"])
+                } else {
+                  this.router.navigate(["/createfamily"])
+                }
+                
+              })
+              
+            } catch (error) {
+              console.log("NO USER LOGGED IN")
+            } finally {
+              a.dismiss().then(() => console.log('abort presenting'));
+            }
+            
+          })
+        } catch (error) {
+          console.log("NO USER LOGGED IN")
+        } finally {
           a.dismiss().then(() => console.log('abort presenting'));
-        })
+        }
+
+
       })
     })
     

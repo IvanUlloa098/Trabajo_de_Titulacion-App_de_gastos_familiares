@@ -27,3 +27,12 @@ img {
     --ion-color-shade: var(--ion-color-success-shade, #28ba62) !important;
     --ion-color-tint: var(--ion-color-success-tint, #42d77d) !important;
 }
+
+#file-input {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    text-align: center;
+}

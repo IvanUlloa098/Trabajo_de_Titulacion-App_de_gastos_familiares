@@ -61,10 +61,6 @@ export class AuthenticationService {
     return await this.afs.collection("users").doc(user.uid).update({lastLogin: new Date()})
   }
 
-  async savePhotoURL(user, path){
-    return await this.afs.collection("users").doc(user).update({photoURL: path})
-  }
-
   async changeFamily(user, family) {
     return await this.afs.collection("users").doc(user.uid).update({id_familia: family.id})
   }
@@ -100,14 +96,8 @@ export class AuthenticationService {
   emailV: any;
   //verificacion quien inicio sesion
   async verificacion(){
-    try{
-      //console.log(" VER " , (await this.afAuth.currentUser).uid) ;
-      this.emailV = (await this.afAuth.currentUser).email;
-      return this.emailV;
-      
-    }catch(error){
-      console.log("error en envio de verificacion")
-    }
+    this.emailV = (await this.afAuth.currentUser).email;
+    return this.emailV;
     
   }
 
@@ -140,27 +130,17 @@ export class AuthenticationService {
   }
 
   async signupUser(name: string, email: string, password: string): Promise<any> {
-    try {
-      await this.afAuth.createUserWithEmailAndPassword(email, password);
-      const user = await this.afAuth.currentUser;
+    await this.afAuth.createUserWithEmailAndPassword(email, password);
+    const user = await this.afAuth.currentUser;
 
-      return await user.updateProfile({
-        displayName: name,
-        photoURL: 'https://goo.gl/7kz9qG'
-      });
-
-    } catch (error) {
-      console.error('Error' + JSON.stringify(error));
-      return error;
-    }
+    return await user.updateProfile({
+      displayName: name,
+      photoURL: 'https://goo.gl/7kz9qG'
+    });
   }
 
   async resetPassword(email: string): Promise<void> {
-    try {
-      return this.afAuth.sendPasswordResetEmail(email);
-    } catch (error) {
-      return error;
-    }
+    return this.afAuth.sendPasswordResetEmail(email);
   }
 
   async updateUserProfileData(user) {
