@@ -38,4 +38,7 @@ export class PresupuestosService {
   async actualizarPresupuesto(presupuesto) {
     return await this.afs.collection("presupuestos").doc(presupuesto.id).update({activo: false})
   }
+  async actualizarFamiliaPrsp(familia,monto) {
+    return await this.afs.collection("families").doc(familia).update({presupuesto_global: monto})
+  }
 }

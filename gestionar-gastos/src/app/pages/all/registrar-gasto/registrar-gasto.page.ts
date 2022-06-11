@@ -30,7 +30,7 @@ export class RegistrarGastoPage implements OnInit {
     private auth :  AuthenticationService,
     private loadingController: LoadingController,
     public menuCtrl: MenuController ) {
-      this.menuCtrl.enable(false)
+      this.menuCtrl.enable(true)
     }
 
   async ngOnInit() {

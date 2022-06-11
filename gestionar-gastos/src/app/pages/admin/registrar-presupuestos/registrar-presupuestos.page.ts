@@ -45,7 +45,7 @@ export class RegistrarPresupuestosPage implements OnInit {
     private loadingController: LoadingController,
     private auth :  AuthenticationService,
     public menuCtrl: MenuController ) {
-      this.menuCtrl.enable(false)
+      this.menuCtrl.enable(true)
     }
 
   async ngOnInit() {
@@ -131,7 +131,7 @@ export class RegistrarPresupuestosPage implements OnInit {
               }
               
             })
-
+            this.actualizarFamilia()
           } catch(error){
               console.log(error)  
               this.alert = "Ocurrió un error inesperado al registrar el presupuesto"
@@ -164,6 +164,7 @@ export class RegistrarPresupuestosPage implements OnInit {
               }                
             })
           })
+          
         } catch(error){
           console.log(error)  
           this.alert = "Ocurrió un error inesperado al registrar el presupuesto"
@@ -191,7 +192,7 @@ export class RegistrarPresupuestosPage implements OnInit {
                 this.ultimaActualizaicon=""
               }
             })
-          })
+          })          
         } catch(error){
           console.log(error)  
           this.alert = "Ocurrió un error inesperado al registrar el presupuesto"
@@ -203,5 +204,14 @@ export class RegistrarPresupuestosPage implements OnInit {
       })
     })
   })
+  }
+  async actualizarFamilia(){
+    this.sessionUser = await this.auth.getUserAuth()    
+    this.sessionUser.pipe(take(1)).subscribe(async user =>{
+      this.usuario = await this.auth.getUsuario(user.email)
+      this.usuario.pipe(take(1)).subscribe(async user =>{
+        this.presupuestoService.actualizarFamiliaPrsp(user[0].id_familia,this.presupuestoTotal)                
+      })      
+    })
   }
 }
