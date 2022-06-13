@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GastosService } from 'src/app/services/gastos.service';
 
 @Component({
   selector: 'app-spence-prediction',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SpencePredictionPage implements OnInit {
 
-  constructor() { }
+  constructor(private gastosService: GastosService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const id = "HJyLcJIdpmETrn9VeD9y";
+
+    await this.gastosService.regression(id).then((res) => console.log(res));
   }
 
 }

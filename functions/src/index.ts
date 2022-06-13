@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as regression from "regression";
 
+const cors = require("cors")({origin: true});
 admin.initializeApp();
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -31,53 +32,61 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 
 // URL: https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq
 export const regressionReq = functions.https.onRequest((request, response) => {
-  // functions.logger.info("Yup, it's working!", {structuredData: true});
-  // response.send("Hello from Firebase! I'm really smart!");
+  cors(request, response, () => {
+    // functions.logger.info("Yup, it's working!", {structuredData: true});
+    // response.send("Hello from Firebase! I'm really smart!");
 
-  const userID = request.body.id_usuario;
-  console.log("ID> "+userID);
+    response.set("Access-Control-Allow-Origin", "*");
+    response.set("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS");
+    response.set("Access-Control-Allow-Headers", "*");
 
-  admin.firestore().collection("gastos").where("id_usuario", "==", userID).get()
-      .then((res) => {
-        const data:any = [];
-        const pairs:any = [];
+    const userID = request.body.id_usuario;
+    console.log("ID> "+userID);
 
-        res.forEach((doc) => {
-          const dt = new Date((""+doc.data().fecha).substring(0, 19));
-          const aux = [dt.getTime(),
-            doc.data().monto];
-          pairs.push(aux);
+    admin.firestore().collection("gastos")
+        .where("id_usuario", "==", userID).get()
+        .then((res) => {
+          const data:any = [];
+          const pairs:any = [];
 
-          // console.log((""+doc.data().fecha).substring(0, 19));
-          // console.log(typeof doc.data().monto);
+          res.forEach((doc) => {
+            const dt = new Date((""+doc.data().fecha).substring(0, 19));
+            const aux = [dt.getTime(),
+              doc.data().monto];
+            pairs.push(aux);
 
-          data.push(doc.data());
+            // console.log((""+doc.data().fecha).substring(0, 19));
+            // console.log(typeof doc.data().monto);
+
+            data.push(doc.data());
+          });
+
+          pairs.sort(function(a, b) {
+            return a[0]-b[0];
+          });
+
+          let c = 0;
+          pairs.forEach((element) => {
+            element[0] = c;
+            c++;
+          });
+
+          // console.log(pairs);
+
+          const result = regression.linear(pairs);
+
+          if (Object.keys(data).length == 0) {
+            response.status(404)
+                .send({"error": "No existen gastos con ese ID"});
+          } else {
+            response.send(result);
+          }
+        })
+        .catch((error) => {
+          // En caso de un error
+          console.log(error);
+          functions.logger.info(error, {structuredData: true});
+          response.status(500).send(error);
         });
-
-        pairs.sort(function(a, b) {
-          return a[0]-b[0];
-        });
-
-        let c = 0;
-        pairs.forEach((element) => {
-          element[0] = c;
-          c++;
-        });
-
-        // console.log(pairs);
-
-        const result = regression.linear(pairs);
-
-        if (Object.keys(data).length == 0) {
-          response.status(404).send({"error": "No existen gastos con ese ID"});
-        } else {
-          response.send(result);
-        }
-      })
-      .catch((error) => {
-        // En caso de un error
-        console.log(error);
-        functions.logger.info(error, {structuredData: true});
-        response.status(500).send(error);
-      });
+  });
 });
