@@ -66,6 +66,14 @@ const routes: Routes = [
     path: 'ver-presupuestos',
     loadChildren: () => import('./pages/all/ver-presupuestos/ver-presupuestos.module').then( m => m.VerPresupuestosPageModule)
   },
+  {
+    path: 'reporte-gastos',
+    loadChildren: () => import('./pages/all/reporte-gastos/reporte-gastos.module').then( m => m.ReporteGastosPageModule)
+  },
+  {
+    path: 'reporte-gastos-admin',
+    loadChildren: () => import('./pages/admin/reporte-gastos-admin/reporte-gastos-admin.module').then( m => m.ReporteGastosAdminPageModule)
+  },
 
 ];
 

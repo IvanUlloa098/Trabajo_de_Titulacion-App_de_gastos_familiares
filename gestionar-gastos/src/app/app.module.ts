@@ -18,6 +18,8 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
 
+import {NgChartsModule } from 'ng2-charts'
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -26,8 +28,10 @@ import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications
             AngularFireModule.initializeApp(environment.firebaseConfig), 
             AngularFirestoreModule, 
             AngularFireAuthModule, 
-            AngularFireStorageModule,             
+            AngularFireStorageModule,
+            NgChartsModule ,
             AppRoutingModule],
+            
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {provide: ErrorHandler}, GooglePlus, AngularFireStorage,LocalNotifications],
   bootstrap: [AppComponent],
 })
