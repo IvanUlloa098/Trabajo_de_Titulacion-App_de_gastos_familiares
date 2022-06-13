@@ -27,7 +27,7 @@ export class VerGastosPage implements OnInit {
     private alertCtrl: AlertController,
     private auth :  AuthenticationService,
     public menuCtrl: MenuController ) {
-      this.menuCtrl.enable(false)
+      this.menuCtrl.enable(true)
     } 
 
   async ngOnInit() {
