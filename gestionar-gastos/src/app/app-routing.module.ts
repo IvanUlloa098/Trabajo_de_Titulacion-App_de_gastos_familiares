@@ -60,9 +60,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/all/home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'spence-prediction',
+        loadChildren: () => import('./pages/admin/spence-prediction/spence-prediction.module').then( m => m.SpencePredictionPageModule)
+  },
+  {
     path: 'registrar-presupuestos',
     loadChildren: () => import('./pages/admin/registrar-presupuestos/registrar-presupuestos.module').then( m => m.RegistrarPresupuestosPageModule)
-  },  {
+  },
+  {
     path: 'ver-presupuestos',
     loadChildren: () => import('./pages/all/ver-presupuestos/ver-presupuestos.module').then( m => m.VerPresupuestosPageModule)
   },
