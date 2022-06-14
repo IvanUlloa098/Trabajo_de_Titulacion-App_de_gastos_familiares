@@ -43,7 +43,7 @@ export class GastosService {
       })
     };
 
-    body.set('id_usuario', id);
+    body.set('id_familia', id);
 
     return this.http.post<any>(this.regressionUrl, body, httpOptions).toPromise();
   }

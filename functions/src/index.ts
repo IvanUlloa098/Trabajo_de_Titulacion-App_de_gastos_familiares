@@ -40,11 +40,11 @@ export const regressionReq = functions.https.onRequest((request, response) => {
     response.set("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS");
     response.set("Access-Control-Allow-Headers", "*");
 
-    const userID = request.body.id_usuario;
-    console.log("ID> "+userID);
+    const familyID = request.body.id_familia;
+    console.log("ID> "+familyID);
 
     admin.firestore().collection("gastos")
-        .where("id_usuario", "==", userID).get()
+        .where("id_familia", "==", familyID ).get()
         .then((res) => {
           const data:any = [];
           const pairs:any = [];
@@ -65,10 +65,12 @@ export const regressionReq = functions.https.onRequest((request, response) => {
             return a[0]-b[0];
           });
 
-          let c = 0;
+          const hour = ((1000 * 60) * 60)*100;
+
+          const firstReg = pairs[0][0]/hour;
+
           pairs.forEach((element) => {
-            element[0] = c;
-            c++;
+            element[0] = parseFloat(((element[0]/hour)-firstReg).toFixed(2));
           });
 
           // console.log(pairs);
@@ -79,7 +81,15 @@ export const regressionReq = functions.https.onRequest((request, response) => {
             response.status(404)
                 .send({"error": "No existen gastos con ese ID"});
           } else {
-            response.send(result);
+            const jsonRes = {
+              raw: pairs,
+              points: result.points,
+              equation: result.equation,
+              r2: result.r2,
+              string: result.string,
+            };
+
+            response.send(jsonRes);
           }
         })
         .catch((error) => {

@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { AlertController, MenuController,LoadingController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
+import * as moment from 'moment';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class RegistrarGastoPage implements OnInit {
   async ngOnInit() {
     this.sessionUser = await this.auth.getUserAuth()    
   }
+
   async registrarGasto(){
     this.gasto.id=null    
     return await this.loadingController.create({ }).then(a => {
@@ -44,13 +46,16 @@ export class RegistrarGastoPage implements OnInit {
           try {        
             this.usuario = await this.auth.getUsuario(user.email)
             this.usuario.pipe(take(1)).subscribe(async user =>{
-              this.gasto.id_usuario=user[0].uid
-              let fecha=new Date(this.gasto.fecha);
+              this.gasto.id_usuario=user[0].uid;
+              this.gasto.id_familia=user[0].id_familia;
+
+              console.log("FECHA> "+this.gasto.fecha)
+
               this.localNotifications.schedule({
                 text: "Nuevo Gasto"+this.gasto.descripcion+"\n De: "+this.gasto.monto,
-                trigger: {at: fecha},                 
+                trigger: {at: this.gasto.fecha},                 
              });
-              this.gastoService.guardar(this.gasto)       
+              this.gastoService.guardar(this.gasto);     
             })        
           } catch(error){
               console.log(error)  
