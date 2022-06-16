@@ -109,7 +109,16 @@ export class LoginPage implements OnInit {
                   this.router.navigate(["/home"]);
                 }
                 
-              })
+              },
+              err => {
+                console.log('HTTP Error', err);
+                this.alert = "Ocurrió un error al cargar sus datos"
+                this.advice = 'Por favor, inténtelo de nuevo'
+                
+                a.dismiss().then(() => console.log('abort presenting'));
+                this.genericAlert(this.alert, this.advice)
+              },
+              () => console.log('AUTH stream done'));
               
             } catch (error) {
               
@@ -168,7 +177,16 @@ export class LoginPage implements OnInit {
 
             }
       
-          })
+          },
+          err => {
+            console.log('HTTP Error', err);
+            this.alert = "Ocurrió un error al cargar sus datos"
+            this.advice = 'Por favor, inténtelo de nuevo'
+            
+            a.dismiss().then(() => console.log('abort presenting'));
+            this.genericAlert(this.alert, this.advice)
+          },
+          () => console.log('AUTH stream done'));
           
         } catch (error) {
           this.alert = "Ocurrió un error inesperado en con el inicio de sesión"

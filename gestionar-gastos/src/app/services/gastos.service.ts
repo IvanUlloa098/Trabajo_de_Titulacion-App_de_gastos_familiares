@@ -9,8 +9,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class GastosService {  
 
-  // private regressionUrl = "https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq";
-  private regressionUrl = "http://localhost:5000/gestionar-gastos/us-central1/regressionReq";
+  private regressionUrl = "https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq";
+  // private regressionUrl = "http://localhost:5000/gestionar-gastos/us-central1/regressionReq";
   
   constructor(public afs: AngularFirestore, private http: HttpClient) { 
      
@@ -46,6 +46,7 @@ export class GastosService {
 
   regression(id: any) {
     let body = new URLSearchParams();
+    console.log("ID> "+id)
 
     const httpOptions = {
       headers: new HttpHeaders({

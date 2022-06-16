@@ -5,7 +5,8 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-adapter-date-fns';
 import { UserService } from 'src/app/services/user/user.service';
 import { take } from 'rxjs/operators';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 Chart.register(zoomPlugin);
 
@@ -20,29 +21,70 @@ export class SpencePredictionPage implements AfterViewInit {
   
   private regressionRes: any;
   private generalChart: any;  
+  private sessionUser: any;
+  private id: any;
 
   categories: any;
   isSpenceSelected: boolean;
   gasto: any;
 
+  alert: string
+  advice: string
+
   constructor(private gastosService: GastosService, 
               private userService: UserService,
-              private loadingController: LoadingController) {
+              private loadingController: LoadingController,
+              private alertCtrl: AlertController,
+              private auth: AuthenticationService) {
                 this.isSpenceSelected = false;
               }
 
   async ngAfterViewInit() {
-    const id = "7Jq8PcqKZso18jwqjhoN";
-
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
+        this.sessionUser = await this.auth.getUserAuth();
+
         await this.gastosService.getCategories().pipe(take(1)).subscribe(cat => {
           this.categories = cat;
-        });
-    
-        this.regressionRes = await this.gastosService.regression(id).then((res) => 
-          this.graficaGeneral(res, a)
-        );
+        },
+        err => {
+          console.log('HTTP Error', err);
+          this.alert = "Ocurrió un error al cargar sus datos"
+          this.advice = 'Por favor, inténtelo de nuevo'
+  
+          a.dismiss().then(() => console.log('abort presenting'));
+          this.genericAlert(this.alert, this.advice)
+        },
+        () => console.log('HTTP request stream done'));
+
+        await this.sessionUser.pipe(take(1)).subscribe(async user =>{
+          
+          const aux = await this.auth.getUsuario(user.email)
+          await aux.pipe(take(1)).subscribe( async res=> {
+            this.id = res[0];
+            this.id = this.id.id_familia;
+                        
+            this.regressionRes = await this.gastosService.regression(this.id).then((res) => 
+              this.graficaGeneral(res, a)
+            ).catch(err => {
+              console.log('HTTP Error', err);
+              this.alert = "Ocurrió un error al cargar sus datos"
+              this.advice = 'Por favor, inténtelo de nuevo'
+      
+              a.dismiss().then(() => console.log('abort presenting'));
+              this.genericAlert(this.alert, this.advice)
+            });
+          })
+        },
+        err => {
+          console.log('HTTP Error', err);
+          this.alert = "Ocurrió un error al cargar sus datos"
+          this.advice = 'Por favor, inténtelo de nuevo'
+  
+          a.dismiss().then(() => console.log('abort presenting'));
+          this.genericAlert(this.alert, this.advice)
+        },
+        () => console.log('HTTP request stream done'));
 
       })
     })
@@ -91,7 +133,7 @@ export class SpencePredictionPage implements AfterViewInit {
                 const currentPoint = data.data.dataId[element[0].index];
                 console.log(currentPoint);          
 
-                const aux = await this.userService.getUserbyId(currentPoint[1])
+                const aux = await (await this.userService.getUserbyId(currentPoint[1]))
                 aux.pipe(take(1)).subscribe(async (res) => {
 
                   const aux2 = await this.gastosService.obtenerGastoPorId(currentPoint[2]);
@@ -111,15 +153,36 @@ export class SpencePredictionPage implements AfterViewInit {
                     this.isSpenceSelected = true;
                     b.dismiss().then(() => console.log('abort presenting'));
 
-                  });
-
-            })
-
-              })
-            })
+                  },
+                  err => {
+                    console.log('HTTP Error', err);
+                    this.alert = "Ocurrió un error al cargar sus datos"
+                    this.advice = 'Por favor, inténtelo de nuevo'
+            
+                    b.dismiss().then(() => console.log('abort presenting'));
+                    this.genericAlert(this.alert, this.advice)
+                  },
+                  () => console.log('HTTP request stream done'));
+                },
+                err => {
+                  console.log('HTTP Error', err);
+                  this.alert = "Ocurrió un error al cargar sus datos"
+                  this.advice = 'Por favor, inténtelo de nuevo'
+          
+                  b.dismiss().then(() => console.log('abort presenting'));
+                  this.genericAlert(this.alert, this.advice)
+                },
+                () => console.log('HTTP request stream done'));
+              });
+            });
 
           } catch (error) {
             console.log("NO POINT> "+error)
+            this.alert = "Ocurrió un error al cargar sus datos"
+            this.advice = 'Por favor, inténtelo de nuevo'
+    
+            a.dismiss().then(() => console.log('abort presenting'));
+            this.genericAlert(this.alert, this.advice)
           }
 
         }
@@ -130,7 +193,7 @@ export class SpencePredictionPage implements AfterViewInit {
           data: data.data.inputDate,
           showLine: true,
           pointRadius: 6,
-          tension: 0.2,
+          tension: 0.15,
           backgroundColor: 'rgba(255, 99, 132, 0.2)',
           borderColor: 'rgb(255, 99, 132)',
           borderWidth: 1
@@ -153,6 +216,24 @@ export class SpencePredictionPage implements AfterViewInit {
 
   async dismiss() {
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
+
+  async genericAlert(alert_message, advice){
+
+    const prompt = await this.alertCtrl.create({  
+      header: 'Lo sentimos',  
+      subHeader: alert_message,
+      message: advice,  
+      
+      buttons: [
+        {  
+          text: 'Accept'
+        }  
+      ]  
+    }); 
+
+    await prompt.present()
+
   }
 
 }

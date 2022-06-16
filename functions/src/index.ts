@@ -13,23 +13,6 @@ admin.initializeApp();
 //  Cloud Functions locally => firebase serve --only functions
 // Deploy Functions => firebase deploy --only functions
 
-export const helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Yup, it's working!", {structuredData: true});
-  // response.send("Hello from Firebase! I'm really smart!");
-
-  admin.firestore().doc("categories/834IqsQWzMFPdsE7TZKu").get()
-      .then((res) => {
-        const data = res.data();
-        response.send(data);
-      })
-      .catch((error) => {
-        // En caso de un error
-        console.log(error);
-        functions.logger.info(error, {structuredData: true});
-        response.status(500).send(error);
-      });
-});
-
 // URL: https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq
 export const regressionReq = functions.https.onRequest((request, response) => {
   cors(request, response, () => {

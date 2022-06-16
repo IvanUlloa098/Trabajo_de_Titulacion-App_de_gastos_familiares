@@ -4,8 +4,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    // redirectTo: 'login',
-    redirectTo: 'spence-prediction',
+    redirectTo: 'login',
+    // redirectTo: 'spence-prediction',
     pathMatch: 'full'
   },
   {

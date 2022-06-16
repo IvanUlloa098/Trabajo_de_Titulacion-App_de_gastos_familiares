@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
     { title: 'Modificar Familia', url: '/update-family', icon: 'people-outline' },
     { title: 'Ver Gastos Familia', url: '/ver-gastos-familia', icon: 'list-outline' },
     { title: 'Ver Gastos Personales', url: '/ver-gastos', icon: 'list-outline' },
-    { title: 'Ver Presupuestos', url: '/ver-presupuestos', icon: 'pricetags-outline' },    
+    { title: 'Ver Presupuestos', url: '/ver-presupuestos', icon: 'pricetags-outline' },
+    { title: 'Predicción de gastos', url: '/spence-prediction', icon: 'analytics-outline' }
   ];
 
   private appPagesUser = [
