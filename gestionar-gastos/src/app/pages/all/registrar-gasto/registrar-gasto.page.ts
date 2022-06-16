@@ -6,7 +6,6 @@ import { take } from 'rxjs/operators';
 import { AlertController, MenuController,LoadingController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
-import * as moment from 'moment';
 
 
 @Component({
@@ -49,7 +48,7 @@ export class RegistrarGastoPage implements OnInit {
               this.gasto.id_usuario=user[0].uid;
               this.gasto.id_familia=user[0].id_familia;
 
-              console.log("FECHA> "+this.gasto.fecha)
+              // console.log("FECHA> "+this.gasto.fecha)
 
               this.localNotifications.schedule({
                 text: "Nuevo Gasto"+this.gasto.descripcion+"\n De: "+this.gasto.monto,

@@ -9,7 +9,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class GastosService {  
 
-  private regressionUrl = "https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq";
+  // private regressionUrl = "https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq";
+  private regressionUrl = "http://localhost:5000/gestionar-gastos/us-central1/regressionReq";
   
   constructor(public afs: AngularFirestore, private http: HttpClient) { 
      
@@ -24,15 +25,25 @@ export class GastosService {
   
       refGastos.doc(gasto.id).set(Object.assign({}, gasto));
   }
+
   obtenerGastos(idG:any):Observable<any[]>{
     return this.afs.collection("gastos",
             ref=> ref.where("id_usuario","==",idG)).valueChanges();
   }  
+
+  obtenerGastoPorId(id) {
+    return this.afs.collection("gastos", ref => ref.where("id", "==", id)).valueChanges()
+  }
+
   obtenerusrFamilia(idF:any):Observable<any[]>{    
     return this.afs.collection("users",
             ref=> ref.where("id_familia","==",idF).where("active","==",true)).valueChanges();
   }
   
+  getCategories(){
+    return this.afs.collection("categories").valueChanges()
+  }
+
   regression(id: any) {
     let body = new URLSearchParams();
 

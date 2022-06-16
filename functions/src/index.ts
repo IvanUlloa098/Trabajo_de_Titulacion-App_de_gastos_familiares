@@ -33,30 +33,31 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 // URL: https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq
 export const regressionReq = functions.https.onRequest((request, response) => {
   cors(request, response, () => {
-    // functions.logger.info("Yup, it's working!", {structuredData: true});
-    // response.send("Hello from Firebase! I'm really smart!");
+    functions.logger.info("Petition requested for Regression ALL."
+        , {structuredData: true});
 
     response.set("Access-Control-Allow-Origin", "*");
     response.set("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS");
     response.set("Access-Control-Allow-Headers", "*");
 
     const familyID = request.body.id_familia;
-    console.log("ID> "+familyID);
 
     admin.firestore().collection("gastos")
         .where("id_familia", "==", familyID ).get()
         .then((res) => {
           const data:any = [];
           const pairs:any = [];
+          const dateDat:any[] = [];
+          const dataId:any[] = [];
 
           res.forEach((doc) => {
             const dt = new Date((""+doc.data().fecha).substring(0, 19));
-            const aux = [dt.getTime(),
-              doc.data().monto];
+
+            const aux = [dt.getTime(), doc.data().monto];
             pairs.push(aux);
 
-            // console.log((""+doc.data().fecha).substring(0, 19));
-            // console.log(typeof doc.data().monto);
+            const aux2 = [dt.getTime(), doc.data().id_usuario, doc.data().id];
+            dataId.push(aux2);
 
             data.push(doc.data());
           });
@@ -65,25 +66,55 @@ export const regressionReq = functions.https.onRequest((request, response) => {
             return a[0]-b[0];
           });
 
-          const hour = ((1000 * 60) * 60)*100;
+          dataId.sort(function(a, b) {
+            return a[0]-b[0];
+          });
 
+          const hour = ((1000 * 60) * 60)*100;
           const firstReg = pairs[0][0]/hour;
 
           pairs.forEach((element) => {
+            dateDat.push((new Date(element[0])).toISOString());
             element[0] = parseFloat(((element[0]/hour)-firstReg).toFixed(2));
           });
-
-          // console.log(pairs);
-
-          const result = regression.linear(pairs);
 
           if (Object.keys(data).length == 0) {
             response.status(404)
                 .send({"error": "No existen gastos con ese ID"});
           } else {
+            const result = regression.linear(pairs);
+
+            const input:any[] = [];
+            const regr :any[] = [];
+            const inputDate:any[] = [];
+            const regrDate :any[] = [];
+
+            let c = 0;
+            pairs.forEach((element) => {
+              let aux = {x: element[0], y: element[1]};
+              input.push(aux);
+
+              aux = {x: dateDat[c], y: element[1]};
+              inputDate.push(aux);
+              c++;
+            });
+
+            c = 0;
+            result.points.forEach((element) => {
+              let aux = {x: element[0], y: element[1]};
+              regr.push(aux);
+
+              aux = {x: dateDat[c], y: element[1]};
+              regrDate.push(aux);
+              c++;
+            });
+
             const jsonRes = {
-              raw: pairs,
-              points: result.points,
+              data: {
+                dataId: dataId,
+                inputDate: inputDate,
+                pointsDate: regrDate,
+              },
               equation: result.equation,
               r2: result.r2,
               string: result.string,

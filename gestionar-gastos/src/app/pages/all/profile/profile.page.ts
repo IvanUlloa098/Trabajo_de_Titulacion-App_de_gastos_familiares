@@ -39,7 +39,7 @@ export class ProfilePage implements OnInit{
 
   isImgUploading: boolean;
   isImgUploaded: boolean;
-  isUploadingEnable: boolean
+  isUploadingEnable: boolean;
 
   private ngFirestoreCollection: AngularFirestoreCollection<FILE>;
   private sessionUser: any;
