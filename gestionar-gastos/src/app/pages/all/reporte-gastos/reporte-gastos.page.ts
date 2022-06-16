@@ -82,9 +82,9 @@ export class ReporteGastosPage implements AfterViewInit{
                     this.gastoTot+=gasto[index].monto
                   }
                   if(this.gastoTot>=this.presp){
-                    this.prespGst=this.presp
+                    this.prespGst=0
                   }else {
-                    this.prespGst=this.gastoTot                
+                    this.prespGst=this.presp-this.gastoTot                
                   }                  
                   if(this.doughnutChart!=null){
                     this.doughnutChart.destroy()
@@ -92,20 +92,20 @@ export class ReporteGastosPage implements AfterViewInit{
                   this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
                     type: 'polarArea',
                     data: {
-                      labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+                      labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
                       datasets: [{
                         label: 'Cantidad en Dolares $',
                         data: [this.presp, this.prespGst, this.gastoTot],
                         backgroundColor: [
-                          'rgba(255, 159, 64, 0.2)',
-                          'rgba(255, 99, 132, 0.2)',
-                          'rgba(54, 162, 235, 0.2)'            
+                          'rgba(255, 159, 64, 0.4)',
+                          'rgba(54, 162, 235, 0.4)',                          
+                          'rgba(255, 99, 132, 0.4)'                                      
                         ],
-                        hoverBackgroundColor: [
-                          '#FFCE56',
-                          '#FF6384',
-                          '#36A2EB'
-                        ]
+                        borderColor:['#ff9f40','#36a2eb','#ff6384'],
+                        hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+                        hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+                        borderWidth:[1,1,1],
+                        hoverBorderWidth:[1,1,1]                        
                       }]
                     }
                   });                  

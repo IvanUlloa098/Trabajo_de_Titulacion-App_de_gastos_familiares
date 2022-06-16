@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
     { title: 'Modificar Familia', url: '/update-family', icon: 'people-outline' },
     { title: 'Ver Gastos Familia', url: '/ver-gastos-familia', icon: 'list-outline' },
     { title: 'Ver Gastos Personales', url: '/ver-gastos', icon: 'list-outline' },
-    { title: 'Ver Presupuestos', url: '/ver-presupuestos', icon: 'pricetags-outline' },    
+    { title: 'Ver Presupuestos', url: '/ver-presupuestos', icon: 'pricetags-outline' },
+    { title: 'Reporte Gastos/Presupuestos', url: '/reporte-gastos-admin', icon: 'bar-chart-outline' },
   ];
 
   private appPagesUser = [
@@ -32,7 +33,8 @@ export class AppComponent implements OnInit {
     { title: 'Perfil', url: '/profile', icon: 'person-circle-outline' },
     { title: 'Registrar Gastos', url: '/registrar-gasto', icon: 'cash-outline' },
     { title: 'Ver Gastos', url: '/ver-gastos', icon: 'wallet-outline' },
-    { title: 'Ver Presupuestos', url: '/ver-presupuestos', icon: 'pricetags-outline' }    
+    { title: 'Ver Presupuestos', url: '/ver-presupuestos', icon: 'pricetags-outline' } ,
+    { title: 'Reporte Gastos/Presupuestos', url: '/reporte-gastos', icon: 'bar-chart-outline' },   
   ];
 
   constructor(private auth :  AuthenticationService,

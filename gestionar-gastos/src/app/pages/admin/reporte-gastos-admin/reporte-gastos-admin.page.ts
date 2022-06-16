@@ -133,9 +133,9 @@ export class ReporteGastosAdminPage implements AfterViewInit {
                     }
                   }
                   if(this.gastoTot>=this.presp){
-                    this.prespGst=this.presp
+                    this.prespGst=0
                   }else {
-                    this.prespGst=this.gastoTot
+                    this.prespGst=this.presp-this.gastoTot
                   }
                   this.presupuestos.pipe(take(1)).subscribe(async prespt =>{
                     for (let index = 0; index < prespt.length; index++) {
@@ -191,20 +191,20 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     this.generalChart = new Chart(this.generalCanvas.nativeElement, {
       type: 'polarArea',
       data: {
-        labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+        labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
           label: 'Cantidad en Dolares $',
           data: [this.presp, this.prespGst, this.gastoTot],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)'            
+            'rgba(255, 159, 64, 0.4)',
+            'rgba(54, 162, 235, 0.4)',                          
+            'rgba(255, 99, 132, 0.4)'                                      
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-            '#36A2EB'
-          ]
+          borderColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+          borderWidth:[1,1,1],
+          hoverBorderWidth:[1,1,1]
         }]
       }
     });
@@ -215,27 +215,27 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     var aux=0.0    
     if (this.gastoSalud>=this.presupuestoSalud){
-      aux=this.presupuestoSalud
+      aux=0
     } else{
-      aux=this.gastoSalud
+      aux=this.presupuestoSalud-this.gastoSalud
     }
     this.saludChart = new Chart(this.saludCanvas.nativeElement, {
       type: 'polarArea',
       data: {
-        labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+        labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
           label: 'Cantidad en Dolares $',
           data: [this.presupuestoSalud, aux, this.gastoSalud],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)'            
+            'rgba(255, 159, 64, 0.4)',
+            'rgba(54, 162, 235, 0.4)',                          
+            'rgba(255, 99, 132, 0.4)'                                      
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-            '#36A2EB'
-          ]
+          borderColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+          borderWidth:[1,1,1],
+          hoverBorderWidth:[1,1,1]
         }]
       }
     });
@@ -246,27 +246,27 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     var aux=0.0
     if (this.gastoVivienda>=this.presupuestoVivienda){
-      aux=this.presupuestoVivienda
+      aux=0.0
     } else{
-      aux=this.gastoVivienda
+      aux=this.presupuestoVivienda-this.gastoVivienda
     }
     this.viviendaChart = new Chart(this.viviendaCanvas.nativeElement, {
       type: 'polarArea',
       data: {
-        labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+        labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
           label: 'Cantidad en Dolares $',
           data: [this.presupuestoVivienda, aux, this.gastoVivienda],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)'            
+            'rgba(255, 159, 64, 0.4)',
+            'rgba(54, 162, 235, 0.4)',                          
+            'rgba(255, 99, 132, 0.4)'                                      
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-            '#36A2EB'
-          ]
+          borderColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+          borderWidth:[1,1,1],
+          hoverBorderWidth:[1,1,1]
         }]
       }
     });
@@ -277,27 +277,27 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     var aux=0.0
     if (this.gastoTransporte>=this.presupuestoTransporte){
-      aux=this.presupuestoTransporte
+      aux=0
     } else{
-      aux=this.gastoTransporte
+      aux=this.presupuestoTransporte-this.gastoTransporte
     }
     this.transporteChart = new Chart(this.transporteCanvas.nativeElement, {
       type: 'polarArea',
       data: {
-        labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+        labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
           label: 'Cantidad en Dolares $',
           data: [this.presupuestoTransporte, aux, this.gastoTransporte],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)'            
+            'rgba(255, 159, 64, 0.4)',
+            'rgba(54, 162, 235, 0.4)',                          
+            'rgba(255, 99, 132, 0.4)'                                      
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-            '#36A2EB'
-          ]
+          borderColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+          borderWidth:[1,1,1],
+          hoverBorderWidth:[1,1,1]
         }]
       }
     });
@@ -308,27 +308,27 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     var aux=0.0
     if (this.gastoOcio>=this.presupuestoOcio){
-      aux=this.presupuestoOcio
+      aux=0
     } else{
-      aux=this.gastoOcio
+      aux=this.presupuestoOcio-this.gastoOcio
     }
     this.ocioChart = new Chart(this.ocioCanvas.nativeElement, {
       type: 'polarArea',
       data: {
-        labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+        labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
           label: 'Cantidad en Dolares $',
           data: [this.presupuestoOcio, aux, this.gastoOcio],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)'            
+            'rgba(255, 159, 64, 0.4)',
+            'rgba(54, 162, 235, 0.4)',                          
+            'rgba(255, 99, 132, 0.4)'                                      
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-            '#36A2EB'
-          ]
+          borderColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+          borderWidth:[1,1,1],
+          hoverBorderWidth:[1,1,1]
         }]
       }
     });
@@ -339,27 +339,27 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     var aux=0.0
     if (this.gastoEducacion>=this.presupuestoEducacion){
-      aux=this.presupuestoEducacion
+      aux=0
     } else{
-      aux=this.gastoEducacion
+      aux=this.presupuestoEducacion-this.gastoEducacion
     }
     this.educacionChart = new Chart(this.educacionCanvas.nativeElement, {
       type: 'polarArea',
       data: {
-        labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+        labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
           label: 'Cantidad en Dolares $',
           data: [this.presupuestoEducacion, aux, this.gastoEducacion],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)'            
+            'rgba(255, 159, 64, 0.4)',
+            'rgba(54, 162, 235, 0.4)',                          
+            'rgba(255, 99, 132, 0.4)'                                      
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-            '#36A2EB'
-          ]
+          borderColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+          borderWidth:[1,1,1],
+          hoverBorderWidth:[1,1,1]
         }]
       }
     });
@@ -370,27 +370,27 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     var aux=0.0
     if (this.gastoServicios>=this.presupuestoServicios){
-      aux=this.presupuestoServicios
+      aux=0
     } else{
-      aux=this.gastoServicios
+      aux=this.presupuestoServicios-this.gastoServicios
     }
     this.serviciosChart = new Chart(this.serviciosCanvas.nativeElement, {
       type: 'polarArea',
       data: {
-        labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+        labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
           label: 'Cantidad en Dolares $',
           data: [this.presupuestoServicios, aux, this.gastoServicios],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)'            
+            'rgba(255, 159, 64, 0.4)',
+            'rgba(54, 162, 235, 0.4)',                          
+            'rgba(255, 99, 132, 0.4)'                                      
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-            '#36A2EB'
-          ]
+          borderColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+          borderWidth:[1,1,1],
+          hoverBorderWidth:[1,1,1]
         }]
       }
     });
@@ -401,27 +401,27 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     var aux=0.0
     if (this.gastoAlimentacion>=this.presupuestoAlimentacion){
-      aux=this.presupuestoAlimentacion
+      aux=0
     } else{
-      aux=this.gastoAlimentacion
+      aux=this.presupuestoAlimentacion-this.gastoAlimentacion
     }
     this.alimentacionChart = new Chart(this.alimentacionCanvas.nativeElement, {
       type: 'polarArea',
       data: {
-        labels: ['Presupuesto', 'Presupuesto Gastado', 'Gastos Totales'],
+        labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
           label: 'Cantidad en Dolares $',
           data: [this.presupuestoAlimentacion, aux, this.gastoAlimentacion],
           backgroundColor: [
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)'            
+            'rgba(255, 159, 64, 0.4)',
+            'rgba(54, 162, 235, 0.4)',                          
+            'rgba(255, 99, 132, 0.4)'                                      
           ],
-          hoverBackgroundColor: [
-            '#FFCE56',
-            '#FF6384',
-            '#36A2EB'
-          ]
+          borderColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],
+          hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],
+          borderWidth:[1,1,1],
+          hoverBorderWidth:[1,1,1]
         }]
       }
     });
@@ -445,12 +445,16 @@ export class ReporteGastosAdminPage implements AfterViewInit {
           (this.gastoSalud*100/this.presupuestoSalud)
         ],
           fill: true,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgb(255, 99, 132)',
-          pointBackgroundColor: 'rgb(255, 99, 132)',
+          backgroundColor: 'rgba(54, 162, 235, 0.4)',
+          borderColor: 'rgb(54, 162, 235)',
+          pointBackgroundColor: 'rgb(10, 10, 10)',
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgb(255, 99, 132)'
+          pointHoverBorderColor: 'rgb(54, 162, 235)',
+          borderWidth:1,
+          pointHitRadius:5,
+          pointRadius:5
+          
         }]
       },
       options: {
