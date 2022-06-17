@@ -9,12 +9,14 @@
     <ion-card-title>Su predicción</ion-card-title>
   </ion-card-header>
   <ion-card-content>
+    <div *ngIf="isNotPlot">No podemos cargar ningún gráfico...</div>
     <canvas #generalCanvas style="height:280px !important;"></canvas>        
   </ion-card-content>
 
   <ion-card-content style="margin-left: 5%; margin-right: 5%; background-color: #001230e8; border-radius: 20px;" *ngIf="!isSpenceSelected">
-    <ion-card-subtitle>Una predicción de sus gastos futuros</ion-card-subtitle>    
-    <p>Puede revisar cada punto y visualizar el gasto respectivo</p>    
+    <ion-card-subtitle >Una predicción de sus gastos futuros</ion-card-subtitle>   
+    <p>{{getM()}}</p> 
+    <p>Puede revisar cada punto y visualizar el gasto respectivo.</p>    
   </ion-card-content>
 
   <ion-card-content style="margin-left: 5%; margin-right: 5%; background-color: #001230e8; border-radius: 20px;" *ngIf="isSpenceSelected">

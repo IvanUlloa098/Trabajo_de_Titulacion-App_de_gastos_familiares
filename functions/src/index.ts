@@ -110,7 +110,7 @@ export const regressionReq = functions.https.onRequest((request, response) => {
           // En caso de un error
           console.log(error);
           functions.logger.info(error, {structuredData: true});
-          response.status(500).send(error);
+          response.status(500).send({"error": error});
         });
   });
 });

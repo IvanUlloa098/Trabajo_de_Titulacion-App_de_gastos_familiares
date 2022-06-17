@@ -46,7 +46,7 @@ export class AuthenticationService {
   //iniciar sesion
   async onLogin (user: User) {
     this.afAuth.setPersistence('session').then( () => {
-      this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
+      // this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
       this.afAuth.signInWithEmailAndPassword( user.email, user.password).then((userCredential) => {
         this.currentUser = userCredential.user
       })

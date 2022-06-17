@@ -23,9 +23,11 @@ export class SpencePredictionPage implements AfterViewInit {
   private generalChart: any;  
   private sessionUser: any;
   private id: any;
+  private m: number;
 
   categories: any;
   isSpenceSelected: boolean;
+  isNotPlot: boolean = false;
   gasto: any;
 
   alert: string
@@ -64,11 +66,15 @@ export class SpencePredictionPage implements AfterViewInit {
             this.id = res[0];
             this.id = this.id.id_familia;
                         
-            this.regressionRes = await this.gastosService.regression(this.id).then((res) => 
-              this.graficaGeneral(res, a)
-            ).catch(err => {
+            this.regressionRes = await this.gastosService.regression(this.id).then((res) => {
+              this.m = res.equation[0];
+              this.graficaGeneral(res, a);
+              
+
+            }).catch(err => {
               console.log('HTTP Error', err);
-              this.alert = "Ocurrió un error al cargar sus datos"
+              this.isNotPlot = true;
+              this.alert = "Ocurrió un error al cargar sus datos o no se encontraron datos de gastos"
               this.advice = 'Por favor, inténtelo de nuevo'
       
               a.dismiss().then(() => console.log('abort presenting'));
@@ -106,7 +112,7 @@ export class SpencePredictionPage implements AfterViewInit {
             }
           },
           y: {
-            beginAtZero: true
+            beginAtZero: false
           }
         },
         plugins: {
@@ -123,15 +129,15 @@ export class SpencePredictionPage implements AfterViewInit {
           }
         },
 
+        // Metodo onClick para mostrar los gastos en cada punto
         onClick: async (e) => {
           this.isSpenceSelected = false;
           try {
-
+            const element = this.generalChart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, false)
+            const currentPoint = data.data.dataId[element[0].index];
+            
             return await this.loadingController.create({ }).then(b => {
-              b.present().then(async () => {
-                const element = this.generalChart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, false)
-                const currentPoint = data.data.dataId[element[0].index];
-                console.log(currentPoint);          
+              b.present().then(async () => {      
 
                 const aux = await (await this.userService.getUserbyId(currentPoint[1]))
                 aux.pipe(take(1)).subscribe(async (res) => {
@@ -178,11 +184,7 @@ export class SpencePredictionPage implements AfterViewInit {
 
           } catch (error) {
             console.log("NO POINT> "+error)
-            this.alert = "Ocurrió un error al cargar sus datos"
-            this.advice = 'Por favor, inténtelo de nuevo'
-    
             a.dismiss().then(() => console.log('abort presenting'));
-            this.genericAlert(this.alert, this.advice)
           }
 
         }
@@ -234,6 +236,18 @@ export class SpencePredictionPage implements AfterViewInit {
 
     await prompt.present()
 
+  }
+
+  getM(): string {
+    if (this.m > 0) {
+      return "Sus gastos en este momento tienden a aumentar."
+    } else if (this.m < 0) {
+      return "Sus gastos en este momento tienden a disminuir."
+    } else if (this.m == 0) {
+      return "Sus gastos en este momento están en perfecto equilibrio. ¡Vaya!."
+    } else {
+      return "Cargando..."
+    }
   }
 
 }

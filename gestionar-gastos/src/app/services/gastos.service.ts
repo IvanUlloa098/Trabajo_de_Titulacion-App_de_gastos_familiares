@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Gasto } from '../domain/gasto';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -8,8 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class GastosService {  
-
-  private regressionUrl = "https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq";
+  // Debugging de la función localmente
   // private regressionUrl = "http://localhost:5000/gestionar-gastos/us-central1/regressionReq";
   
   constructor(public afs: AngularFirestore, private http: HttpClient) { 
@@ -46,7 +46,6 @@ export class GastosService {
 
   regression(id: any) {
     let body = new URLSearchParams();
-    console.log("ID> "+id)
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -57,7 +56,7 @@ export class GastosService {
 
     body.set('id_familia', id);
 
-    return this.http.post<any>(this.regressionUrl, body, httpOptions).toPromise();
+    return this.http.post<any>(environment.RG_FUNC_PATH, body, httpOptions).toPromise();
   }
   
 }
