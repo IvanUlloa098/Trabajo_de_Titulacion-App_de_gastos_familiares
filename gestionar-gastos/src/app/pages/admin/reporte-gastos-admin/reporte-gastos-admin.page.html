@@ -1,18 +1,18 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Reporte gastos de Familia</ion-title>
+    <ion-title>Reporte gastos de Familia</ion-title><!--Titulo de la pagina-->
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-accordion-group>
-    <ion-accordion value="General">
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto General</ion-label>
+  <ion-accordion-group><!--Grupo de elementos desplegables-->
+    <ion-accordion value="General"><!--Elemento desplegable-->
+      <ion-item slot="header"><!--Elemento d cabecera-->
+        <ion-label>Grafica de Gastos y Presupuesto General</ion-label><!--Etiqueta-->
       </ion-item>
-      <ion-list slot="content">
+      <ion-list slot="content"><!--Lista para contenido de desplegable-->
         <ion-item>
-          <canvas #generalCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #generalCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica General-->
         </ion-item>
       </ion-list>
     </ion-accordion>
@@ -22,7 +22,7 @@
       </ion-item>
       <ion-list slot="content">
         <ion-item>
-          <canvas #saludCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #saludCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Salud-->
         </ion-item>
       </ion-list>
     </ion-accordion>
@@ -32,7 +32,7 @@
       </ion-item>
       <ion-list slot="content">
         <ion-item>
-          <canvas #transporteCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #transporteCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Transporte-->
         </ion-item>
       </ion-list>
     </ion-accordion>
@@ -42,7 +42,7 @@
       </ion-item>
       <ion-list slot="content">
         <ion-item>
-          <canvas #viviendaCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #viviendaCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Vivienda-->
         </ion-item>
       </ion-list>
     </ion-accordion>
@@ -52,7 +52,7 @@
       </ion-item>
       <ion-list slot="content">
         <ion-item>
-          <canvas #ocioCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #ocioCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Ocio-->
         </ion-item>
       </ion-list>
     </ion-accordion>
@@ -62,7 +62,7 @@
       </ion-item>
       <ion-list slot="content">
         <ion-item>
-          <canvas #educacionCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #educacionCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Educacion-->
         </ion-item>
       </ion-list>
     </ion-accordion>
@@ -72,7 +72,7 @@
       </ion-item>
       <ion-list slot="content">
         <ion-item>
-          <canvas #alimentacionCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #alimentacionCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Alimentacion-->
         </ion-item>
       </ion-list>
     </ion-accordion>
@@ -82,7 +82,7 @@
       </ion-item>
       <ion-list slot="content">
         <ion-item>
-          <canvas #serviciosCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #serviciosCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Servicios-->
         </ion-item>
       </ion-list>
     </ion-accordion>
@@ -92,7 +92,7 @@
       </ion-item>
       <ion-list slot="content">
         <ion-item>
-          <canvas #estrellaCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+          <canvas #estrellaCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria comparativa de categorias-->
         </ion-item>
       </ion-list>
     </ion-accordion>

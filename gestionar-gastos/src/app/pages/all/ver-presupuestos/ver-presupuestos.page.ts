@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { AlertController, MenuController } from '@ionic/angular';
+import { AlertController, MenuController,LoadingController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PresupuestosService } from 'src/app/services/presupuestos.service';
+import { Presupuesto } from 'src/app/domain/presupuesto';
 
 @Component({
   selector: 'app-ver-presupuestos',
@@ -11,60 +12,83 @@ import { PresupuestosService } from 'src/app/services/presupuestos.service';
   styleUrls: ['./ver-presupuestos.page.scss'],
 })
 export class VerPresupuestosPage implements OnInit {
+  //Variables para almacenamiento de respuestas desde Firebase de consultas de cada coleccion
   presupuestos:any
   usuario:any  
 
+  //Variables para una notificacion especifica
   alert: string
   advice: string
 
-  private sessionUser : any
+  private sessionUser : any//Variable para la obtencion de usuario logeado
+
+  presupuestosF:Presupuesto[]=[]//Vector de objetos 'Presupuesto', almacenar en formato visualizacion de informacion de firebase
 
   constructor(private route: ActivatedRoute,
     private router: Router, 
-    private presupuestoService: PresupuestosService,
-    private alertCtrl: AlertController,
-    private auth :  AuthenticationService,
-    public menuCtrl: MenuController ) {
-      this.menuCtrl.enable(true)
+    private presupuestoService: PresupuestosService,//Declaracion de servicios para presupuestos
+    private alertCtrl: AlertController,//Declaracion de servicios para alertas
+    private auth :  AuthenticationService,//Declaracion de servicios de autenticacion
+    private loadingController: LoadingController,//Declaracion de servicios de pantalla de progreso
+    public menuCtrl: MenuController ) {//Declaracion de servicios para control del menu principal
+      this.menuCtrl.enable(true)//Menu activado
     }
 
-  async ngOnInit() {
-    this.sessionUser = await this.auth.getUserAuth()
-    this.obtenerPresupuestos()
+  async ngOnInit() {//Funcion inicial de la pagina
+    this.sessionUser = await this.auth.getUserAuth()//Utilizacion del servicio para obtener usuario que inicio sesion mediante Firebase
+    this.obtenerPresupuestos()//Llamado a funcion diseñada
   }
-  async genericAlert(alert_message, advice){
-
-    const prompt = await this.alertCtrl.create({  
+  async genericAlert(alert_message, advice){//Funcion para creacion de alerta
+    const prompt = await this.alertCtrl.create({//Llamado a creacion con el mensaje antes definido   
       header: 'Lo sentimos',  
       subHeader: alert_message,
-      message: advice,  
-      
-      buttons: ['Aceptar']  
-    }); 
-
+      message: advice,
+      buttons: ['Aceptar']//Boton de confirmacion
+    });
     await prompt.present()
-
   }
-  async obtenerPresupuestos(){
-     
-    await this.sessionUser.pipe(take(1)).subscribe(async user =>{
-      try {
-        
-        this.usuario = await this.auth.getUsuario(user.email)
-        
+  async obtenerPresupuestos(){//Funcion para obtener los presupuestos de la familia correspondiente al usuario logeado         
+    await this.sessionUser.pipe(take(1)).subscribe(async user =>{//Recorrido de respuesta del servicio              
+        this.usuario = await this.auth.getUsuario(user.email)//Utilizacion de servicio para obtener usuario en base a consulta base de datos  
         this.usuario.forEach((element) => {
-          this.presupuestos=this.presupuestoService.obtenerPresupuestos(element[0].id_familia)
+          this.presupuestos=this.presupuestoService.obtenerPresupuestos(element[0].id_familia)//Utilizacion de servicio para obtener presupuestos de la familia correspondiente al usuario en base a consulta base de datos
+          this.presupuestos.pipe(take(1)).subscribe(presp =>{
+            for (let index = 0; index < presp.length; index++) {
+              let aux:Presupuesto=new Presupuesto()//Variable auxilizar de clase gasto
+              //Asignacion de valores correspondientes a la lectura desde Firebase, con cambios para la visualizacion
+              aux.id=presp[index].id        
+              aux.cantidad=presp[index].cantidad
+              aux.id_familia=presp[index].id_familia
+              //Cambio de contenido de variabe segun categoria
+              if(presp[index].id_categoria=='834IqsQWzMFPdsE7TZKu'){
+                aux.id_categoria="Alimentacion"
+              }
+              if(presp[index].id_categoria=='yfXjC94YqUqIbn4zXMjx'){
+                aux.id_categoria="Servicios"
+              }
+              if(presp[index].id_categoria=='EjKGtXUIHEnwC0MKrzIn'){
+                aux.id_categoria="Educacion"
+              }
+              if(presp[index].id_categoria=='Y2xbbnUeLwCz5UhfMMJZ'){
+                aux.id_categoria="Ocio"
+              }
+              if(presp[index].id_categoria=='pZbMomfUFtw8u2aD0sEC'){
+                aux.id_categoria="Transporte"
+              }
+              if(presp[index].id_categoria=='NgNS2EM0p4UdeAQlZ4q6'){
+                aux.id_categoria="Vivienda"
+              }
+              if(presp[index].id_categoria=='Mp82DGLcR5AUOEk5DSrC'){
+                aux.id_categoria="Salud"
+              }
+              if(presp[index].id_categoria=='uPtleC6y1na6ZkkpePAd'){
+                aux.id_categoria="Otros"
+              }
+              aux.fecha=presp[index].fecha                                      
+              this.presupuestosF.push(aux) //Adicion a vector para posterio lectura              
+            }            
+          })
         });
-
-      } catch(error){
-          console.log("error al cargar usuario")
-  
-          this.alert = "Ocurrió un error inesperado al cargar su informacion"
-          this.advice = 'Por favor, inténtelo de nuevo'
-    
-          return this.genericAlert(this.alert, this.advice)
-      }
-    })  
+    })
   }
-
 }

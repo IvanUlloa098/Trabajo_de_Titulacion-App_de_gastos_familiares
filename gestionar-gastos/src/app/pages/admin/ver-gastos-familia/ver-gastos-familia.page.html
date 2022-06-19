@@ -1,26 +1,23 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Ver gastos familia</ion-title>
+    <ion-title>Ver gastos familia</ion-title><!--Titulo de la pagina-->
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div div style="float: left; width: 100%;">
-    <div *ngFor="let gastoA of gastosF">
-      <ion-item-sliding>
-        <ion-item>
-          <ion-label>
-            <div div style="float: left; width: 50%; margin-left: 5%;">
-              <h2>{{ gastoA.id }}</h2>
-              <h2>{{ gastoA.monto }}</h2>
-              <h2>{{ gastoA.id_categoria }}</h2>
-              <p>{{ gastoA.descripcion }}</p>
-              <p>{{ gastoA.fecha }}</p>
-            </div>            
-          </ion-label>
-        </ion-item>        
-      </ion-item-sliding>      
+    <div *ngFor="let gastoA of gastosF"><!--Bucle con codigo angular para visualizar gastos-->
+      <ion-item><!--Item de lista-->
+        <ion-label><ion-label><!--Etiqueta compuesta-->  
+          <div div style="float: left; width: 50%; margin-left: 5%;">              
+            <!--Visualizacion de informacion acerca del gasto-->
+            <h2>{{ gastoA.monto }}</h2>
+            <h2>{{ gastoA.id_categoria }}</h2>
+            <p>{{ gastoA.descripcion }}</p>
+            <p>{{ gastoA.fecha }}</p>
+          </div>            
+        </ion-label>
+      </ion-item>
     </div>
-  </div>
-  <ion-button expand="block">Graficos</ion-button>
+  </div>  
 </ion-content>

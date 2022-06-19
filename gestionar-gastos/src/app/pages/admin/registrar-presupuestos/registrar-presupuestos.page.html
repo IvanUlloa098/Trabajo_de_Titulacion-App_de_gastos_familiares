@@ -1,17 +1,18 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Registrar presupuestos</ion-title>
+    <ion-title>Registrar Presupuestos</ion-title><!--Titulo de la pagina-->
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
-  <ion-list>
-    <ion-item-group>
-      <ion-item-divider>
-        <ion-label>Presupuesto General</ion-label>
+  <ion-list><!--Inicio de lista-->
+    <ion-item-group><!--Inicio de grupo de items de una lista-->
+      <ion-item-divider><!--Divisor de grupos-->
+        <ion-label>Presupuesto General</ion-label><!--Etiqueta-->
       </ion-item-divider>    
-      <ion-item>        
-        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoTotal" placehorder="Cantidad:"></ion-input>
+      <ion-item><!--Inicio de item de lista-->
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="presupuestoTotal" placehorder="Cantidad:"></ion-input><!--Elemento para ingreso, tipo numero, requerido, valor minimo 0 referencia a variable-->
       </ion-item>
     </ion-item-group>
     <ion-item-group>
@@ -66,8 +67,9 @@
     </ion-item-group>
   </ion-list>
   <ion-label>Fecha: </ion-label>
+  <!--Elemento para ingreos de fecha en formato MMM D:HH:mm, referencia a variable, requerido, condicion para eleccion de dia segun familia-->
   <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="presupuestoAlimentacion.fecha" required="true" dayValues={{diaMes}}></ion-datetime>
-  <ion-button expand="block" (click)="registrarPresupuesto()">Registrar</ion-button>
+  <ion-button expand="block" (click)="registrarPresupuesto()">Registrar</ion-button><!--Boton-->
   <ion-button expand="block" (click)="actualizarPresupuestos()">Actualizar</ion-button>
   
 </ion-content>

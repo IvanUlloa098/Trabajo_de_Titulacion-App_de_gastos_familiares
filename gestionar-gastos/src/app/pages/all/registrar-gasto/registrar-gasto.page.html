@@ -1,28 +1,29 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Registrar Gasto</ion-title>
+    <ion-title>Registrar Gasto</ion-title><!--Titulo de la pagina-->
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item-divider>
-      <ion-label>Gasto</ion-label>
+<ion-content><!--Contenido de pagina-->
+  <ion-list><!--Lista de informacion necesaria-->
+    <ion-item-divider><!--Separador de grupo de items-->
+      <ion-label>Gasto</ion-label><!--Etiqueta-->
     </ion-item-divider>
-    <ion-item-group>
+    <ion-item-group><!--Grupo de items-->
       <ion-item>
         <ion-label>Monto: </ion-label>
-        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="gasto.monto"></ion-input>
+        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="gasto.monto"></ion-input><!--Elemento para ingreso, tipo numero, requerido, valor minimo 0 referencia a variable-->
       </ion-item>
     </ion-item-group>
   </ion-list>
         <ion-label>Fecha: </ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="gasto.fecha" required="true"></ion-datetime>
+        <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="gasto.fecha" required="true"></ion-datetime><!--Elemento para ingreso de fecha, tipo date, requerido, referencia a variable, formato de visualizacion y de obtencion-->
   <ion-list>
     <ion-item-group>                  
       <ion-item>
         <ion-label>Categoria:</ion-label>
-        <ion-select [(ngModel)]="gasto.id_categoria">
+        <ion-select [(ngModel)]="gasto.id_categoria" required="true"><!--Elemento para seleccion de categoria, referencia a variable, requerido-->
+          <!--Mediante la selecion de la categoria se asigna un valor, el cual hace referencia a el codigo almacenado en Firebase-->
           <ion-select-option value="834IqsQWzMFPdsE7TZKu">Alimentacion</ion-select-option>
           <ion-select-option value="yfXjC94YqUqIbn4zXMjx">Servicios</ion-select-option>
           <ion-select-option value="EjKGtXUIHEnwC0MKrzIn">Educacion</ion-select-option>
@@ -39,9 +40,9 @@
     </ion-item-divider>
     <ion-item-group>
       <ion-item>        
-        <ion-textarea inputmode="text" [(ngModel)]="gasto.descripcion"></ion-textarea>
+        <ion-textarea inputmode="text" [(ngModel)]="gasto.descripcion"></ion-textarea><!--Elemento para ingreso, tipo texto, referencia a variable-->
       </ion-item>
     </ion-item-group>    
   </ion-list>
-  <ion-button expand="block" (click)="registrarGasto()">Registrar</ion-button>
+  <ion-button expand="block" (click)="registrarGasto()">Registrar</ion-button><!--Boton,llamado a funcion diseñada-->
 </ion-content>
