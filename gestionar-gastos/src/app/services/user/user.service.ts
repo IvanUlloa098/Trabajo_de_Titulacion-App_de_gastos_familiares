@@ -32,6 +32,10 @@ export class UserService {
     return this.afs.collection("users", ref => ref.where("id_familia", "==", fid).where("active", "==", true)).valueChanges();
   }
 
+  async getUserbyId(uid) {
+    return await this.afs.collection("users", ref => ref.where("uid", "==", uid)).valueChanges()
+  }
+
   async savePhotoURL(user, path){
     return await this.afs.collection("users").doc(user).update({photoURL: path})
   }

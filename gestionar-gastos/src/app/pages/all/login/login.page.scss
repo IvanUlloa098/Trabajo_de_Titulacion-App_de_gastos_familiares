@@ -3,7 +3,7 @@ ion-content.background{
 }
 
 #input{
-    background: #c2c2c2cc;
+    background: #001230e8;
     border-radius: 14px;
     margin-bottom: 8px;
 
@@ -16,8 +16,9 @@ ion-content.background{
 
 
 #label{
-    margin-inline: 15%; 
+    margin-inline: 17%; 
     padding-top: 74%; 
+    text-align: center;
     color: white;
     --padding-top: 74%;
     --padding-bottom: 0px;
@@ -28,6 +29,8 @@ ion-content.background{
 #botonIniciar{
    
     margin-inline: 36%;
+    margin-bottom: 7%; 
+    text-align: center;
     --ion-color-base: #72bda3 !important;
     --ion-color-base-rgb: var(--ion-color-success-rgb, 45, 211, 111) !important;
     --ion-color-contrast: var(--ion-color-success-contrast, #fff) !important;
@@ -62,7 +65,7 @@ ion-content.background{
 #botonIniciar3{
    
 
-    font-size: 9px;
+    font-size: 10px;
     --ion-color-base: #7b8783  !important;
     --ion-color-base-rgb: var(--ion-color-success-rgb, 45, 211, 111) !important;
     --ion-color-contrast: var(--ion-color-success-contrast, #fff) !important;

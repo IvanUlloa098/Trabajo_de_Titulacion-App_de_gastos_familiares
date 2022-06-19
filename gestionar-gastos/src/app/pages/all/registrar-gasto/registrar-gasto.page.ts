@@ -50,7 +50,7 @@ export class RegistrarGastoPage implements OnInit {
               var fecha=new Date(this.gasto.fecha);//Crear variable con tipo fecha para generar notificacion 
               this.localNotifications.schedule({//LLamado a funcion de programar la notificacion en base a una fecha
                 text: "Nuevo Gasto"+this.gasto.descripcion+"\n De: "+this.gasto.monto,
-                trigger: {at: fecha},                 
+                trigger: {at: this.gasto.fecha},                 
              });
               this.gastoService.guardar(this.gasto)//Llamado a funcion diseñada
             })        

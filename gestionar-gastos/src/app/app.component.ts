@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
     { title: 'Ver Gastos Personales', url: '/ver-gastos', icon: 'list-outline' },
     { title: 'Ver Presupuestos', url: '/ver-presupuestos', icon: 'pricetags-outline' },
     { title: 'Reporte Gastos/Presupuestos', url: '/reporte-gastos-admin', icon: 'bar-chart-outline' },
+    { title: 'Predicción de gastos', url: '/spence-prediction', icon: 'analytics-outline' }
   ];
 
   private appPagesUser = [

@@ -8,19 +8,19 @@
 
   <ion-grid  style=" margin-top: 70%;">
        <ion-input id="input" placeholder="Email: usuario@mail.com" type = "email" [(ngModel)]="User.email" ></ion-input>
-    <ion-input  id = "input" type = "Password" placeholder= "Password" [(ngModel)]="User.password" ></ion-input>
+    <ion-input  id = "input" type = "Password" placeholder= "Contraseña: ******" [(ngModel)]="User.password" ></ion-input>
   </ion-grid>
 
-  <ion-button id="botonIniciar" style=" margin-bottom: 7%;" color="success"  (click)="logeo()" >      Log In         </ion-button>
+  <ion-button id="botonIniciar" color="success"  (click)="logeo()" >      Ingresar         </ion-button>
   <ion-label id="label"> _________________________ </ion-label>
   
-  <ion-fab-button style="margin-left: 39%; margin-top: 5%;" ><ion-icon name="logo-google" (click)="googleLogin()" ></ion-icon></ion-fab-button>
+  <ion-fab-button style="margin-left: 39%; margin-top: 5%; text-align: center;" ><ion-icon name="logo-google" (click)="googleLogin()" ></ion-icon></ion-fab-button>
  
 
 
-  <ion-grid style=" margin-top: 5%;">
-    <ion-label id="label2">Don't have an account? </ion-label>
-    <ion-button id="botonIniciar3"  color="success" routerLink= "/signup">Sign Up</ion-button>
+  <ion-grid style=" margin-top: 5%; text-align: center;">
+    <ion-label id="label2">¿No tienes una cuenta? </ion-label>
+    <ion-button id="botonIniciar3"  color="success" routerLink= "/signup">Crea una</ion-button>
     
   </ion-grid>
   

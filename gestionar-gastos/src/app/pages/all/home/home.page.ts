@@ -36,63 +36,68 @@ export class HomePage implements OnInit {
 
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => { 
-        await this.auth.getUserAuth().pipe(take(1)).subscribe(async user =>{
-          console.log('FLAG MENU> '+this.auth.sideMenu)
-          try {
-            this.sessionEmail = user.email
-            this.menuCtrl.enable(true)
-    
-            this.sessionUser = await this.auth.getUsuario(this.sessionEmail)
+
+        setTimeout(async () => {
+
+          await this.auth.getUserAuth().pipe(take(1)).subscribe(async user =>{
+            console.log('FLAG MENU> '+this.auth.sideMenu)
+            try {
+              this.sessionEmail = user.email
+              this.menuCtrl.enable(true)
       
-            await this.sessionUser.pipe(take(1)).subscribe(async res=> {
-              console.log('HERE '+res[0].email)
-
-              if(!this.auth.sideMenu) {
-                console.log('reload!')
-                window.location.reload();
-              }
-
-              if(res[0].id_familia === '-1'){
-                this.router.navigate(["/login"])
-              }
-              if(res[0].role=="A"){
-                this.usuarios=this.gastoService.obtenerusrFamilia(res[0].id_familia)          
-                this.usuarios.pipe().subscribe(async user =>{
-                  this.gastos=this.gastoService.obtenerGastos(user[0].uid)
-                  this.gastos.pipe(take(1)).subscribe(async gasto =>{
-                    for (let index = 0; index < gasto.length; index++) {
-                      let fecha=new Date(gasto[index].fecha);
+              this.sessionUser = await this.auth.getUsuario(this.sessionEmail)
+        
+              await this.sessionUser.pipe(take(1)).subscribe(async res=> {
+                console.log('HERE '+res[0].email)
+  
+                if(!this.auth.sideMenu) {
+                  console.log('reload!')
+                  window.location.reload();
+                }
+  
+                if(res[0].id_familia === '-1'){
+                  this.router.navigate(["/login"])
+                }
+                if(res[0].role=="A"){
+                  this.usuarios=this.gastoService.obtenerusrFamilia(res[0].id_familia)          
+                  this.usuarios.pipe().subscribe(async user =>{
+                    this.gastos=this.gastoService.obtenerGastos(user[0].uid)
+                    this.gastos.pipe(take(1)).subscribe(async gasto =>{
+                      for (let index = 0; index < gasto.length; index++) {
+                        let fecha=new Date(gasto[index].fecha);
+                        this.localNotifications.schedule({
+                        text: "Gasto Registrado"+gasto[index].descripcion+"\n De: "+gasto[index].monto,
+                        trigger: {at: fecha},                 
+                     });
+                      }
+                    })            
+                  })
+                }else {
+                  this.gastos=this.gastoService.obtenerGastos(res[0].uid)              
+                  this.gastos.forEach(element => {
+                    for (let index = 0; index < element.length; index++) {
+                      let fecha=new Date(element[index].fecha);
                       this.localNotifications.schedule({
-                      text: "Gasto Registrado"+gasto[index].descripcion+"\n De: "+gasto[index].monto,
-                      trigger: {at: fecha},                 
-                   });
+                        text: "Gasto Registrado"+element[index].descripcion+"\n De: "+element[index].monto,
+                        trigger: {at: fecha},                 
+                     });
                     }
-                  })            
-                })
-              }else {
-                this.gastos=this.gastoService.obtenerGastos(res[0].uid)              
-                this.gastos.forEach(element => {
-                  for (let index = 0; index < element.length; index++) {
-                    let fecha=new Date(element[index].fecha);
-                    this.localNotifications.schedule({
-                      text: "Gasto Registrado"+element[index].descripcion+"\n De: "+element[index].monto,
-                      trigger: {at: fecha},                 
-                   });
-                  }
-                });
-              }
-             
+                  });
+                }
+               
+  
+              }) 
+            } catch (error) {
+              console.log(error);
+              this.router.navigate(["/login"])
+            }finally {
+              a.dismiss().then(() => console.log('abort presenting'));
+              
+            }
+  
+          })
 
-            }) 
-          } catch (error) {
-            console.log(error);
-            this.router.navigate(["/login"])
-          }finally {
-            a.dismiss().then(() => console.log('abort presenting'));
-            
-          }
-
-        })  
+        }, 2000);  
 
       }) 
 

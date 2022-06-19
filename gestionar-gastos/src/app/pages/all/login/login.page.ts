@@ -91,45 +91,58 @@ export class LoginPage implements OnInit {
 
         try {
           const user = await this.AuthenticationService.onLogin(this.User);
-    
-          if(this.User.email && this.User.password){
-            this.user2 = await this.AuthenticationService.getUsuario(this.User.email);
-
-            try {
-
-              await this.user2.pipe(take(1)).subscribe(res=> {
-                this.AuthenticationService.timeStampLogin(res[0]);
-                this.aux = res[0]
-                
-                if (res[0].id_familia === "-1") {
+          setTimeout(async () => {
+            
+            if(this.User.email && this.User.password){
+              this.user2 = await this.AuthenticationService.getUsuario(this.User.email);
+  
+              try {
+  
+                await this.user2.pipe(take(1)).subscribe(res=> {
+                  this.AuthenticationService.timeStampLogin(res[0]);
+                  this.aux = res[0]
+                  
+                  if (res[0].id_familia === "-1") {
+                    a.dismiss().then(() => console.log('abort presenting'));
+                    this.router.navigate(["/createfamily"]);
+                  } else {
+                    a.dismiss().then(() => console.log('abort presenting'));
+                    this.router.navigate(["/home"]);
+                  }
+                  
+                },
+                err => {
+                  console.log('HTTP Error', err);
+                  this.alert = "Ocurrió un error al cargar sus datos"
+                  this.advice = 'Por favor, inténtelo de nuevo'
+                  
                   a.dismiss().then(() => console.log('abort presenting'));
-                  this.router.navigate(["/createfamily"]);
-                } else {
-                  a.dismiss().then(() => console.log('abort presenting'));
-                  this.router.navigate(["/home"]);
-                }
+                  this.genericAlert(this.alert, this.advice)
+                },
+                () => console.log('AUTH stream done'));
                 
-              })
-              
-            } catch (error) {
-              
-              this.alert = "Ocurrió un error con el inicio de sesión"
-              this.advice = 'Por favor, inténtelo de nuevo'
-        
+              } catch (error) {
+                
+                this.alert = "Ocurrió un error con el inicio de sesión"
+                this.advice = 'Por favor, inténtelo de nuevo'
+          
+                a.dismiss().then(() => console.log('abort presenting'));
+                this.genericAlert(this.alert, this.advice)
+  
+              }
+      
+            }else{
+              console.log("error en el loggeo")
+              this.alert = "Los Datos ingresados son incorrectos"
+              this.advice = 'Por favor, ingréselos de nuevo'
+      
               a.dismiss().then(() => console.log('abort presenting'));
               this.genericAlert(this.alert, this.advice)
-
+              
             }
-    
-          }else{
-            console.log("error en el loggeo")
-            this.alert = "Los Datos ingresados son incorrectos"
-            this.advice = 'Por favor, ingréselos de nuevo'
-    
-            a.dismiss().then(() => console.log('abort presenting'));
-            this.genericAlert(this.alert, this.advice)
             
-          }
+          }, 2000);
+
         } catch (error) {
           this.alert = "Ocurrió un error con el inicio de sesión"
           this.advice = 'Por favor, inténtelo de nuevo'
@@ -168,7 +181,16 @@ export class LoginPage implements OnInit {
 
             }
       
-          })
+          },
+          err => {
+            console.log('HTTP Error', err);
+            this.alert = "Ocurrió un error al cargar sus datos"
+            this.advice = 'Por favor, inténtelo de nuevo'
+            
+            a.dismiss().then(() => console.log('abort presenting'));
+            this.genericAlert(this.alert, this.advice)
+          },
+          () => console.log('AUTH stream done'));
           
         } catch (error) {
           this.alert = "Ocurrió un error inesperado en con el inicio de sesión"

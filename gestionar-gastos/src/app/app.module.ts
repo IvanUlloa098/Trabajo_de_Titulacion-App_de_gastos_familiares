@@ -4,6 +4,8 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
+import { HttpClientModule } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -18,7 +20,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
 
-import {NgChartsModule } from 'ng2-charts'
+import { NgChartsModule } from 'ng2-charts'
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,10 +28,11 @@ import {NgChartsModule } from 'ng2-charts'
   imports: [BrowserModule, 
             IonicModule.forRoot(), 
             AngularFireModule.initializeApp(environment.firebaseConfig), 
+            HttpClientModule,
             AngularFirestoreModule, 
             AngularFireAuthModule, 
             AngularFireStorageModule,
-            NgChartsModule ,
+            NgChartsModule,
             AppRoutingModule],
             
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {provide: ErrorHandler}, GooglePlus, AngularFireStorage,LocalNotifications],
