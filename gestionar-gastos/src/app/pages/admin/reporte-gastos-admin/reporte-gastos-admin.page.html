@@ -1,101 +1,113 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Reporte gastos de Familia</ion-title><!--Titulo de la pagina-->
+    <ion-title>Reportes Gráficos</ion-title><!--Titulo de la pagina-->
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-accordion-group><!--Grupo de elementos desplegables-->
-    <ion-accordion value="General"><!--Elemento desplegable-->
-      <ion-item slot="header"><!--Elemento d cabecera-->
-        <ion-label>Grafica de Gastos y Presupuesto General</ion-label><!--Etiqueta-->
-      </ion-item>
-      <ion-list slot="content"><!--Lista para contenido de desplegable-->
-        <ion-item>
-          <canvas #generalCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica General-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-    <ion-accordion value="Salud">      
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto Salud</ion-label>
-      </ion-item>
-      <ion-list slot="content">
-        <ion-item>
-          <canvas #saludCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Salud-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-    <ion-accordion value="Transporte">      
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto Transporte</ion-label>
-      </ion-item>
-      <ion-list slot="content">
-        <ion-item>
-          <canvas #transporteCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Transporte-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-    <ion-accordion value="Vivienda">      
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto Vivienda</ion-label>
-      </ion-item>
-      <ion-list slot="content">
-        <ion-item>
-          <canvas #viviendaCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Vivienda-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-    <ion-accordion value="Ocio">      
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto Ocio</ion-label>
-      </ion-item>
-      <ion-list slot="content">
-        <ion-item>
-          <canvas #ocioCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Ocio-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-    <ion-accordion value="Educacion">      
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto Educacion</ion-label>
-      </ion-item>
-      <ion-list slot="content">
-        <ion-item>
-          <canvas #educacionCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Educacion-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-    <ion-accordion value="Alimentacion">      
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto Alimentacion</ion-label>
-      </ion-item>
-      <ion-list slot="content">
-        <ion-item>
-          <canvas #alimentacionCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Alimentacion-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-    <ion-accordion value="Servicios">      
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto Servicios</ion-label>
-      </ion-item>
-      <ion-list slot="content">
-        <ion-item>
-          <canvas #serviciosCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Servicios-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-    <ion-accordion value="Estrella">      
-      <ion-item slot="header">
-        <ion-label>Grafica de Gastos y Presupuesto Comparativa</ion-label>
-      </ion-item>
-      <ion-list slot="content">
-        <ion-item>
-          <canvas #estrellaCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria comparativa de categorias-->
-        </ion-item>
-      </ion-list>
-    </ion-accordion>
-  </ion-accordion-group>
+  <p *ngIf="loadPlot" style="margin-left: 5%;">Cargando sus gráficas...</p>
+  <div  *ngIf="myPlot == 0">
+    <ion-card-header>
+      <ion-card-title>Su resumen</ion-card-title>
+      <ion-card-subtitle> Gastos y Presupuesto Comparativos</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      
+      <canvas #estrellaCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria comparativa de categorias-->        
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="myPlot == 1">
+    <ion-card-header>    
+      <ion-card-subtitle> Grafica de Gastos y Presupuesto General</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>    
+      <canvas #generalCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica General-->        
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="myPlot == 2">
+    <ion-card-header>    
+      <ion-card-subtitle> Grafica de Gastos y Presupuesto Salud</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>    
+      <canvas #saludCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Salud-->        
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="myPlot == 3">
+    <ion-card-header>    
+      <ion-card-subtitle> Grafica de Gastos y Presupuesto Transporte</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>    
+      <canvas #transporteCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Transporte-->
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="myPlot == 4">
+    <ion-card-header>    
+      <ion-card-subtitle> Grafica de Gastos y Presupuesto Vivienda</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>    
+      <canvas #viviendaCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Vivienda-->
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="myPlot == 5">
+    <ion-card-header>    
+      <ion-card-subtitle> Grafica de Gastos y Presupuesto Ocio</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>    
+      <canvas #ocioCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Ocio-->
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="myPlot == 6">
+    <ion-card-header>    
+      <ion-card-subtitle> Grafica de Gastos y Presupuesto Educacion</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>    
+      <canvas #educacionCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Educacion-->
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="myPlot == 7">
+    <ion-card-header>    
+      <ion-card-subtitle> Grafica de Gastos y Presupuesto Alimentacion</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>    
+      <canvas #alimentacionCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Alimentacion-->
+    </ion-card-content>
+  </div>
+
+  <div *ngIf="myPlot == 8">
+    <ion-card-header>    
+      <ion-card-subtitle> Grafica de Gastos y Presupuesto Servicios</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>    
+      <canvas #serviciosCanvas style="position: relative; height:20vh; width:40vw"></canvas><!--Espacio para grafica de categoria Servicios-->
+    </ion-card-content>
+  </div>
+
+  <ion-item>
+    <ion-label>Categoría de gasto</ion-label>
+    <ion-select [(ngModel)]="myPlot" (ionChange)="plotSelected()" [value]="0">
+      <ion-select-option [value]="0">General comparativa</ion-select-option>
+      <ion-select-option [value]="1">Presupuesto general</ion-select-option>
+      <ion-select-option [value]="2">Salud</ion-select-option>
+      <ion-select-option [value]="3">Transporte</ion-select-option>
+      <ion-select-option [value]="4">Vivienda</ion-select-option>
+      <ion-select-option [value]="5">Ocio</ion-select-option>
+      <ion-select-option [value]="6">Educación</ion-select-option>
+      <ion-select-option [value]="7">Alimentación</ion-select-option>
+      <ion-select-option [value]="8">Servicios</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-card-content style="margin-left: 5%; margin-top: 2%; margin-right: 5%; background-color: #001230e8; border-radius: 20px;" *ngIf="!isSpenceSelected">
+    <ion-card-subtitle >Visualizar los gastos de su falmilia</ion-card-subtitle>   
+    <p>Selecciones las categorías que de gastos de su interes o de un vistazo a los resumenes en gráficas generales.</p>    
+  </ion-card-content>
+
 </ion-content>
 

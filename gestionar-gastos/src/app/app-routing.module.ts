@@ -71,7 +71,11 @@ const routes: Routes = [
   {
     path: 'reporte-gastos-admin',
     loadChildren: () => import('./pages/admin/reporte-gastos-admin/reporte-gastos-admin.module').then( m => m.ReporteGastosAdminPageModule)
+  },  {
+    path: 'member-spence',
+    loadChildren: () => import('./pages/admin/member-spence/member-spence.module').then( m => m.MemberSpencePageModule)
   },
+
 
 ];
 

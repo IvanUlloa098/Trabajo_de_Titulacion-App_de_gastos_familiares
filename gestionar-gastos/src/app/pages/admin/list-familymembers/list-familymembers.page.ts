@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { take } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { MemberSpencePage } from '../member-spence/member-spence.page';
 
 @Component({
   selector: 'app-list-familymembers',
@@ -17,11 +19,13 @@ export class ListFamilymembersPage implements OnInit {
 
   private alert: string
   private advice: string
+  private currentModal = null;
 
   constructor(private userService: UserService, 
               private auth: AuthenticationService,
               private loadingController: LoadingController,
-              private alertCtrl: AlertController) { }
+              private alertCtrl: AlertController,
+              public modalCtrl: ModalController) { }
 
   async ngOnInit() {
 
@@ -111,6 +115,18 @@ export class ListFamilymembersPage implements OnInit {
      
     await prompt.present()
 
+  }
+
+  async presentModal(id) {
+    const modal = await this.modalCtrl.create({
+      component: MemberSpencePage,
+      breakpoints: [0, 0.3, 0.5, 0.8],
+      initialBreakpoint: 0.5,
+      componentProps: {
+        'id': id
+      }
+    });
+    await modal.present();
   }
 
   isHidden(rl: any) {

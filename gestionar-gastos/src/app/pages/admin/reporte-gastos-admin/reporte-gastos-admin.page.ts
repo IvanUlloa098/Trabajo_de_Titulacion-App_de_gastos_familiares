@@ -62,6 +62,10 @@ export class ReporteGastosAdminPage implements AfterViewInit {
   presupuestoAlimentacion=0.0
   presupuestoServicios=0.0
 
+  //Grafica seleccionada
+  myPlot:number=0
+  loadPlot: boolean = true
+
   constructor(private route: ActivatedRoute,
     private router: Router, 
     private gastoService: GastosService,//Declaracion de servicios para gastos
@@ -88,17 +92,17 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     return await this.loadingController.create({ }).then(a => {//Llamado para pantalla de carga
       a.present().then(async () => {
         try {
-          this.entrada()          
+          this.entrada()  
+          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga        
         }catch(error){
           //Caso de encontrar un error, definir mesaje para alerta y lanzar alerta
           console.log(error)
           this.alert = "Ocurrió un error al cargar sus datos"
           this.advice = 'Por favor, inténtelo de nuevo'
 
+          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
           this.genericAlert(this.alert, this.advice)
 
-        } finally {
-          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga        
         }
       })
     })    
@@ -184,14 +188,6 @@ export class ReporteGastosAdminPage implements AfterViewInit {
                     }                      
                   }
                   //Llamado a las funciones correspondientes para generar un grafico para cada categoria
-                  this.graficaGeneral() //General
-                  this.graficaTransporte()
-                  this.graficaSalud()
-                  this.graficaAlimentacion()
-                  this.graficaEducacion()
-                  this.graficaOcio()                    
-                  this.graficaServicios()
-                  this.graficaVivienda()
                   this.graficaEstrella() //Comparativa entre presupuestos
                 })                  
               })
@@ -226,6 +222,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       }
     });
+
+    this.loadPlot = false
   }
   graficaSalud(){//Iniciacion grafica 'Polar Area' para comparacion de presupuesto de salud contra gastos de la misma categoria
     if(this.saludChart!=null){
@@ -257,6 +255,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       }
     });
+
+    this.loadPlot = false
   }
   graficaVivienda(){//Iniciacion grafica 'Polar Area' para comparacion de presupuesto de vivienda contra gastos de la misma categoria
     if(this.viviendaChart!=null){
@@ -288,6 +288,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       }
     });
+
+    this.loadPlot = false
   }
   graficaTransporte(){//Iniciacion grafica 'Polar Area' para comparacion de presupuesto de transporte contra gastos de la misma categoria
     if(this.transporteChart!=null){
@@ -319,6 +321,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       }
     });
+
+    this.loadPlot = false
   }
   graficaOcio(){//Iniciacion grafica 'Polar Area' para comparacion de presupuesto de ocio contra gastos de la misma categoria
     if(this.ocioChart!=null){
@@ -350,6 +354,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       }
     });
+
+    this.loadPlot = false
   }
   graficaEducacion(){//Iniciacion grafica 'Polar Area' para comparacion de presupuesto de educacion contra gastos de la misma categoria
     if(this.educacionChart!=null){
@@ -381,6 +387,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       }
     });
+
+    this.loadPlot = false
   }
   graficaServicios(){//Iniciacion grafica 'Polar Area' para comparacion de presupuesto de servicios contra gastos de la misma categoria
     if(this.serviciosChart!=null){
@@ -412,6 +420,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       }
     });
+
+    this.loadPlot = false
   }
   graficaAlimentacion(){//Iniciacion grafica 'Polar Area' para comparacion de presupuesto de alimentacion contra gastos de la misma categoria
     if(this.alimentacionChart!=null){
@@ -443,6 +453,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       }
     });
+
+    this.loadPlot = false
   }
   graficaEstrella(){//Iniciacion grafica 'Radar' para comparacion de los diferentes presupuestos
     if(this.estrellaChart!=null){
@@ -485,5 +497,40 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }
       },
     });
+
+    this.loadPlot = false
   }
+
+  async plotSelected() {
+    this.loadPlot = true
+
+    return await this.loadingController.create({ }).then(a => {//Llamado para pantalla de carga
+      a.present().then(async () => {
+        if ( this.myPlot == 1 ) {
+          this.graficaGeneral() 
+        } else if ( this.myPlot == 2 ) {
+          this.graficaSalud()
+        } else if ( this.myPlot == 3 ) {
+          this.graficaTransporte()
+        } else if ( this.myPlot == 4 ) {
+          this.graficaVivienda()
+        } else if ( this.myPlot == 5 ) {
+          this.graficaOcio()  
+        } else if ( this.myPlot == 6 ) {
+          this.graficaEducacion()
+        } else if ( this.myPlot == 7 ) {
+          this.graficaAlimentacion()
+        } else if ( this.myPlot == 8 ) {
+          this.graficaServicios()
+        } else if ( this.myPlot == 0 ) {
+          this.graficaEstrella()
+        }
+
+        a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga 
+      })
+    })
+    
+
+  }
+
 }

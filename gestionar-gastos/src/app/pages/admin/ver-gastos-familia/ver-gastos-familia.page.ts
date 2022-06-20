@@ -19,6 +19,7 @@ export class VerGastosFamiliaPage implements OnInit {
   usuarios:any
   gastos:any
   usuario:any  
+  categories: any
 
   //Variables para una notificacion especifica
   alert: string
@@ -39,86 +40,70 @@ export class VerGastosFamiliaPage implements OnInit {
 
   async ngOnInit() {//Funcion inicial de la pagina
     this.sessionUser = await this.auth.getUserAuth()//Utilizacion del servicio para obtener usuario que inicio sesion mediante Firebase  
+    
+
     return await this.loadingController.create({ }).then(a => {//Llamado para pantalla de carga
       a.present().then(async () => {
         try {
-          this.obtenerGastosFml()//Llamado a funcion  diseñado
-          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
+
+          //  Obtener las categorías
+          await this.gastoService.getCategories().pipe(take(1)).subscribe(cat => {
+            this.categories = cat;
+            this.obtenerGastosFml(a)//Llamado a funcion  diseñado
+          },
+          err => {
+            console.log('HTTP Error', err);
+            this.alert = "Ocurrió un error al cargar sus datos"
+            this.advice = 'Por favor, inténtelo de nuevo'
+          },
+          () => console.log('HTTP request stream done'));
+
         } catch (error) {
           //Caso de encontrar un error, definir mesaje para alerta y lanzar alerta
           console.log(error)
           this.alert = "Ocurrió un error al cargar sus datos"
           this.advice = 'Por favor, inténtelo de nuevo'
 
+          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
           this.genericAlert(this.alert, this.advice)
 
-        } finally {
-          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
         }
 
       }) 
     })
         
   }  
-  async obtenerGastosFml(){//Funcion para lectura de gastos de los miembors de la familia, calculo de gastos por categoria
-    this.sessionUser.pipe(take(1)).subscribe(async user =>{//Recorrido de respuesta del servicio
-      try {//Clausua try-catch
-        this.usuario = await this.auth.getUsuario(user.email)//Utilizacion de servicio para obtener usuario en base a consulta base de datos
-        this.usuario.pipe(take(1)).subscribe(async user =>{
-          this.usuarios=await this.gastoService.obtenerusrFamilia(user[0].id_familia)//Utilizacion de servicio para obtener los usuarios miembros de la familia del usuario en base a consulta base de datos          
-          this.usuarios.pipe(take(1)).subscribe(async user =>{
-            for (let index = 0; index < user.length; index++) {              
-              this.gastos=this.gastoService.obtenerGastos(user[index].uid)//Utilizacion de servicio para obtener gastos del usuario en base a consulta base de datos
-              this.gastos.pipe(take(1)).subscribe(async gasto =>{
-                for (let index = 0; index < gasto.length; index++) {
-                  let aux:Gasto=new Gasto()//Variable auxilizar de clase gasto
-                  //Asignacion de valores correspondientes a la lectura desde Firebase, con cambios para la visualizacion 
-                  aux.id=gasto[index].id
-                  aux.monto=gasto[index].monto
-                  aux.id_usuario=gasto[index].id_usuario
-                  //Cambio de contenido de variabe segun categoria
-                  if(gasto[index].id_categoria=='834IqsQWzMFPdsE7TZKu'){
-                    aux.id_categoria="Alimentacion"
-                  }
-                  if(gasto[index].id_categoria=='yfXjC94YqUqIbn4zXMjx'){
-                    aux.id_categoria="Servicios"
-                  }
-                  if(gasto[index].id_categoria=='EjKGtXUIHEnwC0MKrzIn'){
-                    aux.id_categoria="Educacion"
-                  }
-                  if(gasto[index].id_categoria=='Y2xbbnUeLwCz5UhfMMJZ'){
-                    aux.id_categoria="Ocio"
-                  }
-                  if(gasto[index].id_categoria=='pZbMomfUFtw8u2aD0sEC'){
-                    aux.id_categoria="Transporte"
-                  }
-                  if(gasto[index].id_categoria=='NgNS2EM0p4UdeAQlZ4q6'){
-                    aux.id_categoria="Vivienda"
-                  }
-                  if(gasto[index].id_categoria=='Mp82DGLcR5AUOEk5DSrC'){
-                    aux.id_categoria="Salud"
-                  }
-                  if(gasto[index].id_categoria=='uPtleC6y1na6ZkkpePAd'){
-                    aux.id_categoria="Otros"
-                  }                
-                  aux.fecha=gasto[index].fecha
-                  aux.descripcion=gasto[index].descripcion
-                  //Adicion a vector para posterio lectura                        
-                  this.gastosF.push(aux) 
-                }
-              })
-            }                        
-          })         
-        })        
-      } catch(error){
-        //Caso de encontrar un error, definir mesaje para alerta y lanzar alerta
-          console.log(error)  
-          this.alert = "Ocurrió un error inesperado al cargar la informacion del usuario"
-          this.advice = 'Por favor, inténtelo de nuevo'
-    
-          return this.genericAlert(this.alert, this.advice)
-      }
-    })  
+  async obtenerGastosFml(a:any){//Funcion para lectura de gastos de los miembors de la familia, calculo de gastos por categoria
+    this.sessionUser.pipe(take(1)).subscribe(async user =>{     
+      
+      this.usuario = await this.auth.getUsuario(user.email)//Utilizacion de servicio para obtener usuario en base a consulta base de datos        
+      this.usuario.forEach((element) => {//Recorrido de respuesta del servicio
+        this.gastos=this.gastoService.obtenerGastosFamilia(element[0].id_familia)//Utilizacion de servicio para obtener gastos del usuario en base a consulta base de datos
+        
+        this.gastos.forEach(element => {
+          for (let index = 0; index < element.length; index++) {
+            let aux:Gasto=new Gasto()//Variable auxilizar de clase gasto
+            //Asignacion de valores correspondientes a la lectura desde Firebase, con cambios para la visualizacion
+            aux.id=element[index].id        
+            aux.monto=element[index].monto
+            aux.id_usuario=element[index].id_usuario
+            //Cambio de contenido de variabe segun categoria
+            this.categories.forEach(cat => {
+              if (cat.id === element[index].id_categoria){
+                aux.id_categoria = cat.name
+              }
+              
+            });  
+
+            aux.fecha=element[index].fecha
+            aux.descripcion=element[index].descripcion                        
+            this.gastosF.push(aux) //Adicion a vector para posterio lectura
+          }
+
+          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
+        });
+      });     
+    }) 
   } 
   async genericAlert(alert_message, advice){//Funcion para creacion de alerta
     const prompt = await this.alertCtrl.create({//Llamado a creacion con el mensaje antes definido   

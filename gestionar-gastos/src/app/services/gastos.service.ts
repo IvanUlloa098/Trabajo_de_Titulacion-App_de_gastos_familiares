@@ -29,7 +29,12 @@ export class GastosService {
   obtenerGastos(idG:any):Observable<any[]>{
     return this.afs.collection("gastos",
             ref=> ref.where("id_usuario","==",idG)).valueChanges();//Consultar en la coleccion gastos todos los valores correspondientes a un usuario
-  }  
+  } 
+  
+  obtenerGastosFamilia(idG:any):Observable<any[]>{
+    return this.afs.collection("gastos",
+            ref=> ref.where("id_familia","==",idG)).valueChanges();//Consultar en la coleccion gastos todos los valores correspondientes a un usuario
+  } 
 
   obtenerGastoPorId(id) {
     return this.afs.collection("gastos", ref => ref.where("id", "==", id)).valueChanges()
