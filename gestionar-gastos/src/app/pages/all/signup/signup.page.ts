@@ -43,7 +43,7 @@ export class SignupPage implements OnInit {
     this.User.lastLogin = new Date()
     this.User.provider = 'gestion-gastos'
 
-
+    // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => { 
 

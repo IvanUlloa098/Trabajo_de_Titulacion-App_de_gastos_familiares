@@ -27,14 +27,15 @@ export class VerGastosFamiliaPage implements OnInit {
   private sessionUser : any//Variable para la obtencion de usuario logeado
  
   constructor(private route: ActivatedRoute,
-    private router: Router, 
-    private gastoService: GastosService,//Declaracion de servicios para gastos
-    private alertCtrl: AlertController,//Declaracion de servicios para alertas
-    private loadingController: LoadingController,//Declaracion de servicios de pantalla de progreso
-    private auth :  AuthenticationService,//Declaracion de servicios de autenticacion
-    public menuCtrl: MenuController ) {//Declaracion de servicios para control del menu principal
-      this.menuCtrl.enable(true)//Menu activado
-    }
+              private router: Router, 
+              private gastoService: GastosService,//Declaracion de servicios para gastos
+              private alertCtrl: AlertController,//Declaracion de servicios para alertas
+              private loadingController: LoadingController,//Declaracion de servicios de pantalla de progreso
+              private auth :  AuthenticationService,//Declaracion de servicios de autenticacion
+              public menuCtrl: MenuController ) {//Declaracion de servicios para control del menu principal
+                this.menuCtrl.enable(true)//Menu activado
+                
+              }
 
   async ngOnInit() {//Funcion inicial de la pagina
     this.sessionUser = await this.auth.getUserAuth()//Utilizacion del servicio para obtener usuario que inicio sesion mediante Firebase  

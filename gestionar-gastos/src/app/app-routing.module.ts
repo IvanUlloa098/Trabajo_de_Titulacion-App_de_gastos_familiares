@@ -33,16 +33,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/all/signup/signup.module').then( m => m.SignupPageModule)
   },
   {
-    path: 'tabs',
-    loadChildren: () => import('./pages/all/tabs/tabs.module').then( m => m.TabsPageModule)
-  },
-  {
     path: 'createfamily',
     loadChildren: () => import('./pages/all/createfamily/createfamily.module').then( m => m.CreatefamilyPageModule)
-  },
-  {
-    path: 'tabs',
-    loadChildren: () => import('./pages/all/tabs/tabs.module').then( m => m.TabsPageModule)
   },
   {
     path: 'profile',

@@ -42,8 +42,11 @@ export class SpencePredictionPage implements AfterViewInit {
               }
 
   async ngAfterViewInit() {
+    // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
+
+        // Obtención del usuario que actualmente tiene la sesión abierta
         this.sessionUser = await this.auth.getUserAuth();
 
         await this.gastosService.getCategories().pipe(take(1)).subscribe(cat => {
@@ -61,7 +64,10 @@ export class SpencePredictionPage implements AfterViewInit {
 
         await this.sessionUser.pipe(take(1)).subscribe(async user =>{
           
+          // Obtener los datos del usurio de FireStore dado- 
+          //    el email proporcionado por la API de autentificación
           const aux = await this.auth.getUsuario(user.email)
+          
           await aux.pipe(take(1)).subscribe( async res=> {
             this.id = res[0];
             this.id = this.id.id_familia;
@@ -136,6 +142,7 @@ export class SpencePredictionPage implements AfterViewInit {
             const element = this.generalChart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, false)
             const currentPoint = data.data.dataId[element[0].index];
             
+            // Control de la interacción del usuario usando una rueda de carga
             return await this.loadingController.create({ }).then(b => {
               b.present().then(async () => {      
 

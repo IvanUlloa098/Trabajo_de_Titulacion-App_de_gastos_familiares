@@ -46,6 +46,7 @@ export class LoginPage implements OnInit {
 
     this.onDestroy.next();
 
+    // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
 
@@ -68,6 +69,7 @@ export class LoginPage implements OnInit {
             } catch (error) {
               console.log("NO USER LOGGED IN")
             } finally {
+              //  Terminar la carga de la página
               a.dismiss().then(() => console.log('abort presenting'));
             }
             
@@ -75,6 +77,7 @@ export class LoginPage implements OnInit {
         } catch (error) {
           console.log("NO USER LOGGED IN")
         } finally {
+          //  Terminar la carga de la página
           a.dismiss().then(() => console.log('abort presenting'));
         }
 
@@ -86,18 +89,28 @@ export class LoginPage implements OnInit {
 
   async logeo(){
 
+    // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
 
         try {
+          // Iniciar sesión con el usuario ingresado
           const user = await this.AuthenticationService.onLogin(this.User);
+
+          // Garantizar una conexión estable con Firebase implementando un regtraso
           setTimeout(async () => {
             
+            // Verificación del logeo para control de excepciones si no se ingresan datos
             if(this.User.email && this.User.password){
+
+              // Obtener los datos del usurio de FireStore dado- 
+              //    el email proporcionado por la API de autentificación
               this.user2 = await this.AuthenticationService.getUsuario(this.User.email);
-  
+              
+              // Control de errores
               try {
-  
+                
+                
                 await this.user2.pipe(take(1)).subscribe(res=> {
                   this.AuthenticationService.timeStampLogin(res[0]);
                   this.aux = res[0]
@@ -116,7 +129,9 @@ export class LoginPage implements OnInit {
                   this.alert = "Ocurrió un error al cargar sus datos"
                   this.advice = 'Por favor, inténtelo de nuevo'
                   
+                  //  Terminar la carga de la página
                   a.dismiss().then(() => console.log('abort presenting'));
+                  //  Mostrar mensaje de al usuario
                   this.genericAlert(this.alert, this.advice)
                 },
                 () => console.log('AUTH stream done'));
@@ -125,8 +140,10 @@ export class LoginPage implements OnInit {
                 
                 this.alert = "Ocurrió un error con el inicio de sesión"
                 this.advice = 'Por favor, inténtelo de nuevo'
-          
+                
+                //  Terminar la carga de la página
                 a.dismiss().then(() => console.log('abort presenting'));
+                //  Mostrar mensaje de al usuario
                 this.genericAlert(this.alert, this.advice)
   
               }
@@ -135,9 +152,11 @@ export class LoginPage implements OnInit {
               console.log("error en el loggeo")
               this.alert = "Los Datos ingresados son incorrectos"
               this.advice = 'Por favor, ingréselos de nuevo'
-      
+              
+              //  Terminar la carga de la página
               a.dismiss().then(() => console.log('abort presenting'));
-              this.genericAlert(this.alert, this.advice)
+              //  Mostrar mensaje de al usuario
+              this.genericAlert(this.alert, this.advice);
               
             }
             
@@ -146,9 +165,11 @@ export class LoginPage implements OnInit {
         } catch (error) {
           this.alert = "Ocurrió un error con el inicio de sesión"
           this.advice = 'Por favor, inténtelo de nuevo'
-    
+          
+          //  Terminar la carga de la página
           a.dismiss().then(() => console.log('abort presenting'));
-          this.genericAlert(this.alert, this.advice)
+          //  Mostrar mensaje de al usuario
+          this.genericAlert(this.alert, this.advice);
         }
 
       })
@@ -158,6 +179,7 @@ export class LoginPage implements OnInit {
 
   async googleLogin() {
 
+    // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
 
@@ -187,8 +209,10 @@ export class LoginPage implements OnInit {
             this.alert = "Ocurrió un error al cargar sus datos"
             this.advice = 'Por favor, inténtelo de nuevo'
             
+            //  Terminar la carga de la página
             a.dismiss().then(() => console.log('abort presenting'));
-            this.genericAlert(this.alert, this.advice)
+            //  Mostrar mensaje de al usuario
+            this.genericAlert(this.alert, this.advice);
           },
           () => console.log('AUTH stream done'));
           
@@ -196,8 +220,10 @@ export class LoginPage implements OnInit {
           this.alert = "Ocurrió un error inesperado en con el inicio de sesión"
           this.advice = 'Por favor, inténtelo de nuevo'
           
+          //  Terminar la carga de la página
           a.dismiss().then(() => console.log('abort presenting'));
-          this.genericAlert(this.alert, this.advice)
+          //  Mostrar mensaje de al usuario
+          this.genericAlert(this.alert, this.advice);
         }
 
       })
