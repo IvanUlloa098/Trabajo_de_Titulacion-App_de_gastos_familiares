@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Gastos</ion-title><!--Titulo de la pagina-->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div div style="float: left; width: 100%;">
+    <div *ngFor="let gasto of gastosF"><!--Bucle con codigo angular para visualizar gastos-->
+      <ion-item><!--Item de lista-->        
+        <ion-label><!--Etiqueta compuesta-->  
+          <div div style="float: left; width: 50%; margin-left: 5%;"> 
+            <!--Visualizacion de informacion acerca del gasto-->               
+            <h2>$ {{ gasto.monto }}</h2>
+            <h2>{{ gasto.id_categoria }}</h2>
+            <p>{{ gasto.descripcion }}</p>
+            <p>{{ gasto.fecha }}</p>
+          </div>            
+        </ion-label>
+      </ion-item>      
+    </div>
+  </div>  
+</ion-content>

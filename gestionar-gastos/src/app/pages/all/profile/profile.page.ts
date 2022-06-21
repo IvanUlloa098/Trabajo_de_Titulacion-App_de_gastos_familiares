@@ -76,8 +76,10 @@ export class ProfilePage implements OnInit{
 
   async ngOnInit() {
 
+    // Obtención del usuario que actualmente tiene la sesión abierta
     this.sessionUser = await this.auth.getUserAuth()
 
+    // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
 
@@ -85,6 +87,8 @@ export class ProfilePage implements OnInit{
 
           await this.sessionUser.pipe(take(1)).subscribe(async user =>{
 
+            // Obtener los datos del usurio de FireStore dado- 
+            //    el email proporcionado por la API de autentificación
             this.aux = await this.auth.getUsuario(user.email)
     
             await this.aux.pipe(take(1)).subscribe( res=> {

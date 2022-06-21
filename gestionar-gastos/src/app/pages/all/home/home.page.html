@@ -4,6 +4,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
 
+  <ion-card-content *ngIf="loaded" style="margin-left: 5%; margin-top: 5%; margin-right: 5%; background-color: #001230e8; border-radius: 20px;">
+    <h1>¡Bienvenido!</h1>   
+    <p>{{startMes}}</p>    
+  </ion-card-content>
+
+  <div class="ion-padding">
+    
+    <ion-card-header>
+      <ion-card-title *ngIf="loaded">Resumen</ion-card-title>
+      <ion-card-subtitle *ngIf="loaded"> Presupuesto global</ion-card-subtitle>       
+    </ion-card-header>
+    <ion-card-content>
+      <canvas #doughnutCanvas style="position: relative; height:20vh; width:40vw"></canvas>        
+    </ion-card-content>
+  
+  </div>
 </ion-content>
+

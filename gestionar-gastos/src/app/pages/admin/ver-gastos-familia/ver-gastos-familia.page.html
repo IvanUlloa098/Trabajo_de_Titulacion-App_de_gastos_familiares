@@ -5,13 +5,30 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-item class="filter">
+    <ion-label>Categoria de gasto</ion-label>
+    <ion-select class="custom-options" interface="popover" (ionChange)="filterContent()" [(ngModel)]="filter"><!--Elemento para seleccion de categoria, referencia a variable, requerido-->
+      <!--Mediante la selecion de la categoria se asigna un valor, el cual hace referencia a el codigo almacenado en Firebase-->
+      <ion-select-option value="default">Todo</ion-select-option>
+      <ion-select-option value="Alimentación">Alimentación</ion-select-option>
+      <ion-select-option value="Servicios">Servicios</ion-select-option>
+      <ion-select-option value="Educación">Educación</ion-select-option>
+      <ion-select-option value="Ocio">Ocio</ion-select-option>
+      <ion-select-option value="Transporte">Transporte</ion-select-option>
+      <ion-select-option value="Vivienda">Vivienda</ion-select-option>
+      <ion-select-option value="Salud">Salud</ion-select-option>
+      <ion-select-option value="Otros">Otros</ion-select-option>
+    </ion-select>
+  </ion-item>  
+
   <div div style="float: left; width: 100%;">
-    <div *ngFor="let gastoA of gastosF"><!--Bucle con codigo angular para visualizar gastos-->
+    <div *ngFor="let gastoA of filteredContent"><!--Bucle con codigo angular para visualizar gastos-->
       <ion-item><!--Item de lista-->
         <ion-label><!--Etiqueta compuesta-->  
           <div div style="float: left; width: 50%; margin-left: 5%;">              
             <!--Visualizacion de informacion acerca del gasto-->
-            <h2>{{ gastoA.monto }}</h2>
+            <h2>$ {{ gastoA.monto }}</h2>
             <h2>{{ gastoA.id_categoria }}</h2>
             <p>{{ gastoA.descripcion }}</p>
             <p>{{ gastoA.fecha }}</p>

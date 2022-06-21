@@ -33,16 +33,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/all/signup/signup.module').then( m => m.SignupPageModule)
   },
   {
-    path: 'tabs',
-    loadChildren: () => import('./pages/all/tabs/tabs.module').then( m => m.TabsPageModule)
-  },
-  {
     path: 'createfamily',
     loadChildren: () => import('./pages/all/createfamily/createfamily.module').then( m => m.CreatefamilyPageModule)
-  },
-  {
-    path: 'tabs',
-    loadChildren: () => import('./pages/all/tabs/tabs.module').then( m => m.TabsPageModule)
   },
   {
     path: 'profile',
@@ -73,13 +65,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/all/ver-presupuestos/ver-presupuestos.module').then( m => m.VerPresupuestosPageModule)
   },
   {
-    path: 'reporte-gastos',
-    loadChildren: () => import('./pages/all/reporte-gastos/reporte-gastos.module').then( m => m.ReporteGastosPageModule)
-  },
-  {
     path: 'reporte-gastos-admin',
     loadChildren: () => import('./pages/admin/reporte-gastos-admin/reporte-gastos-admin.module').then( m => m.ReporteGastosAdminPageModule)
   },
+  {
+    path: 'member-spence',
+    loadChildren: () => import('./pages/admin/member-spence/member-spence.module').then( m => m.MemberSpencePageModule)
+  },
+
 
 ];
 

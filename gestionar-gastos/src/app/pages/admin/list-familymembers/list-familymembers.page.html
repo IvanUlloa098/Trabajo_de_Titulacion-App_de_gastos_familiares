@@ -13,7 +13,7 @@
         <ion-label>Miembros de tu familia</ion-label>
       </ion-item-divider>
       
-      <ion-item *ngFor="let item of members | async">
+      <ion-item (click)="presentModal(item.uid)" *ngFor="let item of members | async">
         <ion-avatar slot="start">
           <img [src]="item.photoURL" referrerpolicy="no-referrer" alt="">
         </ion-avatar>
