@@ -183,7 +183,7 @@ export class HomePage implements OnInit {
                     scales:{
                       r: {
                         grid: {
-                          color: 'white'
+                          color: 'rgb(38, 38, 38)'
                         }
                       }
                     }

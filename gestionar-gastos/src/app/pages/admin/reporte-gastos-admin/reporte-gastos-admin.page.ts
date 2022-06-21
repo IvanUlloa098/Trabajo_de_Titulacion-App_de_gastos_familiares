@@ -207,7 +207,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales:{
           r: {
             grid: {
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         }
@@ -250,7 +250,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales:{
           r: {
             grid: {
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         }
@@ -292,7 +292,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales:{
           r: {
             grid: {
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         }
@@ -334,7 +334,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales:{
           r: {
             grid: {
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         }
@@ -376,7 +376,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales:{
           r: {
             grid: {
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         }
@@ -418,7 +418,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales:{
           r: {
             grid: {
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         }
@@ -460,7 +460,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales:{
           r: {
             grid: {
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         }
@@ -502,7 +502,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales:{
           r: {
             grid: {
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         }
@@ -565,7 +565,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         scales: {
           r: {
             grid:{
-              color: 'white'
+              color: 'rgb(38, 38, 38)'
             }
           }
         },
