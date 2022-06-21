@@ -203,6 +203,15 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     this.generalChart = new Chart(this.generalCanvas.nativeElement, {//Declaracion de la grafica 
       type: 'polarArea',//Tipo
+      options:{
+        scales:{
+          r: {
+            grid: {
+              color: 'white'
+            }
+          }
+        }
+      },
       data: {//Datos de la grafica
         labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],//Etiquetas
         datasets: [{
@@ -237,6 +246,15 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     this.saludChart = new Chart(this.saludCanvas.nativeElement, {
       type: 'polarArea',
+      options:{
+        scales:{
+          r: {
+            grid: {
+              color: 'white'
+            }
+          }
+        }
+      },
       data: {
         labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
@@ -270,6 +288,15 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     this.viviendaChart = new Chart(this.viviendaCanvas.nativeElement, {
       type: 'polarArea',
+      options:{
+        scales:{
+          r: {
+            grid: {
+              color: 'white'
+            }
+          }
+        }
+      },
       data: {
         labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
@@ -303,6 +330,15 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     this.transporteChart = new Chart(this.transporteCanvas.nativeElement, {
       type: 'polarArea',
+      options:{
+        scales:{
+          r: {
+            grid: {
+              color: 'white'
+            }
+          }
+        }
+      },
       data: {
         labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
@@ -336,6 +372,15 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     this.ocioChart = new Chart(this.ocioCanvas.nativeElement, {
       type: 'polarArea',
+      options:{
+        scales:{
+          r: {
+            grid: {
+              color: 'white'
+            }
+          }
+        }
+      },
       data: {
         labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
@@ -369,6 +414,15 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     this.educacionChart = new Chart(this.educacionCanvas.nativeElement, {
       type: 'polarArea',
+      options:{
+        scales:{
+          r: {
+            grid: {
+              color: 'white'
+            }
+          }
+        }
+      },
       data: {
         labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
@@ -402,6 +456,15 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     this.serviciosChart = new Chart(this.serviciosCanvas.nativeElement, {
       type: 'polarArea',
+      options:{
+        scales:{
+          r: {
+            grid: {
+              color: 'white'
+            }
+          }
+        }
+      },
       data: {
         labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
@@ -435,6 +498,15 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     }
     this.alimentacionChart = new Chart(this.alimentacionCanvas.nativeElement, {
       type: 'polarArea',
+      options:{
+        scales:{
+          r: {
+            grid: {
+              color: 'white'
+            }
+          }
+        }
+      },
       data: {
         labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],
         datasets: [{
@@ -477,8 +549,8 @@ export class ReporteGastosAdminPage implements AfterViewInit {
           (this.gastoSalud*100/this.presupuestoSalud)
         ],
           fill: true,//Relleno de area conformada por dos lineas
-          backgroundColor: 'rgba(54, 162, 235, 0.4)',//Color de relleno
-          borderColor: 'rgb(54, 162, 235)',//Color de borde
+          backgroundColor: 'rgba(255, 159, 64, 0.4)',//Color de relleno
+          borderColor: '#ff9f40',//Color de borde
           pointBackgroundColor: 'rgb(10, 10, 10)',//Color de punto final de linea, sin focus
           pointBorderColor: '#fff',//Color de borde del punto final de linea, sin focus
           pointHoverBackgroundColor: '#fff',//Color de punto final de linea, con focus
@@ -490,6 +562,13 @@ export class ReporteGastosAdminPage implements AfterViewInit {
         }]
       },
       options: {
+        scales: {
+          r: {
+            grid:{
+              color: 'white'
+            }
+          }
+        },
         elements: {
           line: {
             borderWidth: 3
