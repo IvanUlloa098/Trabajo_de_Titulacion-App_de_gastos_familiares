@@ -67,7 +67,7 @@ export class VerGastosFamiliaPage implements OnInit {
           this.usuarios=await this.gastoService.obtenerusrFamilia(user[0].id_familia)//Utilizacion de servicio para obtener los usuarios miembros de la familia del usuario en base a consulta base de datos          
           this.usuarios.pipe(take(1)).subscribe(async user =>{
             for (let index = 0; index < user.length; index++) {              
-              this.gastos=this.gastoService.obtenerGastos(user[index].uid)//Utilizacion de servicio para obtener gastos del usuario en base a consulta base de datos
+              this.gastos= await this.gastoService.obtenerGastos(user[index].uid)//Utilizacion de servicio para obtener gastos del usuario en base a consulta base de datos
               this.gastos.pipe(take(1)).subscribe(async gasto =>{
                 for (let index = 0; index < gasto.length; index++) {
                   let aux:Gasto=new Gasto()//Variable auxilizar de clase gasto
