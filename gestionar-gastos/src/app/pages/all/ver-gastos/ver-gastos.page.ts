@@ -17,6 +17,8 @@ export class VerGastosPage implements OnInit {
   gastos:any
   usuario:any  
   categories: any
+  filter: string = "default"
+  filteredContent: any
 
   //Variables para una notificacion especifica
   alert: string
@@ -96,6 +98,7 @@ export class VerGastosPage implements OnInit {
             this.gastosF.push(aux) //Adicion a vector para posterio lectura
           }
 
+          this.filteredContent = this.gastosF
           a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
         });
       });     
@@ -110,5 +113,15 @@ export class VerGastosPage implements OnInit {
       buttons: ['Aceptar']//Boton de confirmacion
     });
     await prompt.present()
+  }
+
+  filterContent() {
+    
+    if (this.filter === "default") {
+      this.filteredContent = this.gastosF
+    } else {
+      this.filteredContent = this.gastosF.filter(data => data.id_categoria == this.filter)
+    }    
+
   }
 }

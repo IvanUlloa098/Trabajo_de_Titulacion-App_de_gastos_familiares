@@ -7,21 +7,24 @@
 <ion-content><!--Contenido de pagina-->
   <ion-list><!--Lista de informacion necesaria-->
     <ion-item-divider><!--Separador de grupo de items-->
-      <ion-label>Gasto</ion-label><!--Etiqueta-->
+      <ion-label>Gasto realizado</ion-label><!--Etiqueta-->
     </ion-item-divider>
-    <ion-item-group><!--Grupo de items-->
-      <ion-item style="margin-left: 2%;">
+    <ion-item-group style="margin-left: 1%;"><!--Grupo de items-->
+      <ion-item>
         <ion-label>Monto: </ion-label>
-        <ion-input inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="gasto.monto"></ion-input><!--Elemento para ingreso, tipo numero, requerido, valor minimo 0 referencia a variable-->
+        <ion-input placeholder="00.00" inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="gasto.monto"></ion-input><!--Elemento para ingreso, tipo numero, requerido, valor minimo 0 referencia a variable-->
       </ion-item>
     </ion-item-group>
-  </ion-list>
-        <ion-label>Fecha: </ion-label>
+  </ion-list >
+      <ion-item style="margin-top: 1%; margin-bottom: 1%;">
+        <ion-label >Fecha: </ion-label>
         <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="YYYY-MM-DDTHH:mm:ss.sssZ" [(ngModel)]="gasto.fecha" required="true"></ion-datetime><!--Elemento para ingreso de fecha, tipo date, requerido, referencia a variable, formato de visualizacion y de obtencion-->
+      </ion-item>
+        
   <ion-list>
     <ion-item-group>                  
       <ion-item>
-        <ion-label>Categoria:</ion-label>
+        <ion-label>Categoria de gasto</ion-label>
         <ion-select [(ngModel)]="gasto.id_categoria" required="true"><!--Elemento para seleccion de categoria, referencia a variable, requerido-->
           <!--Mediante la selecion de la categoria se asigna un valor, el cual hace referencia a el codigo almacenado en Firebase-->
           <ion-select-option value="834IqsQWzMFPdsE7TZKu">Alimentacion</ion-select-option>
@@ -36,11 +39,11 @@
       </ion-item>      
     </ion-item-group>
     <ion-item-divider>
-      <ion-label>Descripcion</ion-label>
+      <ion-label>Descripcion: </ion-label>
     </ion-item-divider>
     <ion-item-group>
       <ion-item>        
-        <ion-textarea inputmode="text" [(ngModel)]="gasto.descripcion"></ion-textarea><!--Elemento para ingreso, tipo texto, referencia a variable-->
+        <ion-textarea placeholder="Razón de la compra..." inputmode="text" [(ngModel)]="gasto.descripcion"></ion-textarea><!--Elemento para ingreso, tipo texto, referencia a variable-->
       </ion-item>
     </ion-item-group>    
   </ion-list>

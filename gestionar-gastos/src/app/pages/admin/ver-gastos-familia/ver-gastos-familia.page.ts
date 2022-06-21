@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Gasto } from 'src/app/domain/gasto';
 import { GastosService } from 'src/app/services/gastos.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   selector: 'app-ver-gastos-familia',
   templateUrl: './ver-gastos-familia.page.html',
   styleUrls: ['./ver-gastos-familia.page.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class VerGastosFamiliaPage implements OnInit {
   
@@ -20,6 +21,8 @@ export class VerGastosFamiliaPage implements OnInit {
   gastos:any
   usuario:any  
   categories: any
+  filter: string = "default"
+  filteredContent: any
 
   //Variables para una notificacion especifica
   alert: string
@@ -100,6 +103,7 @@ export class VerGastosFamiliaPage implements OnInit {
             this.gastosF.push(aux) //Adicion a vector para posterio lectura
           }
 
+          this.filteredContent = this.gastosF
           a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
         });
       });     
@@ -113,5 +117,15 @@ export class VerGastosFamiliaPage implements OnInit {
       buttons: ['Aceptar']//Boton de confirmacion
     });
     await prompt.present()
+  }
+
+  filterContent() {
+    
+    if (this.filter === "default") {
+      this.filteredContent = this.gastosF
+    } else {
+      this.filteredContent = this.gastosF.filter(data => data.id_categoria == this.filter)
+    }    
+
   }
 }
