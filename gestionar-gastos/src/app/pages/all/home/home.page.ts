@@ -8,6 +8,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { GastosService } from 'src/app/services/gastos.service';
 import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
 import { PresupuestosService } from 'src/app/services/presupuestos.service';
+import { DATE_PIPE_DEFAULT_TIMEZONE } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -95,16 +96,22 @@ export class HomePage implements OnInit {
                 //  Todos los gastos familiares serán mostrados                
                 this.gastos = this.gastoService.obtenerGastosFamilia(res[0].id_familia)
 
-                this.gastos.pipe(take(1)).subscribe(async gasto =>{
-
+                this.gastos.pipe(take(1)).subscribe(async gasto =>{                  
+                  var sumatoria=0.0
                   for (let index = 0; index < gasto.length; index++) {
-                    let fecha=new Date(gasto[index].fecha);
-                    this.localNotifications.schedule({
-                      text: "Gasto Registrado"+gasto[index].descripcion+"\n De: "+gasto[index].monto,
-                      trigger: {at: fecha},                 
-                    });
-
+                    var aux=new Date(gasto[index].fecha)
+                    var actual=new Date()
+                    
+                    if(aux.getDate()==actual.getDate()){
+                      sumatoria+=gasto[index].monto
+                    }
+                    
+                    
                   }
+                  this.localNotifications.schedule({
+                    text: "Gastos del dia "+sumatoria,
+                    trigger: {at: new Date()},                 
+                  });
 
                   this.entrada(a)
                 })            
@@ -128,7 +135,8 @@ export class HomePage implements OnInit {
                 });
               }            
   
-              }) 
+              })
+               
             } catch (error) {
               console.log(error);
               this.alert = "Ocurrió un error al cargar sus datos"
