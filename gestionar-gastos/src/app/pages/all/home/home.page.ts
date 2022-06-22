@@ -187,6 +187,15 @@ export class HomePage implements OnInit {
                 }                                      
                 this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {//Declaracion de la grafica 
                   type: 'polarArea',//Tipo
+                  options:{
+                    scales:{
+                      r: {
+                        grid: {
+                          color: 'rgb(38, 38, 38)'
+                        }
+                      }
+                    }
+                  },
                   data: {//Datos de la grafica
                     labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],//Etiquetas
                     datasets: [{
@@ -198,6 +207,7 @@ export class HomePage implements OnInit {
                         'rgba(54, 162, 235, 0.4)',                          
                         'rgba(255, 99, 132, 0.4)'                                      
                       ],
+                      
                       borderColor:['#ff9f40','#36a2eb','#ff6384'],//Color de borde de area, sin focus
                       hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],//Color de fondo de area con enfoque
                       hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],//Color de borde de area, con focus
