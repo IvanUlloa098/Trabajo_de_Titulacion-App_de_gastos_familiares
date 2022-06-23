@@ -7,7 +7,7 @@
 <ion-content>
 
   <ion-item class="filter">
-    <ion-label>Categoria de gasto</ion-label>
+    <ion-label>Filtrar</ion-label>
     <ion-select class="custom-options" interface="popover" (ionChange)="filterContent()" [(ngModel)]="filter"><!--Elemento para seleccion de categoria, referencia a variable, requerido-->
       <!--Mediante la selecion de la categoria se asigna un valor, el cual hace referencia a el codigo almacenado en Firebase-->
       <ion-select-option value="default">Todo</ion-select-option>
@@ -20,7 +20,15 @@
       <ion-select-option value="Salud">Salud</ion-select-option>
       <ion-select-option value="Otros">Otros</ion-select-option>
     </ion-select>
+
+    <ion-select icon="filter-outline" class="custom-options" interface="popover" (ionChange)="filterContentDate()" [(ngModel)]="filterDate"><!--Elemento para seleccion de categoria, referencia a variable, requerido-->
+      <!--Mediante la selecion de la categoria se asigna un valor, el cual hace referencia a el codigo almacenado en Firebase-->
+      <ion-select-option value="todo">Todo el tiempo</ion-select-option>
+      <ion-select-option value="mes">Último mes</ion-select-option>
+    </ion-select>
   </ion-item>  
+
+  
 
   <div div style="float: left; width: 100%;">
     <div *ngFor="let gastoA of filteredContent"><!--Bucle con codigo angular para visualizar gastos-->

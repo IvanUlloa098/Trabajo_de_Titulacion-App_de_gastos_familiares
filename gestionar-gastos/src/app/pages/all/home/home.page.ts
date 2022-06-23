@@ -23,6 +23,7 @@ export class HomePage implements OnInit {
 
   //Variables para almacenamiento de respuestas desde Firebase de consultas de cada coleccion
   gastos:any
+  gastosMes:any
   usuario:any
   familia:any
   usuarios:any
@@ -174,8 +175,10 @@ export class HomePage implements OnInit {
             for (let index = 0; index < user.length; index++) {
               this.gastos=this.gastoService.obtenerGastos(user[index].uid)//Utilizacion de servicio para obtener gastos del usuario en base a consulta base de datos
               this.gastos.pipe(take(1)).subscribe(gasto =>{
-                for (let index = 0; index < gasto.length; index++) {
-                  this.gastoTot+=gasto[index].monto//Sumatoria de todos los gastos
+                this.gastosMes = gasto.filter(data => (new Date(data.fecha)).getMonth() == (new Date).getMonth())
+                
+                for (let index = 0; index < this.gastosMes.length; index++) {
+                  this.gastoTot+=this.gastosMes[index].monto//Sumatoria de todos los gastos                  
                 }
                 if(this.gastoTot>=this.presp){
                   this.prespGst=0//En caso de que el gasto total sea mayor al presupuesto general, el presupuesto restante es 0
@@ -184,7 +187,8 @@ export class HomePage implements OnInit {
                 }                  
                 if(this.doughnutChart!=null){//En caso de que el grafico este inicializado
                   this.doughnutChart.destroy()//Destruir la instancia
-                }                                      
+                }  
+                                                    
                 this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {//Declaracion de la grafica 
                   type: 'polarArea',//Tipo
                   options:{

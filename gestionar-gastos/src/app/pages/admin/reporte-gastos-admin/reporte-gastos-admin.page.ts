@@ -29,6 +29,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
 
   //Variables para almacenamiento de respuestas desde Firebase de consultas de cada coleccion
   gastos:any
+  gastosMes:any
   usuario:any
   familia:any
   usuarios:any
@@ -92,8 +93,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     return await this.loadingController.create({ }).then(a => {//Llamado para pantalla de carga
       a.present().then(async () => {
         try {
-          this.entrada()  
-          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga        
+          this.entrada(a)                   
         }catch(error){
           //Caso de encontrar un error, definir mesaje para alerta y lanzar alerta
           console.log(error)
@@ -118,7 +118,7 @@ export class ReporteGastosAdminPage implements AfterViewInit {
     await prompt.present()
   }
 
-  async entrada(){
+  async entrada(a){
     this.sessionUser = await this.auth.getUserAuth()//Utilizacion del servicio para obtener usuario que inicio sesion mediante Firebase        
     this.sessionUser.pipe(take(1)).subscribe(async user =>{//Recorrido de respuesta del servicio      
       this.usuario = await this.auth.getUsuario(user.email)//Utilizacion de servicio para obtener usuario en base a consulta base de datos
@@ -132,8 +132,10 @@ export class ReporteGastosAdminPage implements AfterViewInit {
             for (let index = 0; index < user.length; index++) {
               this.gastos=this.gastoService.obtenerGastos(user[index].uid)//Utilizacion de servicio para obtener gastos del usuario en base a consulta base de datos
               this.gastos.pipe(take(1)).subscribe(gasto =>{
-                for (let index = 0; index < gasto.length; index++) {
-                  this.gastoTot+=gasto[index].monto //Sumatoria de todos los gastos
+                this.gastosMes = gasto.filter(data => (new Date(data.fecha)).getMonth() == (new Date).getMonth())
+
+                for (let index = 0; index < this.gastosMes.length; index++) {
+                  this.gastoTot+=this.gastosMes[index].monto //Sumatoria de todos los gastos
                   //Calculo de gastos de las diferentes categorias, se diferencian mediante codigo almacenado en firebase
                   if(gasto[index].id_categoria=="834IqsQWzMFPdsE7TZKu"){
                     this.gastoAlimentacion+=gasto[index].monto
@@ -187,8 +189,9 @@ export class ReporteGastosAdminPage implements AfterViewInit {
                       this.presupuestoSalud=prespt[index].cantidad
                     }                      
                   }
-                  //Llamado a las funciones correspondientes para generar un grafico para cada categoria
+                  //Llamado a las funciones correspondientes para generar un grafico para cada categoria                  
                   this.graficaEstrella() //Comparativa entre presupuestos
+                  a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
                 })                  
               })
             }                                         

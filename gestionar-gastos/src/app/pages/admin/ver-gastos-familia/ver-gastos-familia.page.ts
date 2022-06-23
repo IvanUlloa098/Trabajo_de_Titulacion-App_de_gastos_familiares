@@ -22,7 +22,9 @@ export class VerGastosFamiliaPage implements OnInit {
   usuario:any  
   categories: any
   filter: string = "default"
+  filterDate: string = "todo"
   filteredContent: any
+  filtroAux: any
 
   //Variables para una notificacion especifica
   alert: string
@@ -120,11 +122,22 @@ export class VerGastosFamiliaPage implements OnInit {
   }
 
   filterContent() {
-    
+        
     if (this.filter === "default") {
       this.filteredContent = this.gastosF
     } else {
       this.filteredContent = this.gastosF.filter(data => data.id_categoria == this.filter)
+    }    
+
+  }
+
+  filterContentDate() {
+
+    if (this.filterDate === "mes") {
+      this.filtroAux = this.filteredContent
+      this.filteredContent = this.filteredContent.filter(data => (new Date(data.fecha)).getMonth() == (new Date).getMonth())
+    } else {
+      this.filteredContent = this.filtroAux
     }    
 
   }
