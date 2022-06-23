@@ -4,6 +4,5 @@ export class Presupuesto {
     cantidad:number;//Monto del presupuesto
     id_categoria:string;//Identificacion de categoria al que pertenece
     id_familia : string;//Identificacion de la familia a la que pertenece
-    fecha:Date;//Fecha en la cual se registra el presupuesto    
-    activo:boolean;//Booleano para identificar el estado del presupuesto
+    fecha:string;//Fecha en la cual se registra el presupuesto
 }

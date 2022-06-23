@@ -19,6 +19,7 @@ export class PresupuestosService {
   
       refPresupuestos.doc(presupuesto.id).set(Object.assign({}, presupuesto));
   }
+
   obtenerPresupuestoCtgr(idC:any,idF:any):Observable<any[]>{
     //Consultar en la coleccion presupuestos todos los valores correspondientes a una familia y una categoria
     return this.afs.collection("presupuestos",
@@ -32,16 +33,19 @@ export class PresupuestosService {
   obtenerPresupuestos(idF:any):Observable<any[]>{
     //Consultar en la coleccion presupuestos activos todos los valores correspondientes a una familia 
     return this.afs.collection("presupuestos",
-            ref=> ref.where("id_familia","==",idF).where("activo","==",true)).valueChanges();
+            ref=> ref.where("id_familia","==",idF)).valueChanges();
   }
   obtenerFamilia(idF:any):Observable<any[]>{
     //Consultar en la coleccion families todos los valores correspondientes a un identificador
     return this.afs.collection("families",
             ref=> ref.where("id","==",idF)).valueChanges();
   }
-  async actualizarPresupuesto(presupuesto) {
+  async actualizarPresupuesto(presupuesto:Presupuesto) {
     //Funcion para actulizar el registro de actividad en un documento de la coleccion presupuestos
-    return await this.afs.collection("presupuestos").doc(presupuesto.id).update({activo: false})
+    return await this.afs.collection("presupuestos").doc(presupuesto.id).update({
+      cantidad: presupuesto.cantidad,
+      fecha: presupuesto.fecha
+    })
   }
   async actualizarFamiliaPrsp(familia,monto) {
     //Funcion para actulizar el registro del presupuesto general en un documento de la coleccion familia
