@@ -5,6 +5,6 @@ export class Gasto {
     id_usuario:string;
     id_familia:string;
     id_categoria:string;
-    fecha:Date;
+    fecha:string;
     descripcion:string;
 }

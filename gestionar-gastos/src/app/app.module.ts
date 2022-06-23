@@ -21,6 +21,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
 
 import { NgChartsModule } from 'ng2-charts'
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,7 +36,7 @@ import { NgChartsModule } from 'ng2-charts'
             NgChartsModule,
             AppRoutingModule],
             
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {provide: ErrorHandler}, GooglePlus, AngularFireStorage,LocalNotifications],
+  providers: [DatePipe, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, {provide: ErrorHandler}, GooglePlus, AngularFireStorage,LocalNotifications],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

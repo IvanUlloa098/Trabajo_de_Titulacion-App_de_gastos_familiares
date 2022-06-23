@@ -13,14 +13,11 @@
       <ion-item>
         <ion-label>Monto: </ion-label>
         <ion-input placeholder="00.00" inputmode="decimal" type="number" required="true" min="0" [(ngModel)]="gasto.monto"></ion-input><!--Elemento para ingreso, tipo numero, requerido, valor minimo 0 referencia a variable-->
+        <ion-icon name="cash-outline"></ion-icon>
       </ion-item>
     </ion-item-group>
   </ion-list >
-      <ion-item style="margin-top: 1%; margin-bottom: 1%;">
-        <ion-label >Fecha: </ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="YYYY-MM-DDTHH:mm:ss.sssZ" [(ngModel)]="gasto.fecha" required="true"></ion-datetime><!--Elemento para ingreso de fecha, tipo date, requerido, referencia a variable, formato de visualizacion y de obtencion-->
-      </ion-item>
-        
+
   <ion-list>
     <ion-item-group>                  
       <ion-item>
@@ -36,16 +33,25 @@
           <ion-select-option value="Mp82DGLcR5AUOEk5DSrC">Salud</ion-select-option>
           <ion-select-option value="uPtleC6y1na6ZkkpePAd">Otros</ion-select-option>
         </ion-select>
+        <ion-icon name="list-circle"></ion-icon>
       </ion-item>      
     </ion-item-group>
-    <ion-item-divider>
-      <ion-label>Descripcion: </ion-label>
-    </ion-item-divider>
-    <ion-item-group>
-      <ion-item>        
-        <ion-textarea placeholder="Razón de la compra..." inputmode="text" [(ngModel)]="gasto.descripcion"></ion-textarea><!--Elemento para ingreso, tipo texto, referencia a variable-->
-      </ion-item>
-    </ion-item-group>    
   </ion-list>
+
+  <ion-item style="margin-top: 1%; margin-bottom: 1%;">
+    <ion-label >Fecha: </ion-label>
+    <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="YYYY-MM-DDTHH:mm:ss.sssZ" [(ngModel)]="gasto.fecha" required="true"></ion-datetime><!--Elemento para ingreso de fecha, tipo date, requerido, referencia a variable, formato de visualizacion y de obtencion-->
+  </ion-item>
+        
+  <ion-item-divider>
+    <ion-icon name="document-text"></ion-icon>
+    <ion-label>Descripcion (Opcional) </ion-label>      
+  </ion-item-divider>
+  <ion-item-group>
+    <ion-item>        
+      <ion-textarea placeholder="Razón de la compra..." inputmode="text" [(ngModel)]="gasto.descripcion"></ion-textarea><!--Elemento para ingreso, tipo texto, referencia a variable-->
+    </ion-item>
+  </ion-item-group>    
+  
   <ion-button expand="block" (click)="registrarGasto()">Registrar</ion-button><!--Boton,llamado a funcion diseñada-->
 </ion-content>
