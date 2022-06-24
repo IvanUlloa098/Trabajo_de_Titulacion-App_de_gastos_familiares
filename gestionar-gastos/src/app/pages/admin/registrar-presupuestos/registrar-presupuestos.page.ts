@@ -109,7 +109,9 @@ export class RegistrarPresupuestosPage implements OnInit {
   }
 
   sumaPresupuesto(){
-    this.sumPresupuestoIng=   this.presupuestoAlimentacion.cantidad
+
+    try {
+      this.sumPresupuestoIng=   this.presupuestoAlimentacion.cantidad
                             + this.presupuestoServicios.cantidad
                             + this.presupuestoEducacion.cantidad
                             + this.presupuestoOcio.cantidad
@@ -118,11 +120,14 @@ export class RegistrarPresupuestosPage implements OnInit {
                             + this.presupuestoSalud.cantidad
                             + this.presupuestoOtros.cantidad;
     
-    if(this.sumPresupuestoIng > this.presupuestoTotal){
-      this.labelColor="danger"
-    } else {
-      this.labelColor="primary"
-    }
+      if(this.sumPresupuestoIng > this.presupuestoTotal){
+        this.labelColor="danger"
+      } else {
+        this.labelColor="primary"
+      }
+
+    } catch (error) { }
+    
   }
 
   actionPresupuesto() {
