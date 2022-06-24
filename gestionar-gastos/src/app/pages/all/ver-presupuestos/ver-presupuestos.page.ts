@@ -14,6 +14,8 @@ import { Presupuesto } from 'src/app/domain/presupuesto';
 export class VerPresupuestosPage implements OnInit {
   //Variables para almacenamiento de respuestas desde Firebase de consultas de cada coleccion
   presupuestos:any
+  presupuestoGlobal:number
+  loadGlobal:boolean = false
   usuario:any  
 
   //Variables para una notificacion especifica
@@ -48,47 +50,73 @@ export class VerPresupuestosPage implements OnInit {
     await prompt.present()
   }
   async obtenerPresupuestos(){//Funcion para obtener los presupuestos de la familia correspondiente al usuario logeado         
-    await this.sessionUser.pipe(take(1)).subscribe(async user =>{//Recorrido de respuesta del servicio              
-        this.usuario = await this.auth.getUsuario(user.email)//Utilizacion de servicio para obtener usuario en base a consulta base de datos  
-        this.usuario.forEach((element) => {
-          this.presupuestos=this.presupuestoService.obtenerPresupuestos(element[0].id_familia)//Utilizacion de servicio para obtener presupuestos de la familia correspondiente al usuario en base a consulta base de datos
-          this.presupuestos.pipe(take(1)).subscribe(presp =>{
-            for (let index = 0; index < presp.length; index++) {
-              let aux:Presupuesto=new Presupuesto()//Variable auxilizar de clase gasto
-              //Asignacion de valores correspondientes a la lectura desde Firebase, con cambios para la visualizacion
-              aux.id=presp[index].id        
-              aux.cantidad=presp[index].cantidad
-              aux.id_familia=presp[index].id_familia
-              //Cambio de contenido de variabe segun categoria
-              if(presp[index].id_categoria=='834IqsQWzMFPdsE7TZKu'){
-                aux.id_categoria="Alimentacion"
-              }
-              if(presp[index].id_categoria=='yfXjC94YqUqIbn4zXMjx'){
-                aux.id_categoria="Servicios"
-              }
-              if(presp[index].id_categoria=='EjKGtXUIHEnwC0MKrzIn'){
-                aux.id_categoria="Educacion"
-              }
-              if(presp[index].id_categoria=='Y2xbbnUeLwCz5UhfMMJZ'){
-                aux.id_categoria="Ocio"
-              }
-              if(presp[index].id_categoria=='pZbMomfUFtw8u2aD0sEC'){
-                aux.id_categoria="Transporte"
-              }
-              if(presp[index].id_categoria=='NgNS2EM0p4UdeAQlZ4q6'){
-                aux.id_categoria="Vivienda"
-              }
-              if(presp[index].id_categoria=='Mp82DGLcR5AUOEk5DSrC'){
-                aux.id_categoria="Salud"
-              }
-              if(presp[index].id_categoria=='uPtleC6y1na6ZkkpePAd'){
-                aux.id_categoria="Otros"
-              }
-              aux.fecha=presp[index].fecha                                      
-              this.presupuestosF.push(aux) //Adicion a vector para posterio lectura              
-            }            
+    return await this.loadingController.create({ }).then(a => {
+      a.present().then(async () => {
+        
+        try {
+          
+          await this.sessionUser.pipe(take(1)).subscribe(async user =>{//Recorrido de respuesta del servicio              
+            this.usuario = await this.auth.getUsuario(user.email)//Utilizacion de servicio para obtener usuario en base a consulta base de datos  
+              
+            this.usuario.forEach(async (element) => {
+              await this.presupuestoService.obtenerFamilia(element[0].id_familia).pipe(take(1)).subscribe(fam =>{
+                this.presupuestoGlobal = fam[0].presupuesto_global
+                this.loadGlobal = true
+              });
+              
+              this.presupuestos=this.presupuestoService.obtenerPresupuestos(element[0].id_familia)//Utilizacion de servicio para obtener presupuestos de la familia correspondiente al usuario en base a consulta base de datos
+              this.presupuestos.pipe(take(1)).subscribe(presp =>{
+                for (let index = 0; index < presp.length; index++) {
+                  let aux:Presupuesto=new Presupuesto()//Variable auxilizar de clase gasto
+                  //Asignacion de valores correspondientes a la lectura desde Firebase, con cambios para la visualizacion
+                  aux.id=presp[index].id        
+                  aux.cantidad=presp[index].cantidad
+                  aux.id_familia=presp[index].id_familia
+                  //Cambio de contenido de variabe segun categoria
+                  if(presp[index].id_categoria=='834IqsQWzMFPdsE7TZKu'){
+                    aux.id_categoria="Alimentacion"
+                  }
+                  if(presp[index].id_categoria=='yfXjC94YqUqIbn4zXMjx'){
+                    aux.id_categoria="Servicios"
+                  }
+                  if(presp[index].id_categoria=='EjKGtXUIHEnwC0MKrzIn'){
+                    aux.id_categoria="Educacion"
+                  }
+                  if(presp[index].id_categoria=='Y2xbbnUeLwCz5UhfMMJZ'){
+                    aux.id_categoria="Ocio"
+                  }
+                  if(presp[index].id_categoria=='pZbMomfUFtw8u2aD0sEC'){
+                    aux.id_categoria="Transporte"
+                  }
+                  if(presp[index].id_categoria=='NgNS2EM0p4UdeAQlZ4q6'){
+                    aux.id_categoria="Vivienda"
+                  }
+                  if(presp[index].id_categoria=='Mp82DGLcR5AUOEk5DSrC'){
+                    aux.id_categoria="Salud"
+                  }
+                  if(presp[index].id_categoria=='uPtleC6y1na6ZkkpePAd'){
+                    aux.id_categoria="Otros"
+                  }
+                  aux.fecha=presp[index].fecha                                      
+                  this.presupuestosF.push(aux) //Adicion a vector para posterio lectura 
+                  
+                }            
+              })
+            });
           })
-        });
-    })
+
+        } catch (error) {
+          this.alert = "Ocurrió un error inesperado al registrar el presupuesto"
+          this.advice = 'Por favor, inténtelo de nuevo'        
+          return this.genericAlert(this.alert, this.advice)
+          
+        } finally {
+          a.dismiss().then(() => console.log('abort presenting'))//Mensaje para registro de finalizacion de proceso             
+        }
+        
+
+      })
+    })  
+
   }
 }

@@ -109,7 +109,9 @@ export class RegistrarPresupuestosPage implements OnInit {
   }
 
   sumaPresupuesto(){
-    this.sumPresupuestoIng=   this.presupuestoAlimentacion.cantidad
+
+    try {
+      this.sumPresupuestoIng=   this.presupuestoAlimentacion.cantidad
                             + this.presupuestoServicios.cantidad
                             + this.presupuestoEducacion.cantidad
                             + this.presupuestoOcio.cantidad
@@ -118,16 +120,18 @@ export class RegistrarPresupuestosPage implements OnInit {
                             + this.presupuestoSalud.cantidad
                             + this.presupuestoOtros.cantidad;
     
-    if(this.sumPresupuestoIng > this.presupuestoTotal){
-      this.labelColor="danger"
-    } else {
-      this.labelColor="primary"
-    }
+      if(this.sumPresupuestoIng > this.presupuestoTotal){
+        this.labelColor="danger"
+      } else {
+        this.labelColor="primary"
+      }
+
+    } catch (error) { }
+    
   }
 
   actionPresupuesto() {
-    this.sumaPresupuesto()
-
+    this.sumaPresupuesto()    
     //Clausula para control de presupuestos y presupuesto total, ademas de verificacion de fecha de registro
     if(this.presupuestoTotal !== null 
         && this.presupuestoAlimentacion.cantidad !== null
@@ -144,6 +148,7 @@ export class RegistrarPresupuestosPage implements OnInit {
             this.actualizarPresupuestos()
           } else {
             this.registrarPresupuesto()
+            this.presupuestoExist = true
           }
 
         } else {
@@ -207,10 +212,10 @@ export class RegistrarPresupuestosPage implements OnInit {
             })            
           } catch(error){
             //Caso de encontrar un error, definir mesaje para alerta y lanzar alerta
-              console.log(error)  
-              this.alert = "Ocurrió un error inesperado al registrar el presupuesto"
-              this.advice = 'Por favor, inténtelo de nuevo'        
-              return this.genericAlert(this.alert, this.advice)
+            console.log(error)  
+            this.alert = "Ocurrió un error inesperado al registrar el presupuesto"
+            this.advice = 'Por favor, inténtelo de nuevo'        
+            return this.genericAlert(this.alert, this.advice)
           }finally {
             a.dismiss().then(() => console.log('abort presenting'))//Mensaje para registro de finalizacion de proceso
           }

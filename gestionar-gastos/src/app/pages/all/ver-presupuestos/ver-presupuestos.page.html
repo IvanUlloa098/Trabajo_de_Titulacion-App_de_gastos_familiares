@@ -6,14 +6,24 @@
 
 <ion-content>
   <div div style="float: left; width: 100%;">
+
+    <ion-item *ngIf="loadGlobal"><!--Item de lista-->
+      <ion-label><!--Etiqueta compuesta--> 
+        <div div style="width: 100%; margin-left: 5%;">
+          <!--Visualizacion de informacion acerca del presupuesto-->  
+          <h1>Presupuesto Global</h1>
+          <h1>$ {{ presupuestoGlobal }}</h1>            
+        </div>            
+      </ion-label>
+    </ion-item> 
+    
     <div *ngFor="let presupuesto of presupuestosF"><!--Bucle con codigo angular para visualizar presupuestos-->   
       <ion-item><!--Item de lista-->
         <ion-label><!--Etiqueta compuesta--> 
           <div div style="float: left; width: 50%; margin-left: 5%;">
-            <!--Visualizacion de informacion acerca del gasto-->  
-            <h2>{{ presupuesto.cantidad }}</h2>
-            <h2>{{ presupuesto.id_categoria }}</h2>              
-            <p>{{ presupuesto.fecha }}</p>
+            <!--Visualizacion de informacion acerca del presupuesto-->  
+            <h2>{{ presupuesto.id_categoria }}</h2>
+            <h2>$ {{ presupuesto.cantidad }}</h2>            
           </div>            
         </ion-label>
       </ion-item>            
