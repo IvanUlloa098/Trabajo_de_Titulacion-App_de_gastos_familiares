@@ -105,10 +105,21 @@ export class LoginPage implements OnInit {
 
         try {
           // Iniciar sesión con el usuario ingresado
-          const user = await this.AuthenticationService.onLogin(this.User);
+          await this.AuthenticationService.onLogin(this.User);          
 
           // Garantizar una conexión estable con Firebase implementando un regtraso
           setTimeout(async () => {
+
+            if(this.AuthenticationService.currentUser == null) {
+              //console.log('HTTP Error', err);
+              this.alert = "Ocurrió un error al cargar sus datos"
+              this.advice = 'Correo electrónico o contraseña incorrecta'
+              
+              //  Terminar la carga de la página
+              a.dismiss().then(() => console.log('abort presenting'));
+              //  Mostrar mensaje de al usuario
+              return this.genericAlert(this.alert, this.advice)
+            }
             
             // Verificación del logeo para control de excepciones si no se ingresan datos
             if(this.User.email && this.User.password){
@@ -119,32 +130,21 @@ export class LoginPage implements OnInit {
               
               // Control de errores
               try {
-                
-                
+                                
                 await this.user2.pipe(take(1)).subscribe(res=> {
                   this.AuthenticationService.timeStampLogin(res[0]);
                   this.aux = res[0]
+
                   
-                  if (res[0].id_familia === "-1") {
+                  if (res[0].id_familia === "-1" && res.length > 0) {
                     a.dismiss().then(() => console.log('abort presenting'));
                     this.router.navigate(["/createfamily"]);
-                  } else {
+                  } else if (res[0].id_familia !== "-1" && res.length > 0) {
                     a.dismiss().then(() => console.log('abort presenting'));
                     this.router.navigate(["/home"]);
                   }
                   
-                },
-                err => {
-                  console.log('HTTP Error', err);
-                  this.alert = "Ocurrió un error al cargar sus datos"
-                  this.advice = 'Por favor, inténtelo de nuevo'
-                  
-                  //  Terminar la carga de la página
-                  a.dismiss().then(() => console.log('abort presenting'));
-                  //  Mostrar mensaje de al usuario
-                  this.genericAlert(this.alert, this.advice)
-                },
-                () => console.log('AUTH stream done'));
+                });
                 
               } catch (error) {
                 

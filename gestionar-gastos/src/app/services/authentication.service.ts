@@ -52,6 +52,8 @@ export class AuthenticationService {
       // this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
       this.afAuth.signInWithEmailAndPassword( user.email, user.password).then((userCredential) => {
         this.currentUser = userCredential.user
+      }).catch(err => {
+        console.log("NOT FOUND")
       })
     })
   }
@@ -162,6 +164,7 @@ export class AuthenticationService {
   }
 
   async nativeGoogleLogin()  {
+    
     const gplusUser: any = await this.googlePlus.login({
       webClientId: environment.googleWebClientId,
       offline: true
@@ -172,6 +175,7 @@ export class AuthenticationService {
       const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
       await firebase.default.auth().signInWithCredential(googleCredential).then(async (userCredential) => {
         this.currentUser = await userCredential.user
+        this.credential = await userCredential
       })
       //console.log(JSON.stringify(firebaseUser.user));
       //await this.updateUserData(this.currentUser, 'google');
