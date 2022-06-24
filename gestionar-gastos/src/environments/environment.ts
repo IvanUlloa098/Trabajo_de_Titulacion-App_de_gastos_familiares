@@ -15,7 +15,7 @@ export const environment = {
   },
 
   RG_FUNC_PATH: "https://us-central1-gestionar-gastos.cloudfunctions.net/regressionReq",
-  googleWebClientId : "Qz5zi2nZB4V0YuC5hCXF3RvE"
+  googleWebClientId : "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"
 
 };
 
