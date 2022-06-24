@@ -10,6 +10,9 @@ import * as firebase from 'firebase/compat/app';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { User } from '../domain/user';
 import { Router } from '@angular/router';
+import { Plugins } from '@capacitor/core';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -150,8 +153,10 @@ export class AuthenticationService {
   //GOOGLE
   async googleLogin() {
     if (this.platform.is('capacitor')) {
-      return await this.nativeGoogleLogin();
+      console.log("app en capacitor")
+      return await this.nativeGoogleLogin();      
     } else {
+      console.log("app en web")
       return await this.webGoogleLogin();
     }
   }
@@ -161,6 +166,7 @@ export class AuthenticationService {
       webClientId: environment.googleWebClientId,
       offline: true
     });
+    
 
     await this.afAuth.setPersistence('session').then( async () => {
       const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
