@@ -39,6 +39,17 @@ export class CreatefamilyPage implements OnInit {
 
   async crear(){
 
+    if((this.fam.nombre === null || this.fam.nombre === undefined) || 
+      (this.fam.presupuesto_global === null || this.fam.presupuesto_global === undefined) ||
+      (this.fam.primer_dia_mes === null || this.fam.primer_dia_mes === undefined)){
+        this.alert = "Ocurrió un error"
+        this.advice = 'Por favor, ingrese los datos necesarios'
+        
+        //  Mostrar mensaje de al usuario
+        return this.genericAlert(this.alert, this.advice);
+
+      }
+
     // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => { 

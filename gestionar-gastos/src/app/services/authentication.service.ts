@@ -149,7 +149,7 @@ export class AuthenticationService {
 
   //GOOGLE
   async googleLogin() {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('capacitor')) {
       return await this.nativeGoogleLogin();
     } else {
       return await this.webGoogleLogin();

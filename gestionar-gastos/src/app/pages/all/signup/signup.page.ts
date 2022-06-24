@@ -32,6 +32,17 @@ export class SignupPage implements OnInit {
   }
 
   async registro(){
+
+    if((this.User.email === null || this.User.email === undefined) || 
+      (this.User.password === null || this.User.password === undefined) ||
+      (this.User.displayName === null || this.User.displayName === undefined)){
+        this.alert = "Ocurrió un error"
+        this.advice = 'Por favor, ingrese los datos necesarios'
+        
+        //  Mostrar mensaje de al usuario
+        return this.genericAlert('Lo sentimos',this.alert, this.advice);
+
+      }
     
     const user = await this.auth.onRegistro(this.User);
     this.User.role = 'N'

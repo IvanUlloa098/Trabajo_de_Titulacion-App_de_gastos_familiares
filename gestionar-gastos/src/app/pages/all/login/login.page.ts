@@ -89,6 +89,16 @@ export class LoginPage implements OnInit {
 
   async logeo(){
 
+    if((this.User.email === null || this.User.email === undefined) || 
+      (this.User.password === null || this.User.password === undefined)){
+        this.alert = "Ocurrió un error"
+        this.advice = 'Por favor, ingrese los datos necesarios'
+        
+        //  Mostrar mensaje de al usuario
+        return this.genericAlert(this.alert, this.advice);
+
+      }
+
     // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
@@ -146,6 +156,8 @@ export class LoginPage implements OnInit {
                 //  Mostrar mensaje de al usuario
                 this.genericAlert(this.alert, this.advice)
   
+              } finally {
+                a.dismiss().then(() => console.log('abort presenting'));
               }
       
             }else{
@@ -170,6 +182,8 @@ export class LoginPage implements OnInit {
           a.dismiss().then(() => console.log('abort presenting'));
           //  Mostrar mensaje de al usuario
           this.genericAlert(this.alert, this.advice);
+        } finally {
+          a.dismiss().then(() => console.log('abort presenting'));
         }
 
       })

@@ -138,22 +138,20 @@ export class HomePage implements OnInit {
   
               })
                
-            } catch (error) {
-              console.log(error);
-              this.alert = "Ocurrió un error al cargar sus datos"
-              this.advice = 'Por favor, inténtelo de nuevo'
+          } catch (error) {
+            console.log(error);
+            this.alert = "Ocurrió un error al cargar sus datos"
+            this.advice = 'Por favor, inténtelo de nuevo'
 
-              this.genericAlert(this.alert, this.advice)
-              this.router.navigate(["/login"])
-            } finally {
-              //  Terminar la carga de la página
-              a.dismiss().then(() => console.log('abort presenting'));
-              
-            }
+            this.genericAlert(this.alert, this.advice)
+            this.router.navigate(["/login"])
+          } finally {
+            //  Terminar la carga de la página
+            a.dismiss().then(() => console.log('abort presenting'));
+            
+          }
   
-          })
-
-       
+        })  
 
       }) 
 
