@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "519785918958",
+    "project_id": "gestionar-gastos",
+    "storage_bucket": "gestionar-gastos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519785918958:android:e4f82738145da7096d5eff",
+        "android_client_info": {
+          "package_name": "com.gestionargastos.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519785918958-jfm7103u07hu0sfoprgku3jvp7kk7ire.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBty4n05qqQK_0ToMM7jKd1tbYNcXkRDQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519785918958-jfm7103u07hu0sfoprgku3jvp7kk7ire.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
