@@ -110,7 +110,7 @@ export class LoginPage implements OnInit {
           // Garantizar una conexión estable con Firebase implementando un regtraso
           setTimeout(async () => {
 
-            if(this.AuthenticationService.currentUser == null) {
+            if(this.AuthenticationService.currentUser == null || this.AuthenticationService.currentUser == undefined) {
               //console.log('HTTP Error', err);
               this.alert = "Ocurrió un error al cargar sus datos"
               this.advice = 'Correo electrónico o contraseña incorrecta'
@@ -156,8 +156,6 @@ export class LoginPage implements OnInit {
                 //  Mostrar mensaje de al usuario
                 this.genericAlert(this.alert, this.advice)
   
-              } finally {
-                a.dismiss().then(() => console.log('abort presenting'));
               }
       
             }else{
@@ -182,8 +180,6 @@ export class LoginPage implements OnInit {
           a.dismiss().then(() => console.log('abort presenting'));
           //  Mostrar mensaje de al usuario
           this.genericAlert(this.alert, this.advice);
-        } finally {
-          a.dismiss().then(() => console.log('abort presenting'));
         }
 
       })

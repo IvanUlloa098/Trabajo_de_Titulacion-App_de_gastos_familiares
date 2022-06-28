@@ -49,6 +49,7 @@ export class AuthenticationService {
       // this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
       this.afAuth.signInWithEmailAndPassword( user.email, user.password).then((userCredential) => {
         this.currentUser = userCredential.user
+        
       }).catch(err => {
         console.log("NOT FOUND")
       })
@@ -150,7 +151,7 @@ export class AuthenticationService {
   }
 
   //GOOGLE
-  async googleLogin() {
+  async googleLogin() {    
     if (this.platform.is('capacitor')) {
       return await this.nativeGoogleLogin();
     } else {
