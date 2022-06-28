@@ -45,7 +45,7 @@ export class AuthenticationService {
 
   //iniciar sesion
   async onLogin (user: User) {
-    this.afAuth.setPersistence('session').then( () => {
+    return await this.afAuth.setPersistence('session').then( () => {
       // this.afs.collection("users", ref => ref.where("email", "==", user.email).where("password", "==", user.password)).doc().valueChanges();
       this.afAuth.signInWithEmailAndPassword( user.email, user.password).then((userCredential) => {
         this.currentUser = userCredential.user
@@ -53,6 +53,8 @@ export class AuthenticationService {
       }).catch(err => {
         console.log("NOT FOUND")
       })
+    }).catch(err => {
+      console.log("Other Error")
     })
   }
   

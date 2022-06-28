@@ -105,8 +105,8 @@ export class LoginPage implements OnInit {
 
         try {
           // Iniciar sesión con el usuario ingresado
-          await this.AuthenticationService.onLogin(this.User);          
-
+          await this.AuthenticationService.onLogin(this.User)  
+          
           // Garantizar una conexión estable con Firebase implementando un regtraso
           setTimeout(async () => {
 
@@ -170,7 +170,7 @@ export class LoginPage implements OnInit {
               
             }
             
-          }, 2000);
+          }, 4000);
 
         } catch (error) {
           this.alert = "Ocurrió un error con el inicio de sesión"
@@ -191,11 +191,11 @@ export class LoginPage implements OnInit {
     // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
-                
+
         try {
           //  Iniciamos sesión usando Google
           this.user2 = await this.AuthenticationService.googleLogin()
-
+          
           setTimeout(async () => {
     
             await this.AuthenticationService.updateUserData(this.user2, 'google')
