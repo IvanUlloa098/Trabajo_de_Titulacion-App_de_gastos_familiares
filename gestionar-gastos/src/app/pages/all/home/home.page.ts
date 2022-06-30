@@ -147,67 +147,58 @@ export class HomePage implements OnInit {
   } 
 
   async entrada(a){
-    this.sessionUser.pipe(take(1)).subscribe(user =>{
-        
-      this.familia=this.presupuestoService.obtenerFamilia(user[0].id_familia)//Utilizacion de servicio para obtener familia del usuario en base a consulta base de datos
+
+    this.sessionUser.pipe(take(1)).subscribe(async user =>{
       
-      this.familia.pipe(take(1)).subscribe(fam=>{
-        this.presp=fam[0].presupuesto_global//Asignacion de valor
+      await this.gastoService.homeChartData(user[0].id_familia).then((res) => {
         
-        this.gastosHome.pipe(take(1)).subscribe(gasto =>{
-          this.gastosMes = gasto.filter(data => (new Date(data.fecha)).getMonth() == (new Date).getMonth())
-          
-          this.gastosMes.forEach(element => {
-            this.gastoTot+=element.monto//Sumatoria de todos los gastos
-          });
+        if(this.doughnutChart!=null){//En caso de que el grafico este inicializado
+          this.doughnutChart.destroy()//Destruir la instancia
+        }
 
-          if(this.gastoTot>=this.presp){
-            this.prespGst=0//En caso de que el gasto total sea mayor al presupuesto general, el presupuesto restante es 0
-          }else {
-            this.prespGst=this.presp-this.gastoTot//Caso contrario el gasto total es la resta del presupuesto menos los gastos
-          }    
-
-          if(this.doughnutChart!=null){//En caso de que el grafico este inicializado
-            this.doughnutChart.destroy()//Destruir la instancia
-          }
-
-          this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {//Declaracion de la grafica 
-            type: 'polarArea',//Tipo
-            options:{
-              scales:{
-                r: {
-                  grid: {
-                    color: 'rgb(38, 38, 38)'
-                  }
+        this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {//Declaracion de la grafica 
+          type: 'polarArea',//Tipo
+          options:{
+            scales:{
+              r: {
+                grid: {
+                  color: 'rgb(38, 38, 38)'
                 }
               }
-            },
-            data: {//Datos de la grafica
-              labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],//Etiquetas
-              datasets: [{
-                label: 'Cantidad en Dolares $',
-                data: [this.presp, this.prespGst, this.gastoTot],//Datos a mostrar acorde a las etiquetas
-                backgroundColor: [
-                  //Colores definidos para las partes del area a graficar
-                  'rgba(255, 159, 64, 0.4)',
-                  'rgba(54, 162, 235, 0.4)',                          
-                  'rgba(255, 99, 132, 0.4)'                                      
-                ],
-                
-                borderColor:['#ff9f40','#36a2eb','#ff6384'],//Color de borde de area, sin focus
-                hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],//Color de fondo de area con enfoque
-                hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],//Color de borde de area, con focus
-                borderWidth:[1,1,1],//Tamaño de borde de las partes, sin enfoque
-                hoverBorderWidth:[1,1,1]//Tamaño de borde de las partes, sin enfoque                       
-              }]
             }
-          });
+          },
+          data: {//Datos de la grafica
+            labels: ['Presupuesto', 'Presupuesto Restante', 'Gastos Totales'],//Etiquetas
+            datasets: [{
+              label: 'Cantidad en Dolares $',
+              data: [res.presp, res.prespGst, res.gastoTot],//Datos a mostrar acorde a las etiquetas
+              backgroundColor: [
+                //Colores definidos para las partes del area a graficar
+                'rgba(255, 159, 64, 0.4)',
+                'rgba(54, 162, 235, 0.4)',                          
+                'rgba(255, 99, 132, 0.4)'                                      
+              ],
+              
+              borderColor:['#ff9f40','#36a2eb','#ff6384'],//Color de borde de area, sin focus
+              hoverBackgroundColor:['#ff9f40','#36a2eb','#ff6384'],//Color de fondo de area con enfoque
+              hoverBorderColor:['#ff9f40','#36a2eb','#ff6384'],//Color de borde de area, con focus
+              borderWidth:[1,1,1],//Tamaño de borde de las partes, sin enfoque
+              hoverBorderWidth:[1,1,1]//Tamaño de borde de las partes, sin enfoque                       
+            }]
+          }
+        });
 
-          this.loaded = true
-          a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga   
-        })
-
-      })
+        this.loaded = true
+        a.dismiss().then(() => console.log('abort presenting'))//Termino de pantalla de carga
+          
+      }).catch(err => {
+        console.log('HTTP Error', err);
+        this.alert = "Ocurrió un error al cargar sus datos o no se encontraron datos de gastos"
+        this.advice = 'Por favor, inténtelo de nuevo'
+  
+        a.dismiss().then(() => console.log('abort presenting'));
+        this.genericAlert(this.alert, this.advice)
+      });
     })
   }  
 

@@ -114,3 +114,69 @@ export const regressionReq = functions.https.onRequest((request, response) => {
         });
   });
 });
+
+export const homeReq = functions.https.onRequest((request, response) => {
+  cors(request, response, () => {
+    functions.logger.info("Petition requested for HOME."
+        , {structuredData: true});
+
+    response.set("Access-Control-Allow-Origin", "*");
+    response.set("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS");
+    response.set("Access-Control-Allow-Headers", "*");
+
+    const familyID = request.body.id_familia;
+    let presp: number;
+    let prespGst = 0;
+    let gastoTot = 0;
+    let gastosMes: any = [];
+
+    admin.firestore().collection("gastos")
+        .where("id_familia", "==", familyID ).get()
+        .then((res) => {
+          admin.firestore().collection("families")
+              .where("id", "==", familyID ).get()
+              .then((fam) => {
+                res.forEach((doc) => {
+                  gastosMes.push(doc.data());
+                });
+
+                fam.forEach((doc) => {
+                  presp = doc.data().presupuesto_global;
+                });
+
+                gastosMes = gastosMes.filter((data) =>
+                  (new Date(data.fecha)).getMonth() == (new Date).getMonth());
+
+                gastosMes.forEach((element) => {
+                  gastoTot+=element.monto;
+                });
+
+                if (gastoTot >= presp) {
+                  prespGst = 0;
+                } else {
+                  prespGst = presp-gastoTot;
+                }
+
+                const jsonRes ={
+                  presp: presp,
+                  prespGst: prespGst,
+                  gastoTot: gastoTot,
+                };
+
+                response.send(jsonRes);
+              })
+              .catch((error) => {
+                // En caso de un error
+                console.log(error);
+                functions.logger.info(error, {structuredData: true});
+                response.status(500).send({"error": error});
+              });
+        })
+        .catch((error) => {
+          // En caso de un error
+          console.log(error);
+          functions.logger.info(error, {structuredData: true});
+          response.status(500).send({"error": error});
+        });
+  });
+});
