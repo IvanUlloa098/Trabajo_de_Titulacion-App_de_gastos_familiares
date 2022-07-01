@@ -191,7 +191,7 @@ export class LoginPage implements OnInit {
     // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
-
+                
         try {
           //  Iniciamos sesión usando Google
           this.user2 = await this.AuthenticationService.googleLogin()
