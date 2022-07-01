@@ -128,6 +128,7 @@ export const homeReq = functions.https.onRequest((request, response) => {
     let presp: number;
     let prespGst = 0;
     let gastoTot = 0;
+    let firsDay = 0;
     let gastosMes: any = [];
 
     admin.firestore().collection("gastos")
@@ -142,10 +143,18 @@ export const homeReq = functions.https.onRequest((request, response) => {
 
                 fam.forEach((doc) => {
                   presp = doc.data().presupuesto_global;
+                  firsDay = doc.data().primer_dia_mes;
                 });
 
+                const auxDate1 = (new Date((new Date().setDate(firsDay))))
+                    .toISOString().substring(0, 10);
+                const auxDate2 = new Date((new Date((new Date().setDate(0))))
+                    .setDate(firsDay)).toISOString().substring(0, 10);
+
                 gastosMes = gastosMes.filter((data) =>
-                  (new Date(data.fecha)).getMonth() == (new Date).getMonth());
+                  ((new Date(data.fecha)) <= new Date(auxDate1)) &&
+                  ((new Date(data.fecha)) >= new Date(auxDate2))
+                );
 
                 gastosMes.forEach((element) => {
                   gastoTot+=element.monto;
