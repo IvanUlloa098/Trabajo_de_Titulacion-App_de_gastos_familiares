@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.gestionargastos.app',
+  appId: 'io.ionic.starter',
   appName: 'GestionarGastos',
   webDir: 'www',
   bundledWebRuntime: false

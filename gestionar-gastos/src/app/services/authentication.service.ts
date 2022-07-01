@@ -159,7 +159,7 @@ export class AuthenticationService {
   async googleLogin() {    
     if (this.platform.is('capacitor')) {
       console.log("app en capacitor")
-      return null;      
+      return await this.nativeGoogleLogin();      
     } else {
       console.log("app en web")
       return await this.webGoogleLogin();
@@ -167,38 +167,24 @@ export class AuthenticationService {
   }
 
   async nativeGoogleLogin()  {
-    try {
-      console.log("Antes GplusUser")
-      var gplusUser: any = await this.googlePlus.login({
-        webClientId: environment.googleWebClientId,
-        offline: true
-      });
-      console.log("GplusUser")
-      console.log(gplusUser)
-  
-      await this.afAuth.setPersistence('session').then( async () => {
-        const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
-        await firebase.default.auth().signInWithCredential(googleCredential).then(async (userCredential) => {
-          this.currentUser = await userCredential.user
-          console.log("Current User")
-          console.log(this.currentUser)
-          this.credential = await userCredential
-          console.log("Credenciales")
-          console.log(this.credential)
-          return JSON.stringify(this.currentUser._delegate)
-        })
-        //console.log(JSON.stringify(firebaseUser.user));
-        //await this.updateUserData(this.currentUser, 'google');
-      })
-      
-      
-    }catch(error){      
-      console.log("loggin google")
-      console.log(error)
-      return JSON.stringify("null")
-    }
-      
     
+    const gplusUser: any = await this.googlePlus.login({
+      webClientId: environment.googleWebClientId,
+      offline: true
+    });
+    
+
+    await this.afAuth.setPersistence('session').then( async () => {
+      const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(gplusUser.idToken);
+      await firebase.default.auth().signInWithCredential(googleCredential).then(async (userCredential) => {
+        this.currentUser = await userCredential.user
+        this.credential = await userCredential
+      })
+      //console.log(JSON.stringify(firebaseUser.user));
+      //await this.updateUserData(this.currentUser, 'google');
+    })
+
+    return await JSON.stringify(this.currentUser._delegate)
   }
 
   async webGoogleLogin() {

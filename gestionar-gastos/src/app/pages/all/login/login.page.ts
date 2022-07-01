@@ -193,55 +193,42 @@ export class LoginPage implements OnInit {
       a.present().then(async () => {
 
         try {
-          //  Iniciamos sesión usando Google          
+          //  Iniciamos sesión usando Google
           this.user2 = await this.AuthenticationService.googleLogin()
-          if(this.user2!=null){
-            setTimeout(async () => {
-    
-              await this.AuthenticationService.updateUserData(this.user2, 'google')
-              this.user2 = await this.AuthenticationService.getUsuario(this.user2._delegate.email)
-        
-              await this.user2.pipe(take(1)).subscribe(res=> {
-                this.aux = res[0]
-              
-                if (this.aux.id_familia === "-1") {    
-                  a.dismiss().then(() => console.log('abort presenting'));
-                  this.router.navigate(["/createfamily"]);
-  
-                } else {
-                  a.dismiss().then(() => console.log('abort presenting'));
-                  this.router.navigate(["/home"]);
-  
-                }
-          
-              },
-              err => {
-                console.log('HTTP Error', err);
-                this.alert = "Ocurrió un error al cargar sus datos"
-                this.advice = 'Por favor, inténtelo de nuevo'
-                
-                //  Terminar la carga de la página
-                a.dismiss().then(() => console.log('abort presenting'));
-                //  Mostrar mensaje de al usuario
-                this.genericAlert(this.alert, this.advice);
-              },
-              () => console.log('AUTH stream done'));
-            }, 2000);
-          }else {
-            this.alert = "Accion unicamente en navegador"
-            this.advice = 'Por favor logearse con correo/contraseña'
-          
-            //  Terminar la carga de la página
-            a.dismiss().then(() => console.log('abort presenting'));
-            //  Mostrar mensaje de al usuario
-            this.genericAlert(this.alert, this.advice);
-          }
 
-                    
+          setTimeout(async () => {
+    
+            await this.AuthenticationService.updateUserData(this.user2, 'google')
+            this.user2 = await this.AuthenticationService.getUsuario(this.user2._delegate.email)
+      
+            await this.user2.pipe(take(1)).subscribe(res=> {
+              this.aux = res[0]
+            
+              if (this.aux.id_familia === "-1") {    
+                a.dismiss().then(() => console.log('abort presenting'));
+                this.router.navigate(["/createfamily"]);
+
+              } else {
+                a.dismiss().then(() => console.log('abort presenting'));
+                this.router.navigate(["/home"]);
+
+              }
+        
+            },
+            err => {
+              console.log('HTTP Error', err);
+              this.alert = "Ocurrió un error al cargar sus datos"
+              this.advice = 'Por favor, inténtelo de nuevo'
+              
+              //  Terminar la carga de la página
+              a.dismiss().then(() => console.log('abort presenting'));
+              //  Mostrar mensaje de al usuario
+              this.genericAlert(this.alert, this.advice);
+            },
+            () => console.log('AUTH stream done'));
+          }, 2000);          
           
         } catch (error) {
-          
-          console.log(error)
           this.alert = "Ocurrió un error inesperado en con el inicio de sesión"
           this.advice = 'Por favor, inténtelo de nuevo'
           
