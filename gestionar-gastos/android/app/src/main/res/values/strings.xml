@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">GestionarGastos</string>
-    <string name="title_activity_main">GestionarGastos</string>
-    <string name="package_name">com.gestionargastos.app</string>
-    <string name="custom_url_scheme">com.gestionargastos.app</string>
-</resources>

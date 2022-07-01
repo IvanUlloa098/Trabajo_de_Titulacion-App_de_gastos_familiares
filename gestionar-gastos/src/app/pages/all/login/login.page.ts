@@ -105,12 +105,12 @@ export class LoginPage implements OnInit {
 
         try {
           // Iniciar sesión con el usuario ingresado
-          await this.AuthenticationService.onLogin(this.User);          
-
+          await this.AuthenticationService.onLogin(this.User)  
+          
           // Garantizar una conexión estable con Firebase implementando un regtraso
           setTimeout(async () => {
 
-            if(this.AuthenticationService.currentUser == null) {
+            if(this.AuthenticationService.currentUser == null || this.AuthenticationService.currentUser == undefined) {
               //console.log('HTTP Error', err);
               this.alert = "Ocurrió un error al cargar sus datos"
               this.advice = 'Correo electrónico o contraseña incorrecta'
@@ -156,8 +156,6 @@ export class LoginPage implements OnInit {
                 //  Mostrar mensaje de al usuario
                 this.genericAlert(this.alert, this.advice)
   
-              } finally {
-                a.dismiss().then(() => console.log('abort presenting'));
               }
       
             }else{
@@ -172,7 +170,7 @@ export class LoginPage implements OnInit {
               
             }
             
-          }, 2000);
+          }, 4000);
 
         } catch (error) {
           this.alert = "Ocurrió un error con el inicio de sesión"
@@ -182,8 +180,6 @@ export class LoginPage implements OnInit {
           a.dismiss().then(() => console.log('abort presenting'));
           //  Mostrar mensaje de al usuario
           this.genericAlert(this.alert, this.advice);
-        } finally {
-          a.dismiss().then(() => console.log('abort presenting'));
         }
 
       })
@@ -195,7 +191,7 @@ export class LoginPage implements OnInit {
     // Control de la interacción del usuario usando una rueda de carga
     return await this.loadingController.create({ }).then(a => {
       a.present().then(async () => {
-                
+
         try {
           //  Iniciamos sesión usando Google          
           this.user2 = await this.AuthenticationService.googleLogin()
